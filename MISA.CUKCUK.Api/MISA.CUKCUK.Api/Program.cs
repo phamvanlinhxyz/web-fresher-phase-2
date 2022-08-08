@@ -16,6 +16,18 @@ builder.Services.AddScoped<IDishRepository, DishRepository>();
 builder.Services.AddScoped<IDishService, DishService>();
 builder.Services.AddScoped<IKitchenRepository, KitchenRepository>();
 builder.Services.AddScoped<IKitchenService, KitchenService>();
+builder.Services.AddScoped<IMaterialRepository, MaterialRepository>();
+builder.Services.AddScoped<IMaterialService, MaterialService>();    
+builder.Services.AddScoped<IMaterialGroupRepository, MaterialGroupRepository>();
+builder.Services.AddScoped<IMaterialGroupService, MaterialGroupService>();
+builder.Services.AddScoped<IMenuGroupRepository, MenuGroupRepository>();
+builder.Services.AddScoped<IMenuGroupService, MenuGroupService>();
+builder.Services.AddScoped<IRepositoryRepository, RepositoryRepository>();
+builder.Services.AddScoped<IRepositoryService, RepositoryService>();
+builder.Services.AddScoped<IUnitRepository, UnitRepository>();
+builder.Services.AddScoped<IUnitService, UnitService>();
+builder.Services.AddScoped<IDishMaterialRepository, DishMaterialRepository>();
+builder.Services.AddScoped<IDishMaterialService, DishMaterialService>();
 builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 builder.Services.AddScoped(typeof(IBaseService<>), typeof(BaseService<>));
 
