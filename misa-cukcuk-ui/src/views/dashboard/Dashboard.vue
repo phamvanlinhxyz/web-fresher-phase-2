@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="padding: 20px">
     <h1>Button</h1>
     <base-button content="Đồng ý" type="1" />
     <br />
@@ -21,7 +21,9 @@
     <base-combobox :listItem="testData" :addIcon="true" tableName="Material" />
     <br />
     <h1>Loading</h1>
-    <!-- <base-loading content="Đang lấy dữ liệu" /> -->
+    <div style="position: relative; width: 100%; height: 200px">
+      <base-loading content="Đang lấy dữ liệu" />
+    </div>
   </div>
 </template>
 

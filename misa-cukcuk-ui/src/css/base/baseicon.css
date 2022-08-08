@@ -64,3 +64,33 @@
   width: 15px;
   height: 15px;
 }
+
+.icon-insert {
+  background: url(@/assets/images/IconSprite.png) no-repeat 0 -2648px;
+  width: 16px;
+  height: 16px;
+}
+
+.icon-duplicate {
+  background: url(@/assets/images/IconSprite.png) no-repeat 0 -1888px;
+  width: 16px;
+  height: 16px;
+}
+
+.icon-edit {
+  background: url(@/assets/images/Edit16.png) no-repeat;
+  width: 16px;
+  height: 16px;
+}
+
+.icon-delete {
+  background: url(@/assets/images/IconSprite.png) no-repeat 0 -2680px;
+  width: 16px;
+  height: 16px;
+}
+
+.icon-reload {
+  background: url(@/assets/images/IconSprite.png) no-repeat 0 -2584px;
+  width: 16px;
+  height: 16px;
+}

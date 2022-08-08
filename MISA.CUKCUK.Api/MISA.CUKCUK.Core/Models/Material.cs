@@ -35,7 +35,7 @@ namespace MISA.CUKCUK.Core.Models
         /// <summary>
         /// Thuộc tính nguyên vật liệu
         /// </summary>
-        public string MateralProperty { get; set; }
+        public string MaterialProperty { get; set; }
         /// <summary>
         /// ID nhóm nguyên vật liệu
         /// </summary>
