@@ -1,0 +1,40 @@
+.button {
+  height: 25px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  outline: none;
+  border-radius: 2px;
+  border: 1px solid;
+}
+
+.button:disabled {
+  opacity: 0.3;
+}
+
+.button-1 {
+  background-color: #fafafa;
+  border-color: #ccc;
+}
+
+.button-1:hover,
+.button-1:active {
+  background-color: #e4f2ea;
+  border-color: #0072bc;
+}
+
+.button-2 {
+  background-color: #0072bc;
+  border-color: #0072bc;
+  color: #fff;
+}
+
+.button-2:hover,
+.button-2:active {
+  background-color: #008ce6;
+  border-color: #008ce6;
+}
+
+.button-icon {
+  margin-right: 8px;
+}

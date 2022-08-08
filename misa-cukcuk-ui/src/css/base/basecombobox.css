@@ -1,0 +1,61 @@
+.combobox {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 22px;
+  border: 1px solid #c1c1c1;
+  z-index: 101;
+}
+
+.cbb-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.cbb-input {
+  flex: 1;
+  outline: none;
+  border: none;
+  font-size: 12px;
+  padding: 0 5px;
+}
+
+.add-button {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.cbb-option {
+  position: fixed;
+  max-height: 300px;
+  overflow: auto;
+  z-index: 100;
+  background-color: #fff;
+  box-shadow: rgb(136 136 136) 0px 3px 10px -3px;
+  border-radius: 2px;
+}
+
+.cbb-list-item {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.cbb-item {
+  padding: 1px 6px;
+  line-height: 22px;
+  cursor: pointer;
+  position: relative;
+}
+
+.item-selected,
+.cbb-item:hover {
+  background-color: #d6e8f6;
+}

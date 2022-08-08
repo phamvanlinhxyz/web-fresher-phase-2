@@ -1,0 +1,26 @@
+.loading-wrapper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(10, 10, 10, 0.4) !important;
+}
+
+.loading {
+  padding: 8px;
+  border-radius: 3px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loading-text {
+  margin-top: 5px;
+  color: #666;
+  font: 13px helvetica,arial,verdana,sans-serif;
+}

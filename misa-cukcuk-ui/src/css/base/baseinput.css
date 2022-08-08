@@ -1,0 +1,26 @@
+.input-wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  height: 22px;
+  outline: 0;
+  border: 1px solid #c1c1c1;
+  padding: 0 5px;
+  font-size: 12px;
+  flex: 1;
+}
+
+.input:focus {
+  border-color: #0072bc;
+}
+
+.input-error {
+  border-color: #e04742;
+}
+
+.input-error-icon {
+  margin: 0 5px;
+}
