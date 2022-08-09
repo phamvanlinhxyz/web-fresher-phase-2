@@ -1,6 +1,9 @@
 .menu-list {
   padding: 18px 10px 10px;
   width: calc(100% - 20px);
+  height: calc(100% - 28px);
+  display: flex;
+  flex-direction: column;
   overflow: auto;
 }
 
@@ -16,6 +19,7 @@
   background-color: #ededed !important;
   background-image: -webkit-linear-gradient(top, #f9f9f9, #e3e4e6);
   border: 1px solid #d9d9d9;
+  border-bottom: none;
   display: flex;
   align-items: center;
 }
@@ -27,6 +31,7 @@
   align-items: center;
   width: fit-content;
   margin-right: 9px;
+  cursor: pointer;
 }
 
 .toolbar-button:hover {
@@ -54,6 +59,9 @@
 }
 
 .menu-table {
-  width: 100%;
+  width: calc(100% - 2px);
+  border: 1px solid #c1c1c1;
   overflow: auto;
+  flex: 1;
+  position: relative;
 }

@@ -76,6 +76,10 @@ namespace MISA.CUKCUK.Core.Models
         /// Là bán thành phẩm
         /// </summary>
         public int? SemiFinishedProduct { get; set; }
+        /// <summary>
+        /// Đã định lượng nguyên vật liệu
+        /// </summary>
+        public int? MaterialQuantified { get; set; }
         #endregion
     }
 }

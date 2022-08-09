@@ -26,4 +26,5 @@ body {
 .main-body {
   flex: 1;
   display: flex;
+  height: calc(100% - 55px);
 }

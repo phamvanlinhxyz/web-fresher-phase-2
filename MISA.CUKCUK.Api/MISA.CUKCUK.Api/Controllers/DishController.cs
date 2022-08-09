@@ -14,9 +14,25 @@ namespace MISA.CUKCUK.Api.Controllers
     [ApiController]
     public class DishController : BaseController<Dish>
     {
+        #region Variable
+        IDishRepository _repository;
+        IDishService _service;
+        #endregion
+
         #region Contructor
         public DishController(IDishRepository repository, IDishService service) : base(repository, service)
         {
+            _repository = repository;
+            _service = service;
+        }
+        #endregion
+
+        #region Controller
+        [HttpPost("paging")]
+        public IActionResult Paging(int pageIndex, int pageSize, FilterObject[] filterObjects)
+        {
+            var data = _service.PagingService(pageIndex, pageSize, filterObjects);
+            return Ok(data);
         }
         #endregion
     }

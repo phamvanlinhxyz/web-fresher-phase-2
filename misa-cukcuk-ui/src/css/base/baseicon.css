@@ -94,3 +94,47 @@
   width: 16px;
   height: 16px;
 }
+
+.icon-checkbox-empty {
+  background: url(@/assets/images/checkbox.png) no-repeat -1px -1px;
+  width: 13px;
+  height: 13px;
+  margin: auto;
+}
+
+.icon-checkbox-tick {
+  background: url(@/assets/images/checkbox.png) no-repeat 0 -15px;
+  width: 15px;
+  height: 15px;
+  margin: auto;
+}
+
+.icon-page-first {
+  background: url(@/assets/images/page-first.png) no-repeat;
+  height: 16px;
+  width: 16px;
+}
+
+.icon-page-prev {
+  background: url(@/assets/images/page-prev.png) no-repeat;
+  height: 16px;
+  width: 16px;
+}
+
+.icon-page-next {
+  background: url(@/assets/images/page-next.png) no-repeat;
+  height: 16px;
+  width: 16px;
+}
+
+.icon-page-last {
+  background: url(@/assets/images/page-last.png) no-repeat;
+  height: 16px;
+  width: 16px;
+}
+
+.icon-refresh {
+  background: url(@/assets/images/refresh.png) no-repeat;
+  height: 16px;
+  width: 16px;
+}

@@ -1,4 +1,5 @@
-﻿using MISA.CUKCUK.Core.Interfaces.Services;
+﻿using MISA.CUKCUK.Core.Interfaces.Repositories;
+using MISA.CUKCUK.Core.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,18 @@ namespace MISA.CUKCUK.Core.Service
     /// Created by: linhpv (08/08/2022)
     public class BaseService<T> : IBaseService<T>
     {
+        #region Variable
+        IBaseRepository<T> _repository;
+        #endregion
+
+        #region Contructor
+        public BaseService(IBaseRepository<T> repository)
+        {
+            _repository = repository;
+        }
+        #endregion
+
+        #region Service
         public int InsertService(T entity)
         {
             throw new NotImplementedException();
@@ -23,5 +36,7 @@ namespace MISA.CUKCUK.Core.Service
         {
             throw new NotImplementedException();
         }
+        #endregion
+
     }
 }

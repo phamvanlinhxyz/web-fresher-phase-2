@@ -41,13 +41,18 @@
       <menu-table />
     </div>
     <!-- Phân trang -->
+    <menu-pagination />
+    <!-- Popup -->
+    <!-- <dish-detail /> -->
   </div>
 </template>
 
 <script>
 import MenuTable from "./MenuTable.vue";
+import DishDetail from "./DishDetail.vue";
+import MenuPagination from "./MenuPagination.vue";
 export default {
-  components: { MenuTable },
+  components: { MenuTable, DishDetail, MenuPagination },
 };
 </script>
 
