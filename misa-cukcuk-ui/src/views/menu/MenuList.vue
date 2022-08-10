@@ -4,7 +4,7 @@
     <div class="menu-list-title">Thực đơn</div>
     <!-- Thanh công cụ -->
     <div class="toolbar">
-      <div class="toolbar-button">
+      <div class="toolbar-button" @click="toggleDishPopup">
         <div class="toolbar-button-icon">
           <base-icon iconName="insert" />
         </div>
@@ -43,7 +43,7 @@
     <!-- Phân trang -->
     <menu-pagination />
     <!-- Popup -->
-    <!-- <dish-detail /> -->
+    <dish-detail v-if="isShowDishPopup" />
   </div>
 </template>
 
@@ -51,8 +51,15 @@
 import MenuTable from "./MenuTable.vue";
 import DishDetail from "./DishDetail.vue";
 import MenuPagination from "./MenuPagination.vue";
+import { mapActions, mapState } from 'vuex';
 export default {
   components: { MenuTable, DishDetail, MenuPagination },
+  computed: mapState({
+    isShowDishPopup: (state) => state.dish.isShowDishPopup
+  }),
+  methods: {
+    ...mapActions(["toggleDishPopup"])
+  },
 };
 </script>
 

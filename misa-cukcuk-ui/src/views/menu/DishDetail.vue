@@ -33,7 +33,10 @@
                   <div style="display: flex">
                     <div class="pdi-image">
                       <img
+                        ref="imagePreview"
                         src="https://misathai.cukcuk.com/Handler/ImageHandler.ashx?FileType=1&IsTemp=True&W=160&H=120&IsFit=true"
+                        width="160"
+                        height="120"
                       />
                       <div class="pdi-image-text">
                         Chọn các ảnh có định dạng
@@ -41,8 +44,9 @@
                       </div>
                     </div>
                     <div class="pdi-label">
-                      <div class="pdi-label-icon">...</div>
-                      <div class="pdi-label-icon">x</div>
+                      <input id="input-image" type="file" style="display:none" @change="handleChangeImage" accept=".jpg,.jpeg,.png,.gif" />
+                      <label for="input-image" class="pdi-label-icon">...</label>
+                      <label class="pdi-label-icon">x</label>
                     </div>
                   </div>
                 </fieldset>
@@ -58,11 +62,21 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 export default {
   data() {
     return {
       popupTab: 1,
     };
+  },
+  methods: {
+    handleChangeImage(e) {
+      let imgPreview = this.$refs.imagePreview
+      URL.revokeObjectURL(imgPreview);
+      const file = e.target.files[0];
+      file.preview = URL.createObjectURL(file);
+      imgPreview.src = file.preview;
+    }
   },
 };
 </script>

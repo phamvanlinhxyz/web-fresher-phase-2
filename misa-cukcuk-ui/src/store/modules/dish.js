@@ -9,9 +9,13 @@ const state = {
   isLoadingDish: false,
   totalRecord: 0,
   totalPage: 0,
+  isShowDishPopup: false,
 };
 
 const mutations = {
+  TOGGLE_DISH_POPUP(state) {
+    state.isShowDishPopup = !state.isShowDishPopup
+  },
   LOAD_ALL_DISH(state, payload) {
     state.dishs = payload;
   },
@@ -35,12 +39,38 @@ const mutations = {
 };
 
 const actions = {
+  /**
+   * Đóng mở popup thêm món ăn
+   * @param {*} ctx 
+   * Author: linhpv (10/08/2022)
+   */
+  toggleDishPopup(ctx) {
+    ctx.commit("TOGGLE_DISH_POPUP");
+  },
+  /**
+   * Cập nhật filter object
+   * @param {*} ctx 
+   * @param {*} filterObjects 
+   * Author: linhpv (10/08/2022)
+   */
   updateFilterObjects(ctx, filterObjects) {
     ctx.commit("UPDATE_FILTER_OBJECTS", filterObjects);
   },
+  /**
+   * Cập nhật số bản ghi trên 1 trang
+   * @param {*} ctx 
+   * @param {*} pageSize 
+   * Author: linhpv (10/08/2022)
+   */
   updatePageSize(ctx, pageSize) {
     ctx.commit("UPDATE_PAGE_SIZE", pageSize);
   },
+  /**
+   * Cập nhật số trang
+   * @param {*} ctx 
+   * @param {*} pageIndex
+   * Author: linhpv (10/08/2022) 
+   */
   updatePageIndex(ctx, pageIndex) {
     ctx.commit("UPDATE_PAGE_INDEX", pageIndex);
   },
