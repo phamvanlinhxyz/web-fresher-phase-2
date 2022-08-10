@@ -6,6 +6,7 @@
       :type="type"
       :value="modelValue"
       @input="updateValue"
+      :disabled="disabled"
     />
     <!-- Hiển thị cảnh báo -->
     <div class="input-error-icon" v-if="errorMessage">
@@ -16,7 +17,7 @@
 
 <script>
 export default {
-  props: ["type", "errorMessage", "modelValue"],
+  props: ["type", "errorMessage", "modelValue", "disabled"],
   data() {
     return {
       inputClass: ["input", this.errorMessage ? "input-error" : null],

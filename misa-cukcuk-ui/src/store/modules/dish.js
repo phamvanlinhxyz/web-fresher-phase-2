@@ -23,9 +23,27 @@ const mutations = {
   TOGGLE_LOADING(state) {
     state.isLoadingDish = !state.isLoadingDish;
   },
+  UPDATE_PAGE_INDEX(state, payload) {
+    state.pageIndex = payload;
+  },
+  UPDATE_PAGE_SIZE(state, payload) {
+    state.pageSize = payload;
+  },
+  UPDATE_FILTER_OBJECTS(state, payload) {
+    state.filterObjects = payload;
+  },
 };
 
 const actions = {
+  updateFilterObjects(ctx, filterObjects) {
+    ctx.commit("UPDATE_FILTER_OBJECTS", filterObjects);
+  },
+  updatePageSize(ctx, pageSize) {
+    ctx.commit("UPDATE_PAGE_SIZE", pageSize);
+  },
+  updatePageIndex(ctx, pageIndex) {
+    ctx.commit("UPDATE_PAGE_INDEX", pageIndex);
+  },
   /**
    * Lấy tất cả món ăn trong db
    * @param {*} ctx
@@ -59,9 +77,7 @@ const actions = {
     } catch (error) {
       console.log(error);
     }
-    setTimeout(() => {
-      ctx.commit("TOGGLE_LOADING");
-    }, [1000]);
+    ctx.commit("TOGGLE_LOADING");
   },
 };
 

@@ -5,21 +5,23 @@
       type="text"
       @input="handleInput"
       ref="comboboxInput"
+      :disabled="disabled"
     />
     <base-icon iconName="grey-drop-arrow" @click="handleArrowClick" />
     <div class="add-button" v-if="addIcon">
       <base-icon iconName="add" />
     </div>
   </div>
-  <div class="cbb-bg" @click="toggleDropdown" v-if="isShowDropdown"></div>
+  <div class="cbb-bg" @click="toggleDropdown" v-show="isShowDropdown"></div>
   <div
     class="cbb-option"
-    v-if="isShowDropdown"
+    v-show="isShowDropdown"
     :style="{
       top: `${dropdownTop}px`,
       left: `${dropdownLeft}px`,
       width: `${dropdownWidth}px`,
     }"
+    ref="comboboxOption"
   >
     <ul class="cbb-list-item">
       <li
@@ -39,8 +41,11 @@
 </template>
 
 <script>
+import { react } from "@babel/types";
+
 export default {
-  props: ["listItem", "addIcon", "tableName"],
+  props: ["listItem", "addIcon", "tableName", "disabled", "default"],
+  emits: ["change"],
   data() {
     return {
       isShowDropdown: false,
@@ -50,6 +55,11 @@ export default {
       filterItems: [],
       selectedItem: null,
     };
+  },
+  watch: {
+    selectedItem(newItem, oldItem) {
+      this.$emit("change", newItem);
+    },
   },
   methods: {
     /**
@@ -84,10 +94,7 @@ export default {
           .includes(input.toLowerCase())
       );
       // Setup vị trí
-      let rect = this.$refs.comboboxRef.getBoundingClientRect();
-      this.dropdownTop = rect.top + rect.height;
-      this.dropdownLeft = rect.left;
-      this.dropdownWidth = rect.width;
+      this.setupPosition();
       this.isShowDropdown = true;
       // Auto select nếu đúng tên
       let findItem = this.listItem.find((item) => {
@@ -104,12 +111,23 @@ export default {
      */
     toggleDropdown() {
       if (!this.isShowDropdown) {
-        let rect = this.$refs.comboboxRef.getBoundingClientRect();
-        this.dropdownTop = rect.top + rect.height;
-        this.dropdownLeft = rect.left;
-        this.dropdownWidth = rect.width;
+        this.setupPosition();
       }
       this.isShowDropdown = !this.isShowDropdown;
+    },
+    /**
+     * Đăt vị trí cho dropdown
+     * Author: linhpv (10/08/2022)
+     */
+    setupPosition() {
+      let rect = this.$refs.comboboxRef.getBoundingClientRect();
+      this.dropdownLeft = rect.left;
+      this.dropdownWidth = rect.width;
+      if (rect.bottom + 24 * this.listItem.length < window.innerHeight) {
+        this.dropdownTop = rect.top + rect.height;
+      } else {
+        this.dropdownTop = rect.top - 24 * this.listItem.length;
+      }
     },
   },
   created() {
@@ -118,6 +136,13 @@ export default {
       this.selectedItem = this.filterItems[0];
     } else {
       this.selectedItem[`${this.tableName}ID`] = null;
+    }
+  },
+  mounted() {
+    if (this.default) {
+      this.selectedItem = this.listItem[parseInt(`${this.default}`)];
+      this.$refs.comboboxInput.value =
+        this.selectedItem[`${this.tableName}Name`];
     }
   },
 };
