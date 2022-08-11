@@ -34,5 +34,5 @@
 }
 
 .menu-pagination .combobox {
-  margin-left: 28px;
+  width: fit-content!important;
 }

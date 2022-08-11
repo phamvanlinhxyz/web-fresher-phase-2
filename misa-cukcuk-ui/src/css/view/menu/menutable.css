@@ -70,6 +70,10 @@
   cursor: default;
 }
 
+.table-body tr.selected {
+  background-color: #d9e9f4;
+}
+
 .table-loading {
   width: 100%;
   height: calc(100% - 63px);

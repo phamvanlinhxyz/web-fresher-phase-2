@@ -34,13 +34,6 @@ namespace MISA.CUKCUK.Core.Interfaces.Repositories
         /// <returns>Số bản ghi đã sửa</returns>
         /// Created by: linhpv (07/08/2022)
         int Update(T entity);
-        /// <summary>
-        /// Xóa bảng fhi
-        /// </summary>
-        /// <param name="entityID">ID bản ghi</param>
-        /// <returns>Số bản ghi đã xóa</returns>
-        /// Created by: linhpv (07/08/2022)
-        int Delete(Guid entityID);
         #endregion
     }
 }

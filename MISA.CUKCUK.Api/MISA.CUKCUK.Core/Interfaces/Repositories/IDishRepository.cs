@@ -14,6 +14,14 @@ namespace MISA.CUKCUK.Core.Interfaces.Repositories
     public interface IDishRepository : IBaseRepository<Dish>
     {
         /// <summary>
+        /// Xóa bản ghi
+        /// </summary>
+        /// <param name="entityID">ID bản ghi</param>
+        /// <returns>Số bản ghi đã xóa</returns>
+        /// Created by: linhpv (11/08/2022)
+        int Delete(Guid entityID);
+
+        /// <summary>
         /// Phân trang, lọc
         /// </summary>
         /// <param name="pageIndex">số trang</param>
@@ -21,6 +29,6 @@ namespace MISA.CUKCUK.Core.Interfaces.Repositories
         /// <param name="where">câu lệnh điều kiện</param>
         /// <returns>trả về phân trang</returns>
         /// Created by: linhpv (09/08/2022)
-        public object Paging(int pageIndex, int pageSize, string where);
+        object Paging(int pageIndex, int pageSize, string where);
     }
 }

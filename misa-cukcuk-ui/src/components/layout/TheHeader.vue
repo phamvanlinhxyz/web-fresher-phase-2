@@ -25,7 +25,7 @@
           </div>
         </div>
         <base-icon class="header-icon" iconName="notification" />
-        <div class="span3" title="Code: 0xe800">
+        <div class="span3">
           <i class="globe-icon icon-globe">&#xe800;</i>
         </div>
         <div class="header-user">

@@ -31,3 +31,4 @@ D:\Workspace\Thực tâp\Bài tập giai đoạn 2\MISA.CUKCUK.Api\MISA.CUKCUK.A
 D:\Workspace\Thực tâp\Bài tập giai đoạn 2\MISA.CUKCUK.Api\MISA.CUKCUK.Api\bin\Debug\net6.0\MySqlConnector.dll
 D:\Workspace\Thực tâp\Bài tập giai đoạn 2\MISA.CUKCUK.Api\MISA.CUKCUK.Api\bin\Debug\net6.0\MISA.Web05.Infrastructure.dll
 D:\Workspace\Thực tâp\Bài tập giai đoạn 2\MISA.CUKCUK.Api\MISA.CUKCUK.Api\bin\Debug\net6.0\MISA.Web05.Infrastructure.pdb
+D:\Workspace\Thực tâp\Bài tập giai đoạn 2\MISA.CUKCUK.Api\MISA.CUKCUK.Api\bin\Debug\net6.0\Newtonsoft.Json.dll

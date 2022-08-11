@@ -138,3 +138,46 @@
   height: 16px;
   width: 16px;
 }
+
+.icon-x-close {
+  background: url(@/assets/images/x-close.png) no-repeat;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.icon-question-circle {
+  background: url(@/assets/images/IconSprite.png) no-repeat 0 -1600px;
+  width: 16px;
+  height: 16px;
+}
+
+.icon-save {
+  background: url(@/assets/images/Save16.png) no-repeat;
+  width: 16px;
+  height: 16px;
+}
+
+.icon-save-add {
+  background: url(@/assets/images/SaveAdd16.png) no-repeat;
+  width: 16px;
+  height: 16px;
+}
+
+.icon-cancel {
+  background: url(@/assets/images/Disable16.png) no-repeat;
+  width: 16px;
+  height: 16px;
+}
+
+.icon-x-close-red {
+  background: url(@/assets/images/IconSprite.png) no-repeat -2px -2683px;
+	width: 12px;
+	height: 11px;
+}
+
+.icon-question-32 {
+  background: url(@/assets/images/icon-question.png) no-repeat;
+  width: 32px;
+  height: 32px;
+}

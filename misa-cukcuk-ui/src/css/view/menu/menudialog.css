@@ -1,0 +1,39 @@
+.dialog-bg {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(10, 10, 10, 0.4) !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dialog-form {
+  width: 400px;
+  z-index: 101;
+  position: fixed;
+  border-radius: 4px;
+  background-color: #0072bc;
+}
+
+.dialog-body {
+  display: flex;
+  padding: 10px;
+}
+
+.dialog-message {
+  flex: 1;
+  margin-left: 12px;
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 6px;
+}
+
+.dialog-footer .button {
+  margin-right: 6px;
+}

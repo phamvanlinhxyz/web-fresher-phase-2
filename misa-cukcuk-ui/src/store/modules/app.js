@@ -1,16 +1,23 @@
 const state = {
   isShowMenu: true,
+  isShowDialog: false,
 };
 
 const mutations = {
-  toggleMenu(state) {
+  TOGGLE_DIALOG(state) {
+    state.isShowDialog = !state.isShowDialog
+  },
+  TOGGLE_MENU(state) {
     state.isShowMenu = !state.isShowMenu;
   },
 };
 
 const actions = {
+  toggleDialog(ctx) {
+    ctx.commit("TOGGLE_DIALOG");
+  },
   toggleMenu(ctx) {
-    ctx.commit("toggleMenu");
+    ctx.commit("TOGGLE_MENU");
   },
 };
 

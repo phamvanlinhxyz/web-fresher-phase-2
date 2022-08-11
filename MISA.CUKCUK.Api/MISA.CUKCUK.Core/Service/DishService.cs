@@ -53,7 +53,56 @@ namespace MISA.CUKCUK.Core.Service
             for (int i = 0; i < filterObjects.Length; i++)
             {
                 FilterObject filterObject = filterObjects[i];
-                where += filterObject.ColumnName + " LIKE '%" + filterObject.Value + "%' ";
+                // Nếu loại đầu vào là chữ
+                if (filterObject.InputType == Enum.InputType.Text)
+                {
+                    // Xử lý kiểu lọc
+                    switch (filterObject.FilterType)
+                    {
+                        // Chứa
+                        case Enum.FilterType.Contain:
+                            where += filterObject.ColumnName + " LIKE '%" + filterObject.Value + "%' ";
+                            break;
+                        // Bằng
+                        case Enum.FilterType.Equal:
+                            where += filterObject.ColumnName + " = '" + filterObject.Value + "' ";
+                            break;
+                        // Bắt đầu bằng
+                        case Enum.FilterType.StartWith:
+                            where += filterObject.ColumnName + " LIKE '" + filterObject.Value + "%' ";
+                            break;
+                        // Kết thúc bằng
+                        case Enum.FilterType.EndWith:
+                            where += filterObject.ColumnName + " LIKE '%" + filterObject.Value + "' ";
+                            break;
+                        // Không chứa
+                        case Enum.FilterType.NotContain:
+                            where += filterObject.ColumnName + " NOT LIKE '%" + filterObject.Value + "%' ";
+                            break;
+                    }
+                } else if (filterObject.InputType == Enum.InputType.Number) {
+                    // Nếu loại đầu vào là số
+                    switch (filterObject.FilterType)
+                    {
+                        case Enum.FilterType.Equal:
+                            where += filterObject.ColumnName + " = '" + filterObject.Value + "' ";
+                            break;
+                        case Enum.FilterType.Less:
+                            where += filterObject.ColumnName + " < '" + filterObject.Value + "' ";
+                            break;
+                        case Enum.FilterType.LessOrEqual:
+                            where += filterObject.ColumnName + " <= '" + filterObject.Value + "' ";
+                            break;
+                        case Enum.FilterType.Greater:
+                            where += filterObject.ColumnName + " > '" + filterObject.Value + "' ";
+                            break;
+                        case Enum.FilterType.GreaterOrEqual:
+                            where += filterObject.ColumnName + " >= '" + filterObject.Value + "' ";
+                            break;
+                        default:
+                            break;
+                    }
+                }
                 if (i < filterObjects.Length - 1)
                 {
                     where += "AND ";

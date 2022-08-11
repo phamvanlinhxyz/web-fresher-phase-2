@@ -24,3 +24,35 @@
 .input-error-icon {
   margin: 0 5px;
 }
+
+.textarea {
+  width: 100%;
+  resize: none;
+  outline: 0;
+  border: 1px solid #c1c1c1;
+  padding-inline: 5px;
+  font-size: 12px;
+}
+
+.textarea:focus {
+  border-color: #0072bc;
+}
+
+.checkbox-label {
+  display: flex;
+  margin-top: 6px;
+}
+
+.checkbox-icon {
+  background: url(@/assets/images/checkbox.png) no-repeat 0px 0px;
+  width: 15px;
+  height: 15px;
+  margin-right: 4px;
+}
+
+#checkbox:checked + .checkbox-label .checkbox-icon {
+  background: url(@/assets/images/checkbox.png) no-repeat 0px -15px;
+  width: 15px;
+  height: 15px;
+  margin-right: 4px;
+}

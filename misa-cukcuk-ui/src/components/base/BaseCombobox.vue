@@ -8,7 +8,7 @@
       :disabled="disabled"
     />
     <base-icon iconName="grey-drop-arrow" @click="handleArrowClick" />
-    <div class="add-button" v-if="addIcon">
+    <div class="add-button" v-if="addIcon" @click="handleAddItem">
       <base-icon iconName="add" />
     </div>
   </div>
@@ -41,10 +41,8 @@
 </template>
 
 <script>
-import { react } from "@babel/types";
-
 export default {
-  props: ["listItem", "addIcon", "tableName", "disabled", "default"],
+  props: ["listItem", "addIcon", "tableName", "disabled", "value"],
   emits: ["change"],
   data() {
     return {
@@ -62,6 +60,13 @@ export default {
     },
   },
   methods: {
+    /**
+     * Xự kiện người dùng ấn thêm item
+     * Author: linhpv (11/08/2022)
+     */
+    handleAddItem() {
+      this.$store.dispatch(`toggle${this.tableName}Popup`);
+    },
     /**
      * Xự kiện click chọn item
      * @param {*} item
@@ -130,19 +135,22 @@ export default {
       }
     },
   },
-  created() {
+  created() {},
+  mounted() {
+    if (this.value) {
+      this.selectedItem = this.listItem.find((item) => {
+        return item[`${this.tableName}ID`] == this.value;
+      });
+      this.$refs.comboboxInput.value =
+        this.selectedItem[`${this.tableName}Name`];
+    }
+  },
+  updated() {
     this.filterItems = this.listItem;
     if (this.filterItems.length > 0) {
       this.selectedItem = this.filterItems[0];
     } else {
-      this.selectedItem[`${this.tableName}ID`] = null;
-    }
-  },
-  mounted() {
-    if (this.default) {
-      this.selectedItem = this.listItem[parseInt(`${this.default}`)];
-      this.$refs.comboboxInput.value =
-        this.selectedItem[`${this.tableName}Name`];
+      this.selectedItem = null;
     }
   },
 };

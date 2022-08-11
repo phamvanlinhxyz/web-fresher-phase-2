@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MISA.CUKCUK.Core.Interfaces.Repositories;
 using MISA.CUKCUK.Core.Interfaces.Services;
+using Newtonsoft.Json;
 
 namespace MISA.CUKCUK.Api.Controllers
 {
@@ -34,7 +35,7 @@ namespace MISA.CUKCUK.Api.Controllers
             try
             {
                 // Lấy data
-                var data = _repository.Get();
+                var data = JsonConvert.SerializeObject(_repository.Get(), Formatting.Indented);
 
                 // Trả về data
                 return Ok(data);

@@ -29,14 +29,19 @@
         :listItem="listTotalRecord"
         tableName="totalRecord"
         disabled="true"
-        default="2"
+        value="3"
         @change="selectTotalRecord"
       />
     </div>
     <div class="menu-pagination-right">
       <div v-if="!isLoadingDish">
         Hiển thị {{ (pageIndex - 1) * pageSize + 1 }} -
-        {{ pageIndex * pageSize }} trên {{ totalRecord }} kết quả
+        {{
+          pageIndex * pageSize < totalRecord
+            ? pageIndex * pageSize
+            : totalRecord
+        }}
+        trên {{ totalRecord }} kết quả
       </div>
       <div v-if="isLoadingDish">Không có dữ liệu</div>
     </div>
@@ -52,15 +57,15 @@ export default {
       pageNumber: 1,
       listTotalRecord: [
         {
-          totalRecordID: 1,
+          totalRecordID: "1",
           totalRecordName: 25,
         },
         {
-          totalRecordID: 2,
+          totalRecordID: "2",
           totalRecordName: 50,
         },
         {
-          totalRecordID: 3,
+          totalRecordID: "3",
           totalRecordName: 100,
         },
       ],

@@ -3,6 +3,7 @@ import axios from "axios";
 
 const state = {
   dishs: [],
+  selectedDish: {},
   pageSize: 100,
   pageIndex: 1,
   filterObjects: [],
@@ -10,17 +11,45 @@ const state = {
   totalRecord: 0,
   totalPage: 0,
   isShowDishPopup: false,
+  isShowMGPopup: false,
+  isShowUnitPopup: false,
+  menuGroups: [],
+  units: [],
+  kitchens: [],
 };
 
 const mutations = {
+  DELETE_DISH(state, payload) {
+    state.dishs = state.dishs.filter((dish) => dish.DishID !== payload);
+    state.totalRecord--;
+  },
+  SELECT_DISH(state, payload) {
+    state.selectedDish = payload;
+  },
+  TOGGLE_UNIT_POPUP(state) {
+    state.isShowUnitPopup = !state.isShowUnitPopup;
+  },
+  TOGGLE_MG_POPUP(state) {
+    state.isShowMGPopup = !state.isShowMGPopup;
+  },
+  LOAD_ALL_KITCHEN(state, payload) {
+    state.kitchens = payload;
+  },
+  LOAD_ALL_UNIT(state, payload) {
+    state.units = payload;
+  },
+  LOAD_ALL_MENU_GROUP(state, payload) {
+    state.menuGroups = payload;
+  },
   TOGGLE_DISH_POPUP(state) {
-    state.isShowDishPopup = !state.isShowDishPopup
+    state.isShowDishPopup = !state.isShowDishPopup;
   },
   LOAD_ALL_DISH(state, payload) {
     state.dishs = payload;
   },
   LOAD_DISHS_BY_PAGING(state, payload) {
     state.dishs = payload.data;
+    state.selectedDish = payload.data[0];
     state.totalRecord = payload.totalRecord;
     state.totalPage = payload.totalPage;
   },
@@ -39,9 +68,93 @@ const mutations = {
 };
 
 const actions = {
+  async deleteDish(ctx, dishID) {
+    try {
+      await axios.delete(
+        `${constants.API_URL}/api/${constants.API_VERSION}/Dish/${dishID}`
+      );
+
+      ctx.commit("DELETE_DISH", dishID);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  /**
+   * Chọn món ăn
+   * @param {*} ctx
+   * @param {*} dish
+   * Author: linhpv (11/08/2022)
+   */
+  selectDish(ctx, dish) {
+    ctx.commit("SELECT_DISH", dish);
+  },
+  /**
+   * Đóng mở popup thêm đơn vị tính
+   * @param {*} ctx
+   * Author: linhpv (11/08/2022)
+   */
+  toggleUnitPopup(ctx) {
+    ctx.commit("TOGGLE_UNIT_POPUP");
+  },
+  /**
+   * Đóng mở popup thêm nhóm thực đơn
+   * @param {*} ctx
+   * Author: linhpv (11/08/2022)
+   */
+  toggleMenuGroupPopup(ctx) {
+    ctx.commit("TOGGLE_MG_POPUP");
+  },
+  /**
+   * Lấy tất cả các bếp
+   * @param {*} ctx
+   * Author: linhpv (11/08/2022)
+   */
+  async loadAllKitchen(ctx) {
+    try {
+      const res = await axios.get(
+        `${constants.API_URL}/api/${constants.API_VERSION}/Kitchen`
+      );
+
+      ctx.commit("LOAD_ALL_KITCHEN", res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  /**
+   * Lấy tất cả đơn vị tính
+   * @param {*} ctx
+   * Author: linhpv (11/08/2022)
+   */
+  async loadAllUnit(ctx) {
+    try {
+      const res = await axios.get(
+        `${constants.API_URL}/api/${constants.API_VERSION}/Unit`
+      );
+
+      ctx.commit("LOAD_ALL_UNIT", res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  /**
+   * Lấy tất cả nhóm thực đơn
+   * @param {*} ctx
+   * Author: linhpv (11/08/2022)
+   */
+  async loadAllMenuGroup(ctx) {
+    try {
+      const res = await axios.get(
+        `${constants.API_URL}/api/${constants.API_VERSION}/MenuGroup`
+      );
+
+      ctx.commit("LOAD_ALL_MENU_GROUP", res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  },
   /**
    * Đóng mở popup thêm món ăn
-   * @param {*} ctx 
+   * @param {*} ctx
    * Author: linhpv (10/08/2022)
    */
   toggleDishPopup(ctx) {
@@ -49,8 +162,8 @@ const actions = {
   },
   /**
    * Cập nhật filter object
-   * @param {*} ctx 
-   * @param {*} filterObjects 
+   * @param {*} ctx
+   * @param {*} filterObjects
    * Author: linhpv (10/08/2022)
    */
   updateFilterObjects(ctx, filterObjects) {
@@ -58,8 +171,8 @@ const actions = {
   },
   /**
    * Cập nhật số bản ghi trên 1 trang
-   * @param {*} ctx 
-   * @param {*} pageSize 
+   * @param {*} ctx
+   * @param {*} pageSize
    * Author: linhpv (10/08/2022)
    */
   updatePageSize(ctx, pageSize) {
@@ -67,9 +180,9 @@ const actions = {
   },
   /**
    * Cập nhật số trang
-   * @param {*} ctx 
+   * @param {*} ctx
    * @param {*} pageIndex
-   * Author: linhpv (10/08/2022) 
+   * Author: linhpv (10/08/2022)
    */
   updatePageIndex(ctx, pageIndex) {
     ctx.commit("UPDATE_PAGE_INDEX", pageIndex);

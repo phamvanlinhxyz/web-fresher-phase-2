@@ -29,11 +29,6 @@ namespace MISA.Web05.Infrastructure
         #endregion
 
         #region Repository
-        public int Delete(Guid entityID)
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<T> Get()
         {
             using (SqlConnection = new MySqlConnection(ConnectionString))

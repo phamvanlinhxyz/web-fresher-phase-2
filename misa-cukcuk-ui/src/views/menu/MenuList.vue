@@ -22,7 +22,7 @@
         </div>
         <div class="toolbar-button-text">Sửa</div>
       </div>
-      <div class="toolbar-button">
+      <div class="toolbar-button" @click="toggleDialog">
         <div class="toolbar-button-icon">
           <base-icon iconName="delete" />
         </div>
@@ -44,6 +44,10 @@
     <menu-pagination />
     <!-- Popup -->
     <dish-detail v-if="isShowDishPopup" />
+    <menu-group-form v-if="isShowMGPopup" />
+    <unit-form v-if="isShowUnitPopup" />
+    <!-- Dialog -->
+    <menu-dialog v-if="isShowDialog" />
   </div>
 </template>
 
@@ -51,14 +55,28 @@
 import MenuTable from "./MenuTable.vue";
 import DishDetail from "./DishDetail.vue";
 import MenuPagination from "./MenuPagination.vue";
-import { mapActions, mapState } from 'vuex';
+import MenuGroupForm from "./MenuGroupForm.vue";
+import UnitForm from "./UnitForm.vue";
+import MenuDialog from "./MenuDialog.vue";
+import { mapActions, mapState } from "vuex";
+
 export default {
-  components: { MenuTable, DishDetail, MenuPagination },
+  components: {
+    MenuTable,
+    DishDetail,
+    MenuPagination,
+    MenuGroupForm,
+    UnitForm,
+    MenuDialog,
+  },
   computed: mapState({
-    isShowDishPopup: (state) => state.dish.isShowDishPopup
+    isShowDialog: (state) => state.app.isShowDialog,
+    isShowDishPopup: (state) => state.dish.isShowDishPopup,
+    isShowMGPopup: (state) => state.dish.isShowMGPopup,
+    isShowUnitPopup: (state) => state.dish.isShowUnitPopup,
   }),
   methods: {
-    ...mapActions(["toggleDishPopup"])
+    ...mapActions(["toggleDishPopup", "toggleDialog"]),
   },
 };
 </script>

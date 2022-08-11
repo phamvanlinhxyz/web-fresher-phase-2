@@ -1,7 +1,9 @@
 .button {
   height: 25px;
+  min-width: 75px;
   display: flex;
   align-items: center;
+  justify-content: center;
   padding: 0 10px;
   outline: none;
   border-radius: 2px;

@@ -11,8 +11,8 @@
 }
 
 .popup-dish {
-  width: 740px;
-  height: 615px;
+  width: 750px;
+  height: 625px;
   z-index: 100;
   border-radius: 4px;
   background-color: #0072bc;
@@ -22,6 +22,8 @@
   margin: 5px;
   background-color: #fff;
   height: calc(100% - 10px);
+  display: flex;
+  flex-direction: column;
 }
 
 .popup-dish-header {
@@ -38,6 +40,8 @@
 
 .popup-dish-body {
   padding: 8px;
+  flex: 1;
+  position: relative;
 }
 
 .popup-dish-tab {
@@ -66,11 +70,10 @@
   background-color: rgba(127, 199, 227, 0.4);
   border-inline-color: #d3d3d3;
   border-top-color: #005082;
-  color: #0072bc;
 }
 
 .popup-dish-input {
-  padding-top: 4px;
+  padding-top: 8px;
 }
 
 .pdi-1 {
@@ -79,6 +82,8 @@
 
 .pdi-1-left {
   flex: 1;
+  margin-right: 8px;
+  margin-top: 7px;
 }
 
 .pdi-1-right {
@@ -115,4 +120,33 @@ fieldset {
   border: 1px solid #ccc;
   margin-bottom: 4px;
   cursor: pointer;
+}
+
+.form-input {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.form-label {
+  min-width: 120px;
+  width: 120px;
+  padding-right: 5px;
+}
+
+.popup-dish-footer {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  right: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.pdf-right {
+  display: flex;
+}
+
+.pdf-right .button {
+  margin-left: 8px;
 }
