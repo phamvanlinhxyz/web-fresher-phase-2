@@ -147,7 +147,7 @@ export default {
     filterObjects: (state) => state.dish.filterObjects,
   }),
   methods: {
-    ...mapActions(["loadDishsByPaging", "selectDish", "updateFilterObjects"]),
+    ...mapActions(["loadDishsByPaging", "selectDish", "updateFilterObjects", "updatePageIndex"]),
     handleChangeFilterObject(columnName, value, inputType, filterType) {
       // Tìm vị trí của object trong mảng lọc
       var objectIndex = this.filterObjects.findIndex((object) => {
@@ -176,6 +176,7 @@ export default {
         };
       }
       this.updateFilterObjects(newObjects);
+      this.updatePageIndex(1);
       this.loadDishsByPaging();
     },
     /**

@@ -14,6 +14,14 @@ namespace MISA.CUKCUK.Core.Interfaces.Services
     public interface IDishService : IBaseService<Dish>
     {
         /// <summary>
+        /// Tự động sinh mã 
+        /// </summary>
+        /// <param name="DishName">Tên món ăn</param>
+        /// <returns>Trả về mã code đã sinh</returns>
+        /// Created by: linhpv (12/08/2022)
+        public string AutoGenDishCode(string DishName);
+
+        /// <summary>
         /// Xử lý phân trang, lọc dữ liệu
         /// </summary>
         /// <param name="pageIndex">Số trang</param>

@@ -31,6 +31,7 @@
         @click="handleSelect(item)"
         :class="{
           'item-selected':
+            selectedItem &&
             item[`${tableName}ID`] == selectedItem[`${tableName}ID`],
         }"
       >
@@ -136,21 +137,15 @@ export default {
     },
   },
   created() {},
-  mounted() {
+  mounted() {},
+  updated() {
+    this.filterItems = this.listItem;
     if (this.value) {
       this.selectedItem = this.listItem.find((item) => {
         return item[`${this.tableName}ID`] == this.value;
       });
       this.$refs.comboboxInput.value =
         this.selectedItem[`${this.tableName}Name`];
-    }
-  },
-  updated() {
-    this.filterItems = this.listItem;
-    if (this.filterItems.length > 0) {
-      this.selectedItem = this.filterItems[0];
-    } else {
-      this.selectedItem = null;
     }
   },
 };

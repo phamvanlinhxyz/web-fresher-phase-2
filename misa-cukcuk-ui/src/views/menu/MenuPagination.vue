@@ -153,7 +153,7 @@ export default {
       this.loadDishsByPaging();
     },
   },
-  created() {
+  updated() {
     this.pageNumber = this.pageIndex;
   },
 };

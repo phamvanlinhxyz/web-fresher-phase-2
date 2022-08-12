@@ -33,13 +33,16 @@
                   <div class="form-label">
                     Tên món <span style="color: red">(*)</span>
                   </div>
-                  <base-input />
+                  <base-input
+                    v-model="singleDish.DishName"
+                    @changeValue="getNewCode"
+                  />
                 </div>
                 <div class="form-input">
                   <div class="form-label">
                     Mã món <span style="color: red">(*)</span>
                   </div>
-                  <base-input />
+                  <base-input v-model="singleDish.DishCode" />
                 </div>
                 <div class="form-input">
                   <div class="form-label">Nhóm thực đơn</div>
@@ -47,6 +50,10 @@
                     :listItem="menuGroups"
                     tableName="MenuGroup"
                     :addIcon="true"
+                    :value="singleDish.MenuGroupID"
+                    @change="
+                      (val) => (this.singleDish.MenuGroupID = val.MenuGroupID)
+                    "
                   />
                 </div>
                 <div class="form-input">
@@ -57,27 +64,48 @@
                     :listItem="units"
                     tableName="Unit"
                     :addIcon="true"
+                    :value="singleDish.UnitID"
+                    @change="(val) => (this.singleDish.UnitID = val.UnitID)"
                   />
                 </div>
                 <div class="form-input">
                   <div class="form-label">Giá bán</div>
-                  <base-input style="width: 113px" />
+                  <base-input style="width: 113px" v-model="singleDish.Price" />
                 </div>
                 <div class="form-input">
                   <div class="form-label">Giá vốn</div>
-                  <base-input style="width: 113px" />
+                  <base-input
+                    style="width: 113px"
+                    v-model="singleDish.PurchasePrice"
+                  />
                 </div>
                 <div class="form-input">
                   <div class="form-label">Mô tả</div>
-                  <textarea class="textarea" rows="3"></textarea>
+                  <textarea
+                    class="textarea"
+                    rows="3"
+                    v-model="singleDish.Description"
+                  ></textarea>
                 </div>
                 <div class="form-input">
                   <div class="form-label">Chế biến tại</div>
-                  <base-combobox :listItem="kitchens" tableName="Kitchen" />
+                  <base-combobox
+                    :listItem="kitchens"
+                    tableName="Kitchen"
+                    :value="singleDish.KitchenID"
+                    @change="
+                      (val) => (this.singleDish.KitchenID = val.KitchenID)
+                    "
+                  />
                 </div>
                 <div class="form-input">
                   <div class="form-label"></div>
-                  <input id="checkbox" type="checkbox" style="display: none" />
+                  <input
+                    id="checkbox"
+                    type="checkbox"
+                    style="display: none"
+                    v-model="singleDish.ShowOnMenu"
+                  />
                   <label for="checkbox" class="checkbox-label">
                     <div class="checkbox-icon"></div>
                     Không hiển thị trên thực đơn
@@ -127,7 +155,7 @@
               <base-button content="Giúp" icon="question-circle" />
             </div>
             <div class="pdf-right">
-              <base-button content="Cất" icon="save" />
+              <base-button content="Cất" icon="save" @click="handleStore" />
               <base-button content="Cất & thêm" icon="save-add" />
               <base-button content="Hủy" icon="cancel" />
             </div>
@@ -139,6 +167,8 @@
 </template>
 
 <script>
+import { constants } from "@/config";
+import axios from "axios";
 import { mapActions, mapState } from "vuex";
 import BaseIcon from "../../components/base/BaseIcon.vue";
 
@@ -153,12 +183,14 @@ export default {
           fakeName: "a",
         },
       ],
+      singleDish: {},
     };
   },
   computed: mapState({
     menuGroups: (state) => state.dish.menuGroups,
     units: (state) => state.dish.units,
     kitchens: (state) => state.dish.kitchens,
+    selectedDish: (state) => state.dish.selectedDish,
   }),
   methods: {
     ...mapActions([
@@ -167,6 +199,17 @@ export default {
       "loadAllUnit",
       "loadAllKitchen",
     ]),
+    /**
+     * Sinh mã cho món ăn
+     * @param {*} val
+     * Author: linhpv (12/08/2022)
+     */
+    async getNewCode(val) {
+      const res = await axios.get(
+        `${constants.API_URL}/api/${constants.API_VERSION}/Dish/NewCode?DishName=${val}`
+      );
+      this.singleDish.DishCode = res.data;
+    },
     /**
      * Preview ảnh
      * @param {*} e
@@ -184,6 +227,7 @@ export default {
     this.loadAllMenuGroup();
     this.loadAllUnit();
     this.loadAllKitchen();
+    this.singleDish = this.selectedDish;
   },
 };
 </script>

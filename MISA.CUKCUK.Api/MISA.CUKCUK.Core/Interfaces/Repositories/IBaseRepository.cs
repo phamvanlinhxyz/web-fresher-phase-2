@@ -15,6 +15,13 @@ namespace MISA.CUKCUK.Core.Interfaces.Repositories
     {
         #region Interface
         /// <summary>
+        /// Check trùng mã
+        /// </summary>
+        /// <param name="entityID">Id bản ghi</param>
+        /// <param name="entityCode">Mã đầu vào</param>
+        /// <returns>true - nếu mã trùng, false - nếu không trùng</returns>
+        bool CheckDuplicateCode(Guid? entityID, string entityCode);
+        /// <summary>
         /// Lấy tất cả bản ghi
         /// </summary>
         /// <returns>Tất cả bản ghi</returns>

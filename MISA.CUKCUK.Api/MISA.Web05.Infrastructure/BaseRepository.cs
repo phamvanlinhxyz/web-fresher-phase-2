@@ -26,6 +26,40 @@ namespace MISA.Web05.Infrastructure
             // Lấy tên bảng
             TableName = typeof(T).Name;
         }
+
+        public bool CheckDuplicateCode(Guid? entityID, string entityCode)
+        {
+            using(SqlConnection = new MySqlConnection(ConnectionString))
+            {
+                // Query proc
+                var sqlQuery = $"Proc_CheckDuplicate{TableName}";
+                
+                // Viết câu lệnh where
+                var where = "WHERE";    
+                if (entityID != Guid.Empty)
+                {
+                    where += $" {TableName}ID = '" + entityID + "' AND ";
+                }
+
+                where += $" {TableName}Code = '" + entityCode + "' ";
+
+                // Thêm params
+                var parameters = new DynamicParameters();
+                parameters.Add("$Where", where);
+
+                // Gọi query
+                var res = SqlConnection.QueryFirstOrDefault(sql: sqlQuery, param: parameters, commandType: System.Data.CommandType.StoredProcedure);
+
+                // Trả về kết quảp
+                if (res.Count == 0)
+                {
+                    return false;
+                } else
+                {
+                    return true;
+                }
+            }
+        }
         #endregion
 
         #region Repository

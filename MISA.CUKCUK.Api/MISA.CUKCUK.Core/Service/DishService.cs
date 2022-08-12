@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace MISA.CUKCUK.Core.Service
@@ -26,6 +27,48 @@ namespace MISA.CUKCUK.Core.Service
         #endregion
 
         #region Service
+        /// <summary>
+        /// Tự động sinh mã 
+        /// </summary>
+        /// <param name="DishName">Tên món ăn</param>
+        /// <returns>Trả về mã code đã sinh</returns>
+        /// Created by: linhpv (12/08/2022)
+        public string AutoGenDishCode(string DishName)
+        {
+            string[] words  = DishName.Split(" ");
+            string newCode = "";
+
+            foreach (var word in words)
+            {
+                if (!string.IsNullOrEmpty(word))
+                {
+                    newCode += word[0];
+                }
+            }
+            newCode = RemoveVietnameseTone(newCode).ToUpper();
+            if (_repository.CheckDuplicateCode(Guid.Empty, newCode))
+            {
+                newCode = "";
+                foreach (var word in words)
+                {
+                    if (!string.IsNullOrEmpty(word))
+                    {
+                        newCode += word[0];
+                        if (word.Length > 1)
+                        {
+                            newCode += word[1];
+                        }
+                    }
+                }
+
+                if (_repository.CheckDuplicateCode(Guid.Empty, newCode))
+                {
+                    newCode = DishName.Replace(" ", "");
+                } 
+            } 
+            return RemoveVietnameseTone(newCode).ToUpper();
+        }
+
         /// <summary>
         /// Xử lý phân trang, lọc dữ liệu
         /// </summary>
@@ -116,5 +159,18 @@ namespace MISA.CUKCUK.Core.Service
             return data;
         }
         #endregion
+
+        public string RemoveVietnameseTone(string text)
+        {
+            string result = text.ToLower();
+            result = Regex.Replace(result, "à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ|/g", "a");
+            result = Regex.Replace(result, "è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ|/g", "e");
+            result = Regex.Replace(result, "ì|í|ị|ỉ|ĩ|/g", "i");
+            result = Regex.Replace(result, "ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ|/g", "o");
+            result = Regex.Replace(result, "ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ|/g", "u");
+            result = Regex.Replace(result, "ỳ|ý|ỵ|ỷ|ỹ|/g", "y");
+            result = Regex.Replace(result, "đ", "d");
+            return result;
+        }
     }
 }

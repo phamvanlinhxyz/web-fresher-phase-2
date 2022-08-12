@@ -4,7 +4,7 @@
     <div class="menu-list-title">Thực đơn</div>
     <!-- Thanh công cụ -->
     <div class="toolbar">
-      <div class="toolbar-button" @click="toggleDishPopup">
+      <div class="toolbar-button" @click="handleAddDish">
         <div class="toolbar-button-icon">
           <base-icon iconName="insert" />
         </div>
@@ -16,7 +16,7 @@
         </div>
         <div class="toolbar-button-text">Nhân bản</div>
       </div>
-      <div class="toolbar-button">
+      <div class="toolbar-button" @click="toggleDishPopup">
         <div class="toolbar-button-icon">
           <base-icon iconName="edit" />
         </div>
@@ -76,7 +76,15 @@ export default {
     isShowUnitPopup: (state) => state.dish.isShowUnitPopup,
   }),
   methods: {
-    ...mapActions(["toggleDishPopup", "toggleDialog"]),
+    ...mapActions(["toggleDishPopup", "toggleDialog", "selectDish"]),
+    /**
+     * Người dùng ấn thêm
+     * Author: linhpv (12/08/2022)
+     */
+    handleAddDish() {
+      this.selectDish({});
+      this.toggleDishPopup();
+    },
   },
 };
 </script>

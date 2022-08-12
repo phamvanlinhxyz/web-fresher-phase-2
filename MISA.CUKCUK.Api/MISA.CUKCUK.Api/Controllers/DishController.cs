@@ -29,6 +29,20 @@ namespace MISA.CUKCUK.Api.Controllers
 
         #region Controller
         /// <summary>
+        /// Lấy mã mới theo tên
+        /// </summary>
+        /// <param name="DishName">Tên món ăn</param>
+        /// <returns>Trả về mã món ăn</returns>
+        /// Created by: linhpv (12/08/2022)
+        [HttpGet("NewCode")]
+        public IActionResult GetNewCode(string DishName)
+        {
+            string newCode = _service.AutoGenDishCode(DishName);
+
+            return Ok(newCode);
+        }
+
+        /// <summary>
         /// Xóa bản ghi theo ID
         /// </summary>
         /// <param name="entityID">Id bản ghi</param>

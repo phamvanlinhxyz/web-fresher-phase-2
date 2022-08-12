@@ -7,6 +7,7 @@
       :value="modelValue"
       @input="updateValue"
       :disabled="disabled"
+      @change="changeValue"
     />
     <!-- Hiển thị cảnh báo -->
     <div class="input-error-icon" v-if="errorMessage">
@@ -31,7 +32,9 @@ export default {
      */
     updateValue(event) {
       this.$emit("update:modelValue", event.target.value);
-      this.$emit("change", event.target.value);
+    },
+    changeValue(event) {
+      this.$emit("changeValue", event.target.value);
     },
   },
 };
