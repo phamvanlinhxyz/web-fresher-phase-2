@@ -6,12 +6,26 @@
 export default {
   data() {
     return {
-      iconClass: "",
+      iconClass: [],
     };
   },
-  props: ["iconName"],
+  props: ["iconName", "disabled"],
+  watch: {
+    disabled(newVal) {
+      console.log(newVal);
+      if (newVal) {
+        this.iconClass = [`icon-${this.iconName}`, "disabled"];
+      } else {
+        this.iconClass = [`icon-${this.iconName}`];
+      }
+    },
+  },
   created() {
-    this.iconClass = `icon-${this.iconName}`;
+    if (this.disabled) {
+      this.iconClass = [`icon-${this.iconName}`, "disabled"];
+    } else {
+      this.iconClass = [`icon-${this.iconName}`];
+    }
   },
 };
 </script>

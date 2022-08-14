@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using MISA.CUKCUK.Core.Interfaces.Repositories;
 using MySqlConnector;
+using System.Data;
 
 namespace MISA.Web05.Infrastructure
 {
@@ -54,7 +55,8 @@ namespace MISA.Web05.Infrastructure
                 if (res.Count == 0)
                 {
                     return false;
-                } else
+                } 
+                else
                 {
                     return true;
                 }
@@ -75,14 +77,23 @@ namespace MISA.Web05.Infrastructure
             }
         }
 
-        public int Insert(T entity)
+        public Guid Insert(T entity)
         {
-            throw new NotImplementedException();
-        }
+            using (SqlConnection = new MySqlConnection(ConnectionString))
+            {
+                var sqlQuery = $"Proc_Insert{TableName}";
 
-        public int Update(T entity)
-        {
-            throw new NotImplementedException();
+                // Add params
+                var parameters = new DynamicParameters(entity);
+                parameters.Add("$newID", dbType: DbType.Guid, direction: ParameterDirection.Output);
+
+                // Lấy kết quả
+                SqlConnection.Query<T>(sql: sqlQuery, param: parameters, commandType: CommandType.StoredProcedure);
+                var newID = parameters.Get<Guid>("$newID");
+
+                // Trả về kết quả
+                return newID;
+            }
         }
         #endregion
     }

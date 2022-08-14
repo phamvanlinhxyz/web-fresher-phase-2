@@ -160,6 +160,41 @@ namespace MISA.CUKCUK.Core.Service
         }
         #endregion
 
+        #region Override
+        /// <summary>
+        /// ghi đè phương thức validate
+        /// </summary>
+        /// <param name="dish">Món ăn</param>
+        /// <returns>null - nếu valid, thông báo - nếu không valid</returns>
+        protected override string? Validate(Dish dish)
+        {
+            var langCode = Common.LanguageCode;
+            if (string.IsNullOrEmpty(dish.DishName))
+            {
+                return Resources.Resource.ResourceManager.GetString($"{langCode}_DishName_Empty");
+            }
+            if (string.IsNullOrEmpty(dish.DishCode))
+            {
+                return Resources.Resource.ResourceManager.GetString($"{langCode}_DishCode_Empty");
+            }
+            if (dish.UnitID == Guid.Empty)
+            {
+                return Resources.Resource.ResourceManager.GetString($"{langCode}_Unit_Empty");
+            }
+            if (_repository.CheckDuplicateCode(Guid.Empty, dish.DishCode)) {
+                return String.Format(Resources.Resource.ResourceManager.GetString($"{langCode}_Duplicate_DishCode"), dish.DishCode);
+            }
+            return null;
+        }
+        #endregion
+
+        #region Function
+        /// <summary>
+        /// Xử lý các chữ có dấu
+        /// </summary>
+        /// <param name="text">Đầu vào</param>
+        /// <returns>Dữ liệu sau khi sử lý</returns>
+        /// Created by: linhpv (12/08/2022)
         public string RemoveVietnameseTone(string text)
         {
             string result = text.ToLower();
@@ -172,5 +207,6 @@ namespace MISA.CUKCUK.Core.Service
             result = Regex.Replace(result, "đ", "d");
             return result;
         }
+        #endregion
     }
 }

@@ -137,6 +137,7 @@
 </template>
 
 <script>
+import enums from "@/enums";
 import { mapActions, mapState } from "vuex";
 
 export default {
@@ -147,7 +148,12 @@ export default {
     filterObjects: (state) => state.dish.filterObjects,
   }),
   methods: {
-    ...mapActions(["loadDishsByPaging", "selectDish", "updateFilterObjects", "updatePageIndex"]),
+    ...mapActions([
+      "loadDishsByPaging",
+      "selectDish",
+      "updateFilterObjects",
+      "updatePageIndex",
+    ]),
     handleChangeFilterObject(columnName, value, inputType, filterType) {
       // Tìm vị trí của object trong mảng lọc
       var objectIndex = this.filterObjects.findIndex((object) => {
@@ -198,10 +204,10 @@ export default {
      */
     handleMaterialQuantified(val) {
       switch (val) {
-        case 0:
+        case enums.yesNo.No:
           return "Chưa thiết lập";
-        case 1:
-          return "Đẫ thiết lập";
+        case enums.yesNo.Yes:
+          return "Đã thiết lập";
         default:
           return "";
       }

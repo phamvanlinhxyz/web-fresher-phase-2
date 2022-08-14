@@ -62,7 +62,7 @@ namespace MISA.CUKCUK.Api.Controllers
         /// <param name="pageSize">Số bản ghi trên trang</param>
         /// <param name="filterObjects">Mảng các điều kiện lọc</param>
         /// <returns>Tổng số bản ghi, tổng số trang, các bản ghi thỏa mãn</returns>
-        [HttpPost("paging")]
+        [HttpPost("Paging")]
         public IActionResult Paging(int pageIndex, int pageSize, FilterObject[] filterObjects)
         {
             var data = _service.PagingService(pageIndex, pageSize, filterObjects);

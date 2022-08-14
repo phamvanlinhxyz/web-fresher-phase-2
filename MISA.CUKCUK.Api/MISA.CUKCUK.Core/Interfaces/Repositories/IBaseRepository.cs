@@ -33,14 +33,7 @@ namespace MISA.CUKCUK.Core.Interfaces.Repositories
         /// <param name="entity">Bản ghi cần thêm</param>
         /// <returns>Số bản ghi đã thêm</returns>
         /// Created by: linhpv (07/08/2022)
-        int Insert(T entity);
-        /// <summary>
-        /// Sửa bản ghi
-        /// </summary>
-        /// <param name="entity">Bản ghi cần sửa</param>
-        /// <returns>Số bản ghi đã sửa</returns>
-        /// Created by: linhpv (07/08/2022)
-        int Update(T entity);
+        Guid Insert(T entity);
         #endregion
     }
 }

@@ -6,6 +6,14 @@
   border: 1px solid #c1c1c1;
 }
 
+.combobox-error {
+  border-color: #e04742;
+}
+
+.combobox-focus {
+  border-color: #0072bc;
+}
+
 .cbb-bg {
   position: fixed;
   top: 0;

@@ -1,10 +1,18 @@
 <template>
   <div class="menu-pagination">
     <div class="menu-pagination-left">
-      <div class="pagination-icon" @click="handleFirstPage">
+      <div
+        class="pagination-icon"
+        @click="handleFirstPage"
+        :class="{ disabled: pageIndex == 1 }"
+      >
         <base-icon iconName="page-first" />
       </div>
-      <div class="pagination-icon" @click="handlePrevPage">
+      <div
+        class="pagination-icon"
+        @click="handlePrevPage"
+        :class="{ disabled: pageIndex == 1 }"
+      >
         <base-icon iconName="page-prev" />
       </div>
       <div class="separator-hor"></div>
@@ -14,10 +22,18 @@
       </form>
       <div class="pagination-icon">trên {{ totalPage }}</div>
       <div class="separator-hor"></div>
-      <div class="pagination-icon" @click="handleNextPage">
+      <div
+        class="pagination-icon"
+        @click="handleNextPage"
+        :class="{ disabled: pageIndex == totalPage }"
+      >
         <base-icon iconName="page-next" />
       </div>
-      <div class="pagination-icon" @click="handleLastPage">
+      <div
+        class="pagination-icon"
+        @click="handleLastPage"
+        :class="{ disabled: pageIndex == totalPage }"
+      >
         <base-icon iconName="page-last" />
       </div>
       <div class="separator-hor"></div>
@@ -49,6 +65,7 @@
 </template>
 
 <script>
+import { thisExpression } from "@babel/types";
 import { mapActions, mapState } from "vuex";
 
 export default {
@@ -78,6 +95,11 @@ export default {
     totalRecord: (state) => state.dish.totalRecord,
     isLoadingDish: (state) => state.dish.isLoadingDish,
   }),
+  watch: {
+    pageIndex(newVal) {
+      this.pageNumber = newVal;
+    },
+  },
   methods: {
     ...mapActions(["updatePageSize", "updatePageIndex", "loadDishsByPaging"]),
     selectTotalRecord(item) {
@@ -153,7 +175,7 @@ export default {
       this.loadDishsByPaging();
     },
   },
-  updated() {
+  mounted() {
     this.pageNumber = this.pageIndex;
   },
 };

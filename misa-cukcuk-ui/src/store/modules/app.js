@@ -1,11 +1,12 @@
 const state = {
+  langCode: "VN",
   isShowMenu: true,
   isShowDialog: false,
 };
 
 const mutations = {
   TOGGLE_DIALOG(state) {
-    state.isShowDialog = !state.isShowDialog
+    state.isShowDialog = !state.isShowDialog;
   },
   TOGGLE_MENU(state) {
     state.isShowMenu = !state.isShowMenu;

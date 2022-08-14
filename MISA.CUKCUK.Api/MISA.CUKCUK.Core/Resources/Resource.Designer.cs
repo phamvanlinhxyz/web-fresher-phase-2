@@ -86,5 +86,41 @@ namespace MISA.CUKCUK.Core.Resources {
                 return ResourceManager.GetString("VN_Device_Tablet", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mã món không được phép để trống.
+        /// </summary>
+        internal static string VN_DishCode_Empty {
+            get {
+                return ResourceManager.GetString("VN_DishCode_Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tên món không được để trống.
+        /// </summary>
+        internal static string VN_DishName_Empty {
+            get {
+                return ResourceManager.GetString("VN_DishName_Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mã món &lt;&lt;{0}&gt;&gt; đã tồn tại trong hệ thống.
+        /// </summary>
+        internal static string VN_Duplicate_DishCode {
+            get {
+                return ResourceManager.GetString("VN_Duplicate_DishCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đơn vị tính không được phép để trống.
+        /// </summary>
+        internal static string VN_Unit_Empty {
+            get {
+                return ResourceManager.GetString("VN_Unit_Empty", resourceCulture);
+            }
+        }
     }
 }

@@ -36,13 +36,21 @@
                   <base-input
                     v-model="singleDish.DishName"
                     @changeValue="getNewCode"
+                    @write="checkInputRequired('DishName', $event.target.value)"
+                    :errorMessage="errorList.DishName"
+                    :focus="focusElm === 'DishName'"
                   />
                 </div>
                 <div class="form-input">
                   <div class="form-label">
                     Mã món <span style="color: red">(*)</span>
                   </div>
-                  <base-input v-model="singleDish.DishCode" />
+                  <base-input
+                    v-model="singleDish.DishCode"
+                    @write="checkInputRequired('DishCode', $event.target.value)"
+                    :errorMessage="errorList.DishCode"
+                    :focus="focusElm === 'DishCode'"
+                  />
                 </div>
                 <div class="form-input">
                   <div class="form-label">Nhóm thực đơn</div>
@@ -51,9 +59,7 @@
                     tableName="MenuGroup"
                     :addIcon="true"
                     :value="singleDish.MenuGroupID"
-                    @change="
-                      (val) => (this.singleDish.MenuGroupID = val.MenuGroupID)
-                    "
+                    @change="(val) => this.checkComboboxRequired('MenuGroup', val)"
                   />
                 </div>
                 <div class="form-input">
@@ -65,16 +71,28 @@
                     tableName="Unit"
                     :addIcon="true"
                     :value="singleDish.UnitID"
-                    @change="(val) => (this.singleDish.UnitID = val.UnitID)"
+                    @change="(val) => this.checkComboboxRequired('Unit', val)"
+                    :focus="focusElm == 'UnitID'"
+                    :errorMessage="errorList.UnitID"
                   />
                 </div>
                 <div class="form-input">
-                  <div class="form-label">Giá bán</div>
-                  <base-input style="width: 113px" v-model="singleDish.Price" />
+                  <div class="form-label">
+                    Giá bán <span style="color: red">(*)</span>
+                  </div>
+                  <base-input
+                    type="number"
+                    style="width: 113px"
+                    v-model="singleDish.Price"
+                    @write="checkInputRequired('Price', $event.target.value)"
+                    :errorMessage="errorList.Price"
+                    :focus="focusElm == 'Price'"
+                  />
                 </div>
                 <div class="form-input">
                   <div class="form-label">Giá vốn</div>
                   <base-input
+                    type="number"
                     style="width: 113px"
                     v-model="singleDish.PurchasePrice"
                   />
@@ -93,9 +111,7 @@
                     :listItem="kitchens"
                     tableName="Kitchen"
                     :value="singleDish.KitchenID"
-                    @change="
-                      (val) => (this.singleDish.KitchenID = val.KitchenID)
-                    "
+                    @change="(val) => this.checkComboboxRequired('Kitchen', val)"
                   />
                 </div>
                 <div class="form-input">
@@ -105,6 +121,8 @@
                     type="checkbox"
                     style="display: none"
                     v-model="singleDish.ShowOnMenu"
+                    :true-value="0"
+                    :false-value="1"
                   />
                   <label for="checkbox" class="checkbox-label">
                     <div class="checkbox-icon"></div>
@@ -167,8 +185,10 @@
 </template>
 
 <script>
-import { constants } from "@/config";
 import axios from "axios";
+import { resources } from "@/resources";
+import enums from "@/enums";
+import { constants } from "@/config";
 import { mapActions, mapState } from "vuex";
 import BaseIcon from "../../components/base/BaseIcon.vue";
 
@@ -177,16 +197,17 @@ export default {
   data() {
     return {
       popupTab: 1,
-      fakeItem: [
-        {
-          fakeID: 1,
-          fakeName: "a",
-        },
-      ],
       singleDish: {},
+      errorList: {
+        dishName: null,
+        dishCode: null,
+        price: null,
+      },
+      focusElm: "DishName",
     };
   },
   computed: mapState({
+    langCode: (state) => state.app.langCode,
     menuGroups: (state) => state.dish.menuGroups,
     units: (state) => state.dish.units,
     kitchens: (state) => state.dish.kitchens,
@@ -198,17 +219,123 @@ export default {
       "loadAllMenuGroup",
       "loadAllUnit",
       "loadAllKitchen",
+      "insertDish",
     ]),
+    /**
+     * Người dùng ấn cất
+     * Author: linhpv (12/08/2022)
+     */
+    handleStore() {
+      this.focusElm = "";
+      var valid = this.validateData();
+      if (valid) {
+        this.insertDish(this.singleDish);
+      }
+    },
+    /**
+     * Validate dữ liệu
+     * Author: linhpv (14/08/2022)
+     */
+    validateData() {
+      // Đặt valid mặc định là true
+      var valid = true;
+      // Check các dữ liệu bắt buộc
+      // 1. Tên món ăn
+      if (!this.singleDish.DishName) {
+        if (!this.focusElm) {
+          this.focusElm = "DishName";
+        }
+        this.errorList.DishName =
+          resources.validateError[`${this.langCode}_Required_Error`];
+        valid = false;
+      }
+      // 2. Mã món ăn
+      if (!this.singleDish.DishCode) {
+        if (!this.focusElm) {
+          this.focusElm = "DishCode";
+        }
+        this.errorList.DishCode =
+          resources.validateError[`${this.langCode}_Required_Error`];
+        valid = false;
+      }
+      // 3. Đơn vị tính
+      if (!this.singleDish.UnitID) {
+        if (!this.focusElm) {
+          this.focusElm = "UnitID";
+        }
+        this.errorList.UnitID =
+          resources.validateError[`${this.langCode}_Required_Error`];
+        valid = false;
+      }
+      // 4. Giá bán
+      if (!this.singleDish.Price) {
+        if (!this.focusElm) {
+          this.focusElm = "Price";
+        }
+        this.errorList.Price =
+          resources.validateError[`${this.langCode}_Required_Error`];
+        valid = false;
+      }
+      // Gán tạm cho định lượng NVL = 0;
+      this.singleDish.MaterialQuantified = enums.yesNo.No;
+      return valid;
+    },
+    /**
+     * Set giá trị cho các cột lấy từ combobox
+     * @param {*} tableName
+     * @param {*} value
+     * Author: linhpv (14/08/2022)
+     */
+    setValueCombobox(tableName, value) {
+      if (!value) {
+        this.singleDish[`${tableName}ID`] = null;
+        this.singleDish[`${tableName}Name`] = null;
+      } else {
+        this.singleDish[`${tableName}ID`] = value[`${tableName}ID`];
+        this.singleDish[`${tableName}Name`] = value[`${tableName}Name`];
+      }
+    },
+    /**
+     * Check các combobox required
+     * @param {*} column
+     * @param {*} value
+     * Author: linhpv (14/08/2022)
+     */
+    checkComboboxRequired(tableName, value) {
+      if (!value) {
+        this.errorList[`${tableName}ID`] =
+          resources.validateError[`${this.langCode}_Required_Error`];
+      } else {
+        this.errorList[`${tableName}ID`] = null;
+      }
+      this.setValueCombobox(tableName, value);
+    },
+    /**
+     * Check input required
+     * Author: linhpv (13/08/2022)
+     */
+    checkInputRequired(column, value) {
+      if (!value) {
+        this.errorList[column] =
+          resources.validateError[`${this.langCode}_Required_Error`];
+      } else {
+        this.errorList[column] = null;
+      }
+    },
     /**
      * Sinh mã cho món ăn
      * @param {*} val
      * Author: linhpv (12/08/2022)
      */
     async getNewCode(val) {
-      const res = await axios.get(
-        `${constants.API_URL}/api/${constants.API_VERSION}/Dish/NewCode?DishName=${val}`
-      );
-      this.singleDish.DishCode = res.data;
+      // Nếu có giá trị thì mới gọi API lấy mã mới
+      if (val) {
+        const res = await axios.get(
+          `${constants.API_URL}/api/${constants.API_VERSION}/Dish/NewCode?DishName=${val}`
+        );
+        this.singleDish.DishCode = res.data;
+        this.errorList.DishCode = null;
+      }
     },
     /**
      * Preview ảnh
@@ -223,12 +350,21 @@ export default {
       imgPreview.src = file.preview;
     },
   },
+  /**
+   * Xử lý các xự kiện khi khởi tạo component
+   * Author: linhpv (12/08/2022)
+   */
   created() {
     this.loadAllMenuGroup();
     this.loadAllUnit();
     this.loadAllKitchen();
     this.singleDish = this.selectedDish;
   },
+  /**
+   * Xử lý các sự kiện khi mount component
+   * Author: linhpv (14/08/2022)
+   */
+  mounted() {},
 };
 </script>
 

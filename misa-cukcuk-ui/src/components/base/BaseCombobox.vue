@@ -1,16 +1,23 @@
 <template>
-  <div class="combobox" ref="comboboxRef">
+  <div :class="comboboxClass" ref="comboboxRef">
     <input
       class="cbb-input"
       type="text"
       @input="handleInput"
+      @keydown="handleKeyDown"
+      @keyup="handleKeyUp"
       ref="comboboxInput"
       :disabled="disabled"
+      v-on:focus="this.$refs.comboboxRef.classList.add('combobox-focus')"
+      v-on:blur="handleBlurInput"
     />
     <base-icon iconName="grey-drop-arrow" @click="handleArrowClick" />
     <div class="add-button" v-if="addIcon" @click="handleAddItem">
       <base-icon iconName="add" />
     </div>
+  </div>
+  <div class="input-error-icon" v-if="errorMessage">
+    <base-icon iconName="danger" :title="errorMessage" />
   </div>
   <div class="cbb-bg" @click="toggleDropdown" v-show="isShowDropdown"></div>
   <div
@@ -43,24 +50,110 @@
 
 <script>
 export default {
-  props: ["listItem", "addIcon", "tableName", "disabled", "value"],
+  props: [
+    "listItem",
+    "addIcon",
+    "tableName",
+    "disabled",
+    "value",
+    "focus",
+    "errorMessage",
+  ],
   emits: ["change"],
   data() {
     return {
+      comboboxClass: "combobox",
       isShowDropdown: false,
       dropdownTop: 0,
       dropdownLeft: 0,
       dropdownWidth: 0,
       filterItems: [],
       selectedItem: null,
+      selectedIndex: 0,
     };
   },
   watch: {
-    selectedItem(newItem, oldItem) {
+    selectedItem(newItem) {
       this.$emit("change", newItem);
+    },
+    focus(newVal) {
+      if (newVal) {
+        this.$refs.comboboxInput.focus();
+      }
+    },
+    errorMessage(newVal) {
+      if (newVal == null) {
+        this.comboboxClass = ["combobox"];
+      } else {
+        this.comboboxClass = ["combobox", "combobox-error"];
+      }
     },
   },
   methods: {
+    /**
+     * Xử lý các sự kiện keyup như lên xuống chọn bản ghi
+     * @param {*} event
+     * Author: linhpv (14/08/2022)
+     */
+    handleKeyUp(event) {
+      var key = event.key;
+      // Sự kiện ấn nút mũi tên xuống
+      if (key === "ArrowDown") {
+        // Check filteritem, nếu chưa có giá trị thì gán cho tất cả item
+        if (this.filterItems.length === 0) {
+          this.filterItems = this.listItem;
+        }
+        // Check dropdown nếu chưa mở thì mở
+        if (!this.isShowDropdown) {
+          this.setupPosition();
+          this.isShowDropdown = true;
+          this.selectedIndex = 0;
+        } else if (this.selectedIndex < this.filterItems.length - 1) {
+          this.selectedIndex++;
+        }
+        // Lấy vị trí của item được lựa chọn
+        this.selectedItem = this.filterItems[this.selectedIndex];
+      }
+      if (key === "ArrowUp") {
+        // check dropdown có đang mở hay không và vị trí có khác vị trí đầu không
+        if (this.isShowDropdown && this.selectedIndex > 0) {
+          this.selectedIndex--;
+        }
+        // Lấy vị trí của item được lựa chọn
+        this.selectedItem = this.filterItems[this.selectedIndex];
+      }
+    },
+    /**
+     * Xử lý các sự kiện keydown trên combobox, VD: Tab, Enter
+     * @param {*} event
+     * Author: linhpv (14/08/2022)
+     */
+    handleKeyDown(event) {
+      var key = event.key;
+      // Các sự kiện đóng dropdown
+      if (key === "Tab" || key === "Enter") {
+        this.isShowDropdown = false;
+        if (this.filterItems.length > 0) {
+          this.selectedItem = this.filterItems[this.selectedIndex];
+          event.target.value = this.selectedItem[`${this.tableName}Name`];
+        }
+      }
+    },
+    /**
+     * Khi người dùng blur ra khỏi input
+     * Author: linhpv(14/08/2022)
+     */
+    handleBlurInput() {
+      // Bỏ border xanh
+      this.$refs.comboboxRef.classList.remove("combobox-focus");
+      // Nếu có item đang được chọn thì set value nếu không thì value = null
+      if (this.selectedItem) {
+        this.$refs.comboboxInput.value =
+          this.selectedItem[`${this.tableName}Name`];
+      } else {
+        this.$refs.comboboxInput.value = null;
+      }
+    },
     /**
      * Xự kiện người dùng ấn thêm item
      * Author: linhpv (11/08/2022)
@@ -85,6 +178,7 @@ export default {
     handleArrowClick() {
       this.filterItems = this.listItem;
       this.toggleDropdown();
+      this.$refs.comboboxInput.focus();
     },
     /**
      * Xử lý autocomplete khi nhập
@@ -94,21 +188,25 @@ export default {
     handleInput(event) {
       // Lọc giá trị
       let input = event.target.value;
-      this.filterItems = this.listItem.filter((item) =>
-        item[`${this.tableName}Name`]
-          .toLowerCase()
-          .includes(input.toLowerCase())
-      );
-      // Setup vị trí
-      this.setupPosition();
-      this.isShowDropdown = true;
-      // Auto select nếu đúng tên
-      let findItem = this.listItem.find((item) => {
-        return item[`${this.tableName}Name`] === input;
-      });
-      if (findItem) {
-        this.selectedItem = findItem;
-        this.isShowDropdown = false;
+      if (input !== "") {
+        this.filterItems = this.listItem.filter((item) =>
+          item[`${this.tableName}Name`]
+            .toLowerCase()
+            .includes(input.toLowerCase())
+        );
+      } else {
+        this.filterItems = [];
+      }
+
+      // Nếu lọc có giá trị thì select cái đầu tiên
+      if (this.filterItems.length > 0) {
+        this.selectedIndex = 0;
+        this.selectedItem = this.filterItems[this.selectedIndex];
+        // Setup vị trí
+        this.setupPosition();
+        this.isShowDropdown = true;
+      } else {
+        this.selectedItem = null;
       }
     },
     /**
@@ -136,11 +234,23 @@ export default {
       }
     },
   },
-  created() {},
-  mounted() {},
+  mounted() {
+    if (this.value && !this.selectedItem && this.listItem.length !== 0) {
+      this.selectedItem = this.listItem.find((item) => {
+        return item[`${this.tableName}ID`] == this.value;
+      });
+      this.$refs.comboboxInput.value =
+        this.selectedItem[`${this.tableName}Name`];
+    }
+    if (this.focus) {
+      this.$refs.comboboxInput.focus();
+    }
+  },
   updated() {
-    this.filterItems = this.listItem;
-    if (this.value) {
+    if (!this.filterItems) {
+      this.filterItems = this.listItem;
+    }
+    if (this.value && !this.selectedItem) {
       this.selectedItem = this.listItem.find((item) => {
         return item[`${this.tableName}ID`] == this.value;
       });

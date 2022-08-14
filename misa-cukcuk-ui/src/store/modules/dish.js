@@ -19,6 +19,11 @@ const state = {
 };
 
 const mutations = {
+  INSERT_DISH(state, payload) {
+    state.dishs.unshift(payload);
+    state.totalRecord++;
+    state.isShowDishPopup = false;
+  },
   DELETE_DISH(state, payload) {
     state.dishs = state.dishs.filter((dish) => dish.DishID !== payload);
     state.totalRecord--;
@@ -68,6 +73,32 @@ const mutations = {
 };
 
 const actions = {
+  /**
+   * Thêm món ăn mới
+   * @param {*} ctx context
+   * @param {*} dish món ăn mới
+   * Author: linhpv (14/08/2022)
+   */
+  async insertDish(ctx, dish) {
+    try {
+      const res = await axios.post(
+        `${constants.API_URL}/api/${constants.API_VERSION}/Dish`,
+        dish
+      );
+
+      dish.DishID = res.data;
+
+      ctx.commit("INSERT_DISH", dish);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  /**
+   * Xóa món ăn
+   * @param {*} ctx context
+   * @param {*} dishID id món ăn
+   * Author: linhpv (11/08/2022)
+   */
   async deleteDish(ctx, dishID) {
     try {
       await axios.delete(
@@ -212,7 +243,7 @@ const actions = {
     ctx.commit("TOGGLE_LOADING");
     try {
       const res = await axios.post(
-        `${constants.API_URL}/api/${constants.API_VERSION}/Dish/paging?pageIndex=${state.pageIndex}&pageSize=${state.pageSize}`,
+        `${constants.API_URL}/api/${constants.API_VERSION}/Dish/Paging?pageIndex=${state.pageIndex}&pageSize=${state.pageSize}`,
         state.filterObjects
       );
 

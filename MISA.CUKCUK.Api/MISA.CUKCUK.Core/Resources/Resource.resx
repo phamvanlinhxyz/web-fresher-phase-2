@@ -129,4 +129,20 @@
     <value>Máy tính bảng</value>
     <comment>Thiết bị máy tính bảng</comment>
   </data>
+  <data name="VN_DishCode_Empty" xml:space="preserve">
+    <value>Mã món không được phép để trống</value>
+    <comment>Mã món ăn bị trống</comment>
+  </data>
+  <data name="VN_DishName_Empty" xml:space="preserve">
+    <value>Tên món không được để trống</value>
+    <comment>Tên món ăn bị trống</comment>
+  </data>
+  <data name="VN_Duplicate_DishCode" xml:space="preserve">
+    <value>Mã món &lt;&lt;{0}&gt;&gt; đã tồn tại trong hệ thống</value>
+    <comment>Mã món ăn bị trùng</comment>
+  </data>
+  <data name="VN_Unit_Empty" xml:space="preserve">
+    <value>Đơn vị tính không được phép để trống</value>
+    <comment>Đơn vị tính bị trống</comment>
+  </data>
 </root>

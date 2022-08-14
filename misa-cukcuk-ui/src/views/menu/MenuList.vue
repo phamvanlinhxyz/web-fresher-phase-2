@@ -59,6 +59,7 @@ import MenuGroupForm from "./MenuGroupForm.vue";
 import UnitForm from "./UnitForm.vue";
 import MenuDialog from "./MenuDialog.vue";
 import { mapActions, mapState } from "vuex";
+import enums from "@/enums";
 
 export default {
   components: {
@@ -82,7 +83,10 @@ export default {
      * Author: linhpv (12/08/2022)
      */
     handleAddDish() {
-      this.selectDish({});
+      this.selectDish({
+        ShowOnMenu: enums.yesNo.Yes,
+        SemiFinishedProduct: enums.yesNo.No,
+      });
       this.toggleDishPopup();
     },
   },

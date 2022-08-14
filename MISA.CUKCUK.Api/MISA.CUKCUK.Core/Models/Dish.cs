@@ -63,7 +63,7 @@ namespace MISA.CUKCUK.Core.Models
         /// <summary>
         /// ID bếp
         /// </summary>
-        public Guid KitchenID { get; set; }
+        public Guid? KitchenID { get; set; }
         /// <summary>
         /// Tên bếp
         /// </summary>

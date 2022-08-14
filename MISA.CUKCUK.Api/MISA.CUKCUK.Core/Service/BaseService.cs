@@ -27,16 +27,37 @@ namespace MISA.CUKCUK.Core.Service
         #endregion
 
         #region Service
-        public int InsertService(T entity)
+        /// <summary>
+        /// Thêm bản ghi mới
+        /// </summary>
+        /// <param name="entity">Bản ghi cần thêm</param>
+        /// <returns>Trả về ID mới</returns>
+        /// Created by: linhpv (12/08/2022)
+        public Guid? InsertService(T entity)
         {
-            throw new NotImplementedException();
-        }
+            // Validate dữ liệu
+            string valid = Validate(entity);
 
-        public int UpdateService(T entity)
-        {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(valid)) {
+                return _repository.Insert(entity);
+            } 
+            else
+            {
+                return Guid.Empty;
+            }
         }
         #endregion
 
+        #region Function
+        /// <summary>
+        /// Validate dữ liệu
+        /// </summary>
+        /// <param name="entity">Bản ghi cần validate</param>
+        /// <returns>null - valid, thông báo lỗi - not valid</returns>
+        protected virtual string? Validate(T entity)
+        {
+            return null;
+        }
+        #endregion
     }
 }

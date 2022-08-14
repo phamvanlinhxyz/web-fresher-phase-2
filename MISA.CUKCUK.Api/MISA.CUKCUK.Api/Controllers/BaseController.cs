@@ -29,6 +29,18 @@ namespace MISA.CUKCUK.Api.Controllers
         #endregion
 
         #region Controller
+        [HttpPost]
+        public IActionResult Post(T entity)
+        {
+            var res = _service.InsertService(entity);
+            return Ok(res);
+        }
+
+        /// <summary>
+        /// Lấy tất cả bản ghi
+        /// </summary>
+        /// <returns>Tất cả dữ liệu</returns>
+        /// Created by: linhpv (12/08/2022)
         [HttpGet]
         public IActionResult Get()
         {
