@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MISA.CUKCUK.Core.Interfaces.Repositories;
 using MISA.CUKCUK.Core.Interfaces.Services;
 using MISA.CUKCUK.Core.Models;
+using Newtonsoft.Json;
 
 namespace MISA.CUKCUK.Api.Controllers
 {
@@ -37,9 +38,12 @@ namespace MISA.CUKCUK.Api.Controllers
         [HttpGet("NewCode")]
         public IActionResult GetNewCode(string DishName)
         {
+            // Lấy dữ liệu và khởi tạo response
             string newCode = _service.AutoGenDishCode(DishName);
+            Response res = new Response(newCode, true, Core.Enum.ErrorCode.NoError, "", "");
 
-            return Ok(newCode);
+            // Trả về response
+            return Ok(JsonConvert.SerializeObject(res, Formatting.Indented));
         }
 
         /// <summary>
@@ -51,8 +55,21 @@ namespace MISA.CUKCUK.Api.Controllers
         [HttpDelete("{entityID}")] 
         public IActionResult Delete(Guid entityID)
         {
-            var res = _repository.Delete(entityID);
-            return Ok(res);
+            try
+            {
+                // Lấy dữ liệu và khởi tạo response
+                var data = _repository.Delete(entityID);
+                Response res = new Response(data, true, Core.Enum.ErrorCode.NoError, "", "");
+
+                // Trả về response
+                return Ok(JsonConvert.SerializeObject(res, Formatting.Indented));
+            }
+            catch (Exception ex)
+            {
+                Response res = new Response(null, false, Core.Enum.ErrorCode.BadRequest, "Có lỗi rồi", ex.Message);
+                return Ok(JsonConvert.SerializeObject(res, Formatting.Indented));
+            }
+            
         }
 
         /// <summary>
@@ -65,8 +82,12 @@ namespace MISA.CUKCUK.Api.Controllers
         [HttpPost("Paging")]
         public IActionResult Paging(int pageIndex, int pageSize, FilterObject[] filterObjects)
         {
+            // Lấy dữ liệu và khởi tạo response
             var data = _service.PagingService(pageIndex, pageSize, filterObjects);
-            return Ok(data);
+            Response res = new Response(data: data, success: true, errorCode: Core.Enum.ErrorCode.NoError, userMsg: "", devMsg: "");
+
+            // Trả về response
+            return Ok(JsonConvert.SerializeObject(res, Formatting.Indented));
         }
         #endregion
     }

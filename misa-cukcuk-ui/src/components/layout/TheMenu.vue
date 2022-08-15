@@ -3,7 +3,7 @@
     <ul class="menu-items">
       <li class="menu-item" v-for="(item, index) of menuItems" :key="index">
         <router-link :to="item.path" class="menu-item-router">
-          <base-icon :iconName="item.icon"></base-icon>
+          <base-icon :iconName="item.icon" />
           <div class="item-name">{{ item.name }}</div>
         </router-link>
       </li>

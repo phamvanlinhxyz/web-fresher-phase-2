@@ -84,4 +84,20 @@ namespace MISA.CUKCUK.Core.Enum
         /// </summary>
         GreaterOrEqual = 8,
     }
+
+    /// <summary>
+    /// Error code
+    /// </summary>
+    /// Created by: linhpv (15/08/2022)
+    public enum ErrorCode
+    {
+        /// <summary>
+        /// Không có error
+        /// </summary>
+        NoError = 0,
+        /// <summary>
+        /// Bad request
+        /// </summary>
+        BadRequest = 400,
+    }
 }

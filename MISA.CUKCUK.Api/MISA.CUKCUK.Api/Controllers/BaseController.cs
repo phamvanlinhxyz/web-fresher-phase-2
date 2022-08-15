@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MISA.CUKCUK.Core.Enum;
 using MISA.CUKCUK.Core.Interfaces.Repositories;
 using MISA.CUKCUK.Core.Interfaces.Services;
+using MISA.CUKCUK.Core.Models;
 using Newtonsoft.Json;
 
 namespace MISA.CUKCUK.Api.Controllers
@@ -33,7 +35,7 @@ namespace MISA.CUKCUK.Api.Controllers
         public IActionResult Post(T entity)
         {
             var res = _service.InsertService(entity);
-            return Ok(res);
+            return Ok(JsonConvert.SerializeObject(res, Formatting.Indented));
         }
 
         /// <summary>
@@ -44,18 +46,14 @@ namespace MISA.CUKCUK.Api.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            try
-            {
-                // Lấy data
-                var data = JsonConvert.SerializeObject(_repository.Get(), Formatting.Indented);
+            // Lấy data
+            var data = _repository.Get();
 
-                // Trả về data
-                return Ok(data);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            // Khởi tạo response 
+            Response response = new Response(data: data, success: true, errorCode: ErrorCode.NoError, userMsg: "", devMsg: "");
+
+            // Trả về response
+            return Ok(JsonConvert.SerializeObject(response, Formatting.Indented));
         }
         #endregion
     }

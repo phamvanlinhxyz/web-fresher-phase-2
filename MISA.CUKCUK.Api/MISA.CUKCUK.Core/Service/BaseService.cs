@@ -1,5 +1,6 @@
 ﻿using MISA.CUKCUK.Core.Interfaces.Repositories;
 using MISA.CUKCUK.Core.Interfaces.Services;
+using MISA.CUKCUK.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,17 +34,17 @@ namespace MISA.CUKCUK.Core.Service
         /// <param name="entity">Bản ghi cần thêm</param>
         /// <returns>Trả về ID mới</returns>
         /// Created by: linhpv (12/08/2022)
-        public Guid? InsertService(T entity)
+        public Response InsertService(T entity)
         {
             // Validate dữ liệu
             string valid = Validate(entity);
 
             if (string.IsNullOrEmpty(valid)) {
-                return _repository.Insert(entity);
+                return new Response(data: _repository.Insert(entity), success: true, errorCode: Enum.ErrorCode.NoError, userMsg: "", devMsg: "");
             } 
             else
             {
-                return Guid.Empty;
+                return new Response(data: null, success: false, errorCode: Enum.ErrorCode.BadRequest, userMsg: valid, devMsg: valid);
             }
         }
         #endregion

@@ -16,7 +16,7 @@
         </div>
         <div class="toolbar-button-text">Nhân bản</div>
       </div>
-      <div class="toolbar-button" @click="toggleDishPopup">
+      <div class="toolbar-button" @click="handleEditDish">
         <div class="toolbar-button-icon">
           <base-icon iconName="edit" />
         </div>
@@ -77,7 +77,20 @@ export default {
     isShowUnitPopup: (state) => state.dish.isShowUnitPopup,
   }),
   methods: {
-    ...mapActions(["toggleDishPopup", "toggleDialog", "selectDish"]),
+    ...mapActions([
+      "toggleDishPopup",
+      "toggleDialog",
+      "selectDish",
+      "setFormMode",
+    ]),
+    /**
+     * Người dùng ấn sửa
+     * Author: linhpv (15/08/2022)
+     */
+    handleEditDish() {
+      this.setFormMode(enums.formMode.Edit);
+      this.toggleDishPopup();
+    },
     /**
      * Người dùng ấn thêm
      * Author: linhpv (12/08/2022)
@@ -87,6 +100,7 @@ export default {
         ShowOnMenu: enums.yesNo.Yes,
         SemiFinishedProduct: enums.yesNo.No,
       });
+      this.setFormMode(enums.formMode.Add);
       this.toggleDishPopup();
     },
   },

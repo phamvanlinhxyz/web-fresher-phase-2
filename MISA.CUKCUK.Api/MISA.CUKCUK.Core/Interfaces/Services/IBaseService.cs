@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MISA.CUKCUK.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,7 +21,7 @@ namespace MISA.CUKCUK.Core.Interfaces.Services
         /// <param name="entity">bản ghi mới</param>
         /// <returns>Số bản ghi đã đc thêm</returns>
         /// Created by: linhpv (07/08/2022)
-        Guid? InsertService(T entity);
+        Response? InsertService(T entity);
         #endregion
     }
 }

@@ -1,4 +1,5 @@
 import { constants } from "@/config";
+import enums from "@/enums";
 import axios from "axios";
 
 const state = {
@@ -13,12 +14,16 @@ const state = {
   isShowDishPopup: false,
   isShowMGPopup: false,
   isShowUnitPopup: false,
+  formMode: enums.formMode.Add,
   menuGroups: [],
   units: [],
   kitchens: [],
 };
 
 const mutations = {
+  SET_FORM_MODE(state, payload) {
+    state.formMode = payload;
+  },
   INSERT_DISH(state, payload) {
     state.dishs.unshift(payload);
     state.totalRecord++;
@@ -74,23 +79,29 @@ const mutations = {
 
 const actions = {
   /**
+   * Thay đổi form mode
+   * @param {*} ctx context
+   * @param {*} formMode form mode mới
+   * Author: linhpv (15/08/2022)
+   */
+  setFormMode(ctx, formMode) {
+    ctx.commit("SET_FORM_MODE", formMode);
+  },
+  /**
    * Thêm món ăn mới
    * @param {*} ctx context
    * @param {*} dish món ăn mới
    * Author: linhpv (14/08/2022)
    */
   async insertDish(ctx, dish) {
-    try {
-      const res = await axios.post(
-        `${constants.API_URL}/api/${constants.API_VERSION}/Dish`,
-        dish
-      );
+    const res = await axios.post(
+      `${constants.API_URL}/api/${constants.API_VERSION}/Dish`,
+      dish
+    );
 
-      dish.DishID = res.data;
-
+    if (res.data.Success) {
+      dish.DishID = res.data.Data;
       ctx.commit("INSERT_DISH", dish);
-    } catch (error) {
-      console.log(error);
     }
   },
   /**
@@ -100,14 +111,12 @@ const actions = {
    * Author: linhpv (11/08/2022)
    */
   async deleteDish(ctx, dishID) {
-    try {
-      await axios.delete(
-        `${constants.API_URL}/api/${constants.API_VERSION}/Dish/${dishID}`
-      );
+    var res = await axios.delete(
+      `${constants.API_URL}/api/${constants.API_VERSION}/Dish/${dishID}`
+    );
 
+    if (res.data.Success) {
       ctx.commit("DELETE_DISH", dishID);
-    } catch (error) {
-      console.log(error);
     }
   },
   /**
@@ -146,7 +155,7 @@ const actions = {
         `${constants.API_URL}/api/${constants.API_VERSION}/Kitchen`
       );
 
-      ctx.commit("LOAD_ALL_KITCHEN", res.data);
+      ctx.commit("LOAD_ALL_KITCHEN", res.data.Data);
     } catch (error) {
       console.log(error);
     }
@@ -162,7 +171,7 @@ const actions = {
         `${constants.API_URL}/api/${constants.API_VERSION}/Unit`
       );
 
-      ctx.commit("LOAD_ALL_UNIT", res.data);
+      ctx.commit("LOAD_ALL_UNIT", res.data.Data);
     } catch (error) {
       console.log(error);
     }
@@ -178,7 +187,7 @@ const actions = {
         `${constants.API_URL}/api/${constants.API_VERSION}/MenuGroup`
       );
 
-      ctx.commit("LOAD_ALL_MENU_GROUP", res.data);
+      ctx.commit("LOAD_ALL_MENU_GROUP", res.data.Data);
     } catch (error) {
       console.log(error);
     }
@@ -229,7 +238,7 @@ const actions = {
         `${constants.API_URL}/api/${constants.API_VERSION}/Dish`
       );
 
-      ctx.commit("LOAD_ALL_DISH", res.data);
+      ctx.commit("LOAD_ALL_DISH", res.data.Data);
     } catch (error) {
       console.log(error);
     }
@@ -241,16 +250,15 @@ const actions = {
    */
   async loadDishsByPaging(ctx) {
     ctx.commit("TOGGLE_LOADING");
-    try {
-      const res = await axios.post(
-        `${constants.API_URL}/api/${constants.API_VERSION}/Dish/Paging?pageIndex=${state.pageIndex}&pageSize=${state.pageSize}`,
-        state.filterObjects
-      );
+    const res = await axios.post(
+      `${constants.API_URL}/api/${constants.API_VERSION}/Dish/Paging?pageIndex=${state.pageIndex}&pageSize=${state.pageSize}`,
+      state.filterObjects
+    );
 
-      ctx.commit("LOAD_DISHS_BY_PAGING", res.data);
-    } catch (error) {
-      console.log(error);
+    if (res.data.Success) {
+      ctx.commit("LOAD_DISHS_BY_PAGING", res.data.Data);
     }
+
     ctx.commit("TOGGLE_LOADING");
   },
 };

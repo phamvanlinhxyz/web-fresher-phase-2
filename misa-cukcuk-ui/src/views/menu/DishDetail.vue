@@ -3,7 +3,9 @@
     <div class="popup-dish">
       <div class="popup-dish-inner">
         <div class="popup-dish-header">
-          <div>Thêm món</div>
+          <div>
+            {{ formTitle }}
+          </div>
           <div @click="toggleDishPopup">
             <base-icon iconName="x-close" />
           </div>
@@ -59,7 +61,9 @@
                     tableName="MenuGroup"
                     :addIcon="true"
                     :value="singleDish.MenuGroupID"
-                    @change="(val) => this.checkComboboxRequired('MenuGroup', val)"
+                    @change="
+                      (val) => this.checkComboboxRequired('MenuGroup', val)
+                    "
                   />
                 </div>
                 <div class="form-input">
@@ -81,7 +85,7 @@
                     Giá bán <span style="color: red">(*)</span>
                   </div>
                   <base-input
-                    type="number"
+                    type="money"
                     style="width: 113px"
                     v-model="singleDish.Price"
                     @write="checkInputRequired('Price', $event.target.value)"
@@ -92,7 +96,7 @@
                 <div class="form-input">
                   <div class="form-label">Giá vốn</div>
                   <base-input
-                    type="number"
+                    type="money"
                     style="width: 113px"
                     v-model="singleDish.PurchasePrice"
                   />
@@ -111,7 +115,9 @@
                     :listItem="kitchens"
                     tableName="Kitchen"
                     :value="singleDish.KitchenID"
-                    @change="(val) => this.checkComboboxRequired('Kitchen', val)"
+                    @change="
+                      (val) => this.checkComboboxRequired('Kitchen', val)
+                    "
                   />
                 </div>
                 <div class="form-input">
@@ -199,11 +205,13 @@ export default {
       popupTab: 1,
       singleDish: {},
       errorList: {
-        dishName: null,
-        dishCode: null,
-        price: null,
+        DishName: null,
+        DishCode: null,
+        UnitID: null,
+        Price: null,
       },
       focusElm: "DishName",
+      formTitle: "Thêm món",
     };
   },
   computed: mapState({
@@ -212,6 +220,7 @@ export default {
     units: (state) => state.dish.units,
     kitchens: (state) => state.dish.kitchens,
     selectedDish: (state) => state.dish.selectedDish,
+    formMode: (state) => state.dish.formMode,
   }),
   methods: {
     ...mapActions([
@@ -229,7 +238,35 @@ export default {
       this.focusElm = "";
       var valid = this.validateData();
       if (valid) {
-        this.insertDish(this.singleDish);
+        // Format lại các định dạng giá tiền
+        this.formatData();
+        // Check formMode
+        if (this.formMode == enums.formMode.Add) {
+          this.insertDish(this.singleDish);
+        } else if (this.formMode == enums.formMode.Edit) {
+          console.log(this.singleDish);
+        }
+      }
+    },
+    /**
+     * Format lại một số dữ liệu cần thiết
+     * Author: linhpv (15/08/2022)
+     */
+    formatData() {
+      // 1. Xử lý giá bán
+      if (this.singleDish.Price && typeof this.singleDish.Price == "string") {
+        this.singleDish.Price = parseFloat(
+          this.singleDish.Price.replaceAll(".", "")
+        );
+      }
+      // 2. Xử lý giá vốn
+      if (
+        this.singleDish.PurchasePrice &&
+        typeof this.singleDish.PurchasePrice == "string"
+      ) {
+        this.singleDish.PurchasePrice = parseFloat(
+          this.singleDish.PurchasePrice(".", "")
+        );
       }
     },
     /**
@@ -333,8 +370,10 @@ export default {
         const res = await axios.get(
           `${constants.API_URL}/api/${constants.API_VERSION}/Dish/NewCode?DishName=${val}`
         );
-        this.singleDish.DishCode = res.data;
-        this.errorList.DishCode = null;
+        if (res.data.Success) {
+          this.singleDish.DishCode = res.data.Data;
+          this.errorList.DishCode = null;
+        }
       }
     },
     /**
@@ -364,7 +403,13 @@ export default {
    * Xử lý các sự kiện khi mount component
    * Author: linhpv (14/08/2022)
    */
-  mounted() {},
+  mounted() {
+    if (this.formMode == enums.formMode.Add) {
+      this.formTitle = "Thêm món";
+    } else if (this.formMode == enums.formMode.Edit) {
+      this.formTitle = "Sửa món";
+    }
+  },
 };
 </script>
 

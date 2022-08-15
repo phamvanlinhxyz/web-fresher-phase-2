@@ -9,6 +9,7 @@
       @input="updateValue"
       @change="changeValue"
       ref="inputRef"
+      :maxlength="maxlength"
     />
     <!-- Hiển thị cảnh báo -->
     <div class="input-error-icon" v-if="errorMessage">
@@ -23,6 +24,7 @@ export default {
   data() {
     return {
       inputClass: ["input", this.errorMessage ? "input-error" : null],
+      maxlength: null,
     };
   },
   watch: {
@@ -41,16 +43,31 @@ export default {
   },
   methods: {
     /**
+     *  Định dạng các input giá tiền
+     * @param {*} money
+     * Author: linhpv (15/08/2022)
+     */
+    formatMoney(money) {
+      if (typeof money === "number") {
+        money = Math.round(money);
+      }
+      return money
+        .toString()
+        .replace(/\D/g, "")
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    },
+    /**
      * Xử lý hiển thị đầu vào input
      * @param {*} val
      * Author: linhpv (14/08/2022)
      */
     handleValue(val) {
       if (val && this.type == "money") {
-        return val.toLocaleString("vi-VN", {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        });
+        // return val.toLocaleString("vi-VN", {
+        //   minimumFractionDigits: 2,
+        //   maximumFractionDigits: 2,
+        // });
+        return this.formatMoney(val);
       } else {
         return val;
       }
@@ -61,6 +78,9 @@ export default {
      * @param {*} event
      */
     updateValue(event) {
+      if (this.type === "money") {
+        event.target.value = this.formatMoney(event.target.value);
+      }
       this.$emit("update:modelValue", event.target.value);
       this.$emit("write", event);
     },
@@ -76,6 +96,9 @@ export default {
   mounted() {
     if (this.focus) {
       this.$refs.inputRef.focus();
+    }
+    if (this.type == "money") {
+      this.maxlength = 18;
     }
   },
 };
