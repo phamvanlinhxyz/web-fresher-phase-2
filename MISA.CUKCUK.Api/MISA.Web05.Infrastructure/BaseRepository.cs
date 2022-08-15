@@ -28,30 +28,39 @@ namespace MISA.Web05.Infrastructure
             TableName = typeof(T).Name;
         }
 
-        public bool CheckDuplicateCode(Guid? entityID, string entityCode)
+        /// <summary>
+        /// Check trùng
+        /// </summary>
+        /// <param name="entityID">Id bản ghi</param>
+        /// <param name="text">Dữ liệu cần check</param>
+        /// <param name="column">Cột cần check</param>
+        /// <returns>true - nếu trùng, false - nếu không trùng</returns>
+        /// Created by: linhpv (14/08/2022)
+        public bool CheckDuplicate(Guid? entityID, string text, string column)
         {
             using(SqlConnection = new MySqlConnection(ConnectionString))
             {
                 // Query proc
-                var sqlQuery = $"Proc_CheckDuplicate{TableName}";
+                var sqlQuery = $"Proc_CheckDuplicate";
                 
                 // Viết câu lệnh where
                 var where = "WHERE";    
                 if (entityID != Guid.Empty)
                 {
-                    where += $" {TableName}ID = '" + entityID + "' AND ";
+                    where += $" {TableName}ID <> '" + entityID + "' AND ";
                 }
 
-                where += $" {TableName}Code = '" + entityCode + "' ";
+                where += $" {column} = '" + text + "' ";
 
                 // Thêm params
                 var parameters = new DynamicParameters();
                 parameters.Add("$Where", where);
+                parameters.Add("$TableName", TableName);
 
                 // Gọi query
-                var res = SqlConnection.QueryFirstOrDefault(sql: sqlQuery, param: parameters, commandType: System.Data.CommandType.StoredProcedure);
+                var res = SqlConnection.QueryFirstOrDefault(sql: sqlQuery, param: parameters, commandType: CommandType.StoredProcedure);
 
-                // Trả về kết quảp
+                // Trả về kết quả
                 if (res.Count == 0)
                 {
                     return false;

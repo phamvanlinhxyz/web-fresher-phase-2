@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MISA.CUKCUK.Core;
 using MISA.CUKCUK.Core.Enum;
 using MISA.CUKCUK.Core.Interfaces.Repositories;
 using MISA.CUKCUK.Core.Interfaces.Services;
 using MISA.CUKCUK.Core.Models;
+using MISA.CUKCUK.Core.Resources;
 using Newtonsoft.Json;
 
 namespace MISA.CUKCUK.Api.Controllers
@@ -34,8 +36,15 @@ namespace MISA.CUKCUK.Api.Controllers
         [HttpPost]
         public IActionResult Post(T entity)
         {
-            var res = _service.InsertService(entity);
-            return Ok(JsonConvert.SerializeObject(res, Formatting.Indented));
+            try
+            {
+                var res = _service.InsertService(entity);
+                return Ok(JsonConvert.SerializeObject(res, Formatting.Indented));
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
         }
 
         /// <summary>
@@ -46,14 +55,30 @@ namespace MISA.CUKCUK.Api.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            // Lấy data
-            var data = _repository.Get();
+            try
+            {
+                // Lấy data
+                var data = _repository.Get();
 
-            // Khởi tạo response 
-            Response response = new Response(data: data, success: true, errorCode: ErrorCode.NoError, userMsg: "", devMsg: "");
+                // Khởi tạo response 
+                Response response = new Response(data: data, success: true, errorCode: ErrorCode.NoError, userMsg: "", devMsg: "");
 
-            // Trả về response
-            return Ok(JsonConvert.SerializeObject(response, Formatting.Indented));
+                // Trả về response
+                return Ok(JsonConvert.SerializeObject(response, Formatting.Indented));
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
+        }
+        #endregion
+
+        #region Function
+        protected IActionResult HandleException(Exception ex) 
+        {
+            var langCode = Common.LanguageCode;
+            Response res = new Response(null, false, ErrorCode.ServerInternal, Resource.ResourceManager.GetString($"{langCode}_Server_Error"), ex.Message);
+            return Ok(JsonConvert.SerializeObject(res, Formatting.Indented));
         }
         #endregion
     }

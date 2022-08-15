@@ -88,6 +88,13 @@ export default {
         this.comboboxClass = ["combobox", "combobox-error"];
       }
     },
+    value(newVal) {
+      this.selectedItem = this.listItem.find((item) => {
+        return item[`${this.tableName}ID`] == newVal;
+      });
+      this.$refs.comboboxInput.value =
+        this.selectedItem[`${this.tableName}Name`];
+    },
   },
   methods: {
     /**

@@ -14,11 +14,20 @@
               <div class="form-label">
                 Đơn vị tính <span style="color: red">(*)</span>
               </div>
-              <base-input />
+              <base-input
+                v-model="newUnit.UnitName"
+                @write="checkInputRequired('UnitName', $event.target.value)"
+                :errorMessage="errorList.UnitName"
+                :focus="focusElm == 'UnitName'"
+              />
             </div>
             <div class="form-input">
               <div class="form-label">Diễn giải</div>
-              <textarea class="textarea" rows="3"></textarea>
+              <textarea
+                class="textarea"
+                rows="3"
+                v-model="newUnit.Description"
+              ></textarea>
             </div>
           </div>
         </div>
@@ -27,8 +36,8 @@
             <base-button content="Giúp" icon="question-circle" />
           </div>
           <div class="pdf-right">
-            <base-button content="Cất" icon="save" />
-            <base-button content="Hủy" icon="cancel" />
+            <base-button content="Cất" icon="save" @click="handleStoreUnit" />
+            <base-button content="Hủy" icon="cancel" @click="toggleUnitPopup" />
           </div>
         </div>
       </div>
@@ -37,11 +46,61 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import resources from "@/resources";
+import { mapActions, mapState } from "vuex";
 
 export default {
+  data() {
+    return {
+      newUnit: {},
+      errorList: {
+        UnitName: null,
+      },
+      focusElm: "UnitName",
+    };
+  },
+  computed: mapState({
+    langCode: (state) => state.app.langCode,
+  }),
   methods: {
-    ...mapActions(["toggleUnitPopup"]),
+    ...mapActions(["toggleUnitPopup", "insertUnit"]),
+    /**
+     * Thêm đơn vị tính mới
+     * Author: linhpv (15/08/2022)
+     */
+    handleStoreUnit() {
+      this.focusElm = null;
+      if (this.validateData()) {
+        this.insertUnit(this.newUnit);
+      }
+    },
+    validateData() {
+      // Đặt valid mặc định true
+      var valid = true;
+      // Check đơn vị tính trống
+      if (!this.newUnit.UnitName) {
+        if (!this.focusElm) {
+          this.focusElm = "UnitName";
+        }
+        this.errorList.UnitName =
+          resources.validateError[`${this.langCode}_Required_Error`];
+        valid = false;
+      }
+
+      return valid;
+    },
+    /**
+     * Check input required
+     * Author: linhpv (15/08/2022)
+     */
+    checkInputRequired(column, value) {
+      if (!value) {
+        this.errorList[column] =
+          resources.validateError[`${this.langCode}_Required_Error`];
+      } else {
+        this.errorList[column] = null;
+      }
+    },
   },
 };
 </script>

@@ -31,7 +31,7 @@ namespace MISA.CUKCUK.Core.Models
         /// <summary>
         /// Diễn giải
         /// </summary>
-        public string Description { get; set; }
+        public string? Description { get; set; }
         #endregion
     }
 }

@@ -14,27 +14,44 @@
               <div class="form-label">
                 Mã nhóm <span style="color: red">(*)</span>
               </div>
-              <base-input />
+              <base-input
+                v-model="newMenuGroup.MenuGroupCode"
+                @write="
+                  checkInputRequired('MenuGroupCode', $event.target.value)
+                "
+                :errorMessage="errorList.MenuGroupCode"
+                :focus="focusElm == 'MenuGroupCode'"
+              />
             </div>
             <div class="form-input">
               <div class="form-label">
                 Tên nhóm <span style="color: red">(*)</span>
               </div>
-              <base-input />
-            </div>
-            <div class="form-input">
-              <div class="form-label">
-                Thuộc loại <span style="color: red">(*)</span>
-              </div>
-              <base-input :disabled="true" />
+              <base-input
+                v-model="newMenuGroup.MenuGroupName"
+                @write="
+                  checkInputRequired('MenuGroupName', $event.target.value)
+                "
+                :errorMessage="errorList.MenuGroupName"
+                :focus="focusElm == 'MenuGroupName'"
+              />
             </div>
             <div class="form-input">
               <div class="form-label">Chế biến tại</div>
-              <base-combobox :listItem="kitchens" tableName="Kitchen" />
+              <base-combobox
+                :listItem="kitchens"
+                tableName="Kitchen"
+                :value="newMenuGroup.KitchenID"
+                @change="(val) => this.setValueCombobox('Kitchen', val)"
+              />
             </div>
             <div class="form-input">
               <div class="form-label">Diễn giải</div>
-              <textarea class="textarea" rows="3"></textarea>
+              <textarea
+                class="textarea"
+                rows="3"
+                v-model="newMenuGroup.Description"
+              ></textarea>
             </div>
           </div>
         </div>
@@ -43,8 +60,16 @@
             <base-button content="Giúp" icon="question-circle" />
           </div>
           <div class="pdf-right">
-            <base-button content="Cất" icon="save" />
-            <base-button content="Hủy" icon="cancel" />
+            <base-button
+              content="Cất"
+              icon="save"
+              @click="handleStoreMenuGroup"
+            />
+            <base-button
+              content="Hủy"
+              icon="cancel"
+              @click="toggleMenuGroupPopup"
+            />
           </div>
         </div>
       </div>
@@ -53,14 +78,96 @@
 </template>
 
 <script>
+import resources from "@/resources";
 import { mapActions, mapState } from "vuex";
 
 export default {
+  data() {
+    return {
+      errorList: {
+        MenuGroupCode: null,
+        MenuGroupName: null,
+      },
+      newMenuGroup: {},
+      focusElm: "MenuGroupCode",
+    };
+  },
   computed: mapState({
+    langCode: (state) => state.app.langCode,
     kitchens: (state) => state.dish.kitchens,
   }),
   methods: {
-    ...mapActions(["loadAllKitchen", "toggleMenuGroupPopup"]),
+  ...mapActions([
+      "loadAllKitchen",
+      "toggleMenuGroupPopup",
+      "insertMenuGroup",
+    ]),
+    /**
+     * Thêm nhóm thực đơn mới
+     * Author: linhpv (15/08/2022)
+     */
+    handleStoreMenuGroup() {
+      this.focusElm = null;
+      let valid = this.validateData();
+      if (valid) {
+        this.insertMenuGroup(this.newMenuGroup);
+      }
+    },
+    /**
+     * Validate dữ liệu
+     * Author: linhpv (15/08/2022)
+     */
+    validateData() {
+      // Đặt valid mặc định là true
+      var valid = true;
+      // Kiểm tra các trường bắt buộc
+      // 1. Mã nhóm thực đơn
+      if (!this.newMenuGroup.MenuGroupCode) {
+        if (!this.focusElm) {
+          this.focusElm = "MenuGroupCode";
+        }
+        this.errorList.MenuGroupCode =
+          resources.validateError[`${this.langCode}_Required_Error`];
+        valid = false;
+      }
+      // 2. Tên nhóm thực đơn
+      if (!this.newMenuGroup.MenuGroupName) {
+        if (!this.focusElm) {
+          this.focusElm = "MenuGroupName";
+        }
+        this.errorList.MenuGroupName =
+          resources.validateError[`${this.langCode}_Required_Error`];
+        valid = false;
+      }
+      return valid;
+    },
+    /**
+     * Check input required
+     * Author: linhpv (15/08/2022)
+     */
+    checkInputRequired(column, value) {
+      if (!value) {
+        this.errorList[column] =
+          resources.validateError[`${this.langCode}_Required_Error`];
+      } else {
+        this.errorList[column] = null;
+      }
+    },
+    /**
+     * Set giá trị cho các cột lấy từ combobox
+     * @param {*} tableName
+     * @param {*} value
+     * Author: linhpv (15/08/2022)
+     */
+    setValueCombobox(tableName, value) {
+      if (!value) {
+        this.newMenuGroup[`${tableName}ID`] = null;
+        this.newMenuGroup[`${tableName}Name`] = null;
+      } else {
+        this.newMenuGroup[`${tableName}ID`] = value[`${tableName}ID`];
+        this.newMenuGroup[`${tableName}Name`] = value[`${tableName}Name`];
+      }
+    },
   },
   created() {
     this.loadAllKitchen();

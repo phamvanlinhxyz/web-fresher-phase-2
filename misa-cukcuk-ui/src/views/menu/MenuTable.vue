@@ -111,6 +111,7 @@
         key="dish.dishID"
         :class="{ selected: dish.DishID === selectedDish.DishID }"
         @click="selectDish(dish)"
+        @dblclick="handleDbClickDish(dish)"
       >
         <td>Món ăn</td>
         <td>{{ dish.DishCode }}</td>
@@ -153,7 +154,26 @@ export default {
       "selectDish",
       "updateFilterObjects",
       "updatePageIndex",
+      "setFormMode",
+      "toggleDishPopup",
     ]),
+    /**
+     * Xử lý sự kiện double click vào món ăn
+     * Author: linhpv (15/08/2022)
+     */
+    handleDbClickDish(dish) {
+      this.selectDish(dish);
+      this.setFormMode(enums.formMode.Edit);
+      this.toggleDishPopup();
+    },
+    /**
+     * Xử lý lọc
+     * @param {*} columnName
+     * @param {*} value
+     * @param {*} inputType
+     * @param {*} filterType
+     * Author: linhpv (11/08/2022)
+     */
     handleChangeFilterObject(columnName, value, inputType, filterType) {
       // Tìm vị trí của object trong mảng lọc
       var objectIndex = this.filterObjects.findIndex((object) => {

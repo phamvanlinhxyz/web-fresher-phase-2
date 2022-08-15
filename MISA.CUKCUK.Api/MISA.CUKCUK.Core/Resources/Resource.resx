@@ -130,19 +130,43 @@
     <comment>Thiết bị máy tính bảng</comment>
   </data>
   <data name="VN_DishCode_Empty" xml:space="preserve">
-    <value>Mã món không được phép để trống</value>
+    <value>Mã món không được phép để trống.</value>
     <comment>Mã món ăn bị trống</comment>
   </data>
   <data name="VN_DishName_Empty" xml:space="preserve">
-    <value>Tên món không được để trống</value>
+    <value>Tên món không được để trống.</value>
     <comment>Tên món ăn bị trống</comment>
   </data>
   <data name="VN_Duplicate_DishCode" xml:space="preserve">
-    <value>Mã món &lt;&lt;{0}&gt;&gt; đã tồn tại trong hệ thống</value>
+    <value>Mã món &lt;&lt;{0}&gt;&gt; đã tồn tại trong hệ thống.</value>
     <comment>Mã món ăn bị trùng</comment>
   </data>
+  <data name="VN_Duplicate_MenuGroupCode" xml:space="preserve">
+    <value>Mã nhóm &lt;&lt;{0}&gt;&gt; đã tồn tại trong hệ thống.</value>
+    <comment>Mã nhóm thực đơn bị trùng</comment>
+  </data>
+  <data name="VN_Duplicate_MenuGroupName" xml:space="preserve">
+    <value>Tên nhóm &lt;&lt;{0}&gt;&gt; đã tồn tại trong hệ thống.</value>
+    <comment>Tên nhóm thực đơn bị trùng</comment>
+  </data>
+  <data name="VN_Duplicate_UnitName" xml:space="preserve">
+    <value>Đơn vị tính &lt;&lt;{0}&gt;&gt; đã tồn tại trong hệ thống.</value>
+    <comment>Trùng đơn vị tính</comment>
+  </data>
+  <data name="VN_MenuGroupCode_Empty" xml:space="preserve">
+    <value>Mã nhóm thực đơn không được phép để trống.</value>
+    <comment>Mã nhóm thực đơn để trống</comment>
+  </data>
+  <data name="VN_MenuGroupName_Empty" xml:space="preserve">
+    <value>Tên nhóm thực đơn không được phép để trống.</value>
+    <comment>Tên nhóm thực đơn để trống</comment>
+  </data>
+  <data name="VN_Server_Error" xml:space="preserve">
+    <value>Đã có lỗi xảy ra vui lòng liên hệ MISA để được hỗ trợ.</value>
+    <comment>Lỗi server</comment>
+  </data>
   <data name="VN_Unit_Empty" xml:space="preserve">
-    <value>Đơn vị tính không được phép để trống</value>
+    <value>Đơn vị tính không được phép để trống.</value>
     <comment>Đơn vị tính bị trống</comment>
   </data>
 </root>

@@ -61,9 +61,7 @@
                     tableName="MenuGroup"
                     :addIcon="true"
                     :value="singleDish.MenuGroupID"
-                    @change="
-                      (val) => this.checkComboboxRequired('MenuGroup', val)
-                    "
+                    @change="(val) => this.setValueCombobox('MenuGroup', val)"
                   />
                 </div>
                 <div class="form-input">
@@ -115,9 +113,7 @@
                     :listItem="kitchens"
                     tableName="Kitchen"
                     :value="singleDish.KitchenID"
-                    @change="
-                      (val) => this.checkComboboxRequired('Kitchen', val)
-                    "
+                    @change="(val) => this.setValueCombobox('Kitchen', val)"
                   />
                 </div>
                 <div class="form-input">
@@ -192,7 +188,7 @@
 
 <script>
 import axios from "axios";
-import { resources } from "@/resources";
+import resources from "@/resources";
 import enums from "@/enums";
 import { constants } from "@/config";
 import { mapActions, mapState } from "vuex";
@@ -265,7 +261,7 @@ export default {
         typeof this.singleDish.PurchasePrice == "string"
       ) {
         this.singleDish.PurchasePrice = parseFloat(
-          this.singleDish.PurchasePrice(".", "")
+          this.singleDish.PurchasePrice.replaceAll(".", "")
         );
       }
     },

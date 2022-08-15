@@ -22,7 +22,7 @@ namespace MISA.CUKCUK.Core.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resource {
+    public class Resource {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace MISA.CUKCUK.Core.Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MISA.CUKCUK.Core.Resources.Resource", typeof(Resource).Assembly);
@@ -51,7 +51,7 @@ namespace MISA.CUKCUK.Core.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace MISA.CUKCUK.Core.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Không sử dụng.
         /// </summary>
-        internal static string VN_Device_No {
+        public static string VN_Device_No {
             get {
                 return ResourceManager.GetString("VN_Device_No", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace MISA.CUKCUK.Core.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Máy in.
         /// </summary>
-        internal static string VN_Device_Printer {
+        public static string VN_Device_Printer {
             get {
                 return ResourceManager.GetString("VN_Device_Printer", resourceCulture);
             }
@@ -81,43 +81,97 @@ namespace MISA.CUKCUK.Core.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Máy tính bảng.
         /// </summary>
-        internal static string VN_Device_Tablet {
+        public static string VN_Device_Tablet {
             get {
                 return ResourceManager.GetString("VN_Device_Tablet", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mã món không được phép để trống.
+        ///   Looks up a localized string similar to Mã món không được phép để trống..
         /// </summary>
-        internal static string VN_DishCode_Empty {
+        public static string VN_DishCode_Empty {
             get {
                 return ResourceManager.GetString("VN_DishCode_Empty", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tên món không được để trống.
+        ///   Looks up a localized string similar to Tên món không được để trống..
         /// </summary>
-        internal static string VN_DishName_Empty {
+        public static string VN_DishName_Empty {
             get {
                 return ResourceManager.GetString("VN_DishName_Empty", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mã món &lt;&lt;{0}&gt;&gt; đã tồn tại trong hệ thống.
+        ///   Looks up a localized string similar to Mã món &lt;&lt;{0}&gt;&gt; đã tồn tại trong hệ thống..
         /// </summary>
-        internal static string VN_Duplicate_DishCode {
+        public static string VN_Duplicate_DishCode {
             get {
                 return ResourceManager.GetString("VN_Duplicate_DishCode", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Đơn vị tính không được phép để trống.
+        ///   Looks up a localized string similar to Mã nhóm &lt;&lt;{0}&gt;&gt; đã tồn tại trong hệ thống..
         /// </summary>
-        internal static string VN_Unit_Empty {
+        public static string VN_Duplicate_MenuGroupCode {
+            get {
+                return ResourceManager.GetString("VN_Duplicate_MenuGroupCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tên nhóm &lt;&lt;{0}&gt;&gt; đã tồn tại trong hệ thống..
+        /// </summary>
+        public static string VN_Duplicate_MenuGroupName {
+            get {
+                return ResourceManager.GetString("VN_Duplicate_MenuGroupName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đơn vị tính &lt;&lt;{0}&gt;&gt; đã tồn tại trong hệ thống..
+        /// </summary>
+        public static string VN_Duplicate_UnitName {
+            get {
+                return ResourceManager.GetString("VN_Duplicate_UnitName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mã nhóm thực đơn không được phép để trống..
+        /// </summary>
+        public static string VN_MenuGroupCode_Empty {
+            get {
+                return ResourceManager.GetString("VN_MenuGroupCode_Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tên nhóm thực đơn không được phép để trống..
+        /// </summary>
+        public static string VN_MenuGroupName_Empty {
+            get {
+                return ResourceManager.GetString("VN_MenuGroupName_Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đã có lỗi xảy ra vui lòng liên hệ MISA để được hỗ trợ..
+        /// </summary>
+        public static string VN_Server_Error {
+            get {
+                return ResourceManager.GetString("VN_Server_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đơn vị tính không được phép để trống..
+        /// </summary>
+        public static string VN_Unit_Empty {
             get {
                 return ResourceManager.GetString("VN_Unit_Empty", resourceCulture);
             }

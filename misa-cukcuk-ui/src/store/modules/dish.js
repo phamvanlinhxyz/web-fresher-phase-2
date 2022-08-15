@@ -21,6 +21,16 @@ const state = {
 };
 
 const mutations = {
+  INSERT_UNIT(state, payload) {
+    state.units.unshift(payload);
+    state.selectedDish.UnitID = payload.UnitID;
+    state.isShowUnitPopup = false;
+  },
+  INSERT_MENU_GROUP(state, payload) {
+    state.menuGroups.unshift(payload);
+    state.selectedDish.MenuGroupID = payload.MenuGroupID;
+    state.isShowMGPopup = false;
+  },
   SET_FORM_MODE(state, payload) {
     state.formMode = payload;
   },
@@ -78,6 +88,40 @@ const mutations = {
 };
 
 const actions = {
+  /**
+   * Thêm đơn vị tính mới
+   * @param {*} ctx context
+   * @param {*} unit đơn vị tính
+   * Author: linhpv (15/08/2022)
+   */
+  async insertUnit(ctx, unit) {
+    const res = await axios.post(
+      `${constants.API_URL}/api/${constants.API_VERSION}/Unit`,
+      unit
+    );
+
+    if (res.data.Success) {
+      unit.UnitID = res.data.Data;
+      ctx.commit("INSERT_UNIT", unit);
+    }
+  },
+  /**
+   * Thêm nhóm thực đơn mới
+   * @param {*} ctx context
+   * @param {*} menuGroup món ăn mới
+   * Author: linhpv (15/08/2022)
+   */
+  async insertMenuGroup(ctx, menuGroup) {
+    const res = await axios.post(
+      `${constants.API_URL}/api/${constants.API_VERSION}/MenuGroup`,
+      menuGroup
+    );
+
+    if (res.data.Success) {
+      menuGroup.MenuGroupID = res.data.Data;
+      ctx.commit("INSERT_MENU_GROUP", menuGroup);
+    }
+  },
   /**
    * Thay đổi form mode
    * @param {*} ctx context

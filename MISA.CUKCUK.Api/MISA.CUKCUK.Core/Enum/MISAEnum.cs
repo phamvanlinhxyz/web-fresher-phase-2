@@ -99,5 +99,9 @@ namespace MISA.CUKCUK.Core.Enum
         /// Bad request
         /// </summary>
         BadRequest = 400,
+        /// <summary>
+        /// Lỗi server
+        /// </summary>
+        ServerInternal = 500,
     }
 }

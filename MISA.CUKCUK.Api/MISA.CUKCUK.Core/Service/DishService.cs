@@ -20,6 +20,11 @@ namespace MISA.CUKCUK.Core.Service
         #endregion
 
         #region Contructor
+        /// <summary>
+        /// Hàm khởi tạo 
+        /// </summary>
+        /// <param name="repository">repo</param>
+        /// Created by: linhpv (15/08/2022)
         public DishService(IDishRepository repository) : base(repository)
         {
             _repository = repository;   
@@ -46,7 +51,7 @@ namespace MISA.CUKCUK.Core.Service
                 }
             }
             newCode = RemoveVietnameseTone(newCode).ToUpper();
-            if (_repository.CheckDuplicateCode(Guid.Empty, newCode))
+            if (_repository.CheckDuplicate(Guid.Empty, newCode, "DishCode"))
             {
                 newCode = "";
                 foreach (var word in words)
@@ -61,7 +66,7 @@ namespace MISA.CUKCUK.Core.Service
                     }
                 }
 
-                if (_repository.CheckDuplicateCode(Guid.Empty, newCode))
+                if (_repository.CheckDuplicate(Guid.Empty, newCode, "DishCode"))
                 {
                     newCode = DishName.Replace(" ", "");
                 } 
@@ -169,20 +174,24 @@ namespace MISA.CUKCUK.Core.Service
         protected override string? Validate(Dish dish)
         {
             var langCode = Common.LanguageCode;
+            // Check tên món ăn trống
             if (string.IsNullOrEmpty(dish.DishName))
             {
                 return Resources.Resource.ResourceManager.GetString($"{langCode}_DishName_Empty");
             }
+            // Check mã món ăn trống
             if (string.IsNullOrEmpty(dish.DishCode))
             {
                 return Resources.Resource.ResourceManager.GetString($"{langCode}_DishCode_Empty");
             }
+            // Check đơn vị tính trống
             if (dish.UnitID == Guid.Empty)
             {
                 return Resources.Resource.ResourceManager.GetString($"{langCode}_Unit_Empty");
             }
-            if (_repository.CheckDuplicateCode(Guid.Empty, dish.DishCode)) {
-                return String.Format(Resources.Resource.ResourceManager.GetString($"{langCode}_Duplicate_DishCode"), dish.DishCode);
+            // Check trùng mã món ăn
+            if (_repository.CheckDuplicate(Guid.Empty, dish.DishCode, "DishCode")) {
+                return string.Format(Resources.Resource.ResourceManager.GetString($"{langCode}_Duplicate_DishCode"), dish.DishCode);
             }
             return null;
         }
