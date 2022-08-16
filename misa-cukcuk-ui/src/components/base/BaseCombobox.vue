@@ -21,6 +21,7 @@
   </div>
   <div class="cbb-bg" @click="toggleDropdown" v-show="isShowDropdown"></div>
   <div
+    v-if="dropdownType != 1"
     class="cbb-option"
     v-show="isShowDropdown"
     :style="{
@@ -46,6 +47,41 @@
       </li>
     </ul>
   </div>
+  <div
+    v-if="dropdownType == 1"
+    class="cbb-option"
+    v-show="isShowDropdown"
+    :style="{
+      top: `${dropdownTop}px`,
+      left: `${dropdownLeft}px`,
+    }"
+    ref="comboboxOption"
+  >
+    <ul class="cbb-list-item-table">
+      <li class="cbb-item-table table-title">
+        <div class="item-code">Mã</div>
+        <div class="item-name">Tên</div>
+      </li>
+      <li
+        class="cbb-item-table"
+        v-for="item of filterItems"
+        :key="item[`${tableName}ID`]"
+        @click="handleSelect(item)"
+        :class="{
+          'item-selected':
+            selectedItem &&
+            item[`${tableName}ID`] == selectedItem[`${tableName}ID`],
+        }"
+      >
+        <div class="item-code">
+          {{ item[`${tableName}Code`] }}
+        </div>
+        <div class="item-name">
+          {{ item[`${tableName}Name`] }}
+        </div>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
@@ -58,6 +94,9 @@ export default {
     "value",
     "focus",
     "errorMessage",
+    "hideBorder",
+    "dropdownType",
+    "columnShow",
   ],
   emits: ["change"],
   data() {
@@ -70,6 +109,7 @@ export default {
       filterItems: [],
       selectedItem: null,
       selectedIndex: 0,
+      show: "",
     };
   },
   watch: {
@@ -83,17 +123,23 @@ export default {
     },
     errorMessage(newVal) {
       if (newVal == null) {
-        this.comboboxClass = ["combobox"];
+        this.comboboxClass = [
+          "combobox",
+          this.hideBorder ? "hide-border" : null,
+        ];
       } else {
-        this.comboboxClass = ["combobox", "combobox-error"];
+        this.comboboxClass = [
+          "combobox",
+          this.hideBorder ? "hide-border" : null,
+          "combobox-error",
+        ];
       }
     },
     value(newVal) {
       this.selectedItem = this.listItem.find((item) => {
         return item[`${this.tableName}ID`] == newVal;
       });
-      this.$refs.comboboxInput.value =
-        this.selectedItem[`${this.tableName}Name`];
+      this.$refs.comboboxInput.value = this.selectedItem[this.show];
     },
   },
   methods: {
@@ -142,7 +188,7 @@ export default {
         this.isShowDropdown = false;
         if (this.filterItems.length > 0) {
           this.selectedItem = this.filterItems[this.selectedIndex];
-          event.target.value = this.selectedItem[`${this.tableName}Name`];
+          event.target.value = this.selectedItem[this.show];
         }
       }
     },
@@ -155,8 +201,7 @@ export default {
       this.$refs.comboboxRef.classList.remove("combobox-focus");
       // Nếu có item đang được chọn thì set value nếu không thì value = null
       if (this.selectedItem) {
-        this.$refs.comboboxInput.value =
-          this.selectedItem[`${this.tableName}Name`];
+        this.$refs.comboboxInput.value = this.selectedItem[this.show];
       } else {
         this.$refs.comboboxInput.value = null;
       }
@@ -170,11 +215,11 @@ export default {
     },
     /**
      * Xự kiện click chọn item
-     * @param {*} item
+     * @param {object} item item đã chọn
      * Author: linhpv (07/08/2022)
      */
     handleSelect(item) {
-      this.$refs.comboboxInput.value = item[`${this.tableName}Name`];
+      this.$refs.comboboxInput.value = item[this.show];
       this.selectedItem = item;
       this.toggleDropdown();
     },
@@ -234,20 +279,29 @@ export default {
       let rect = this.$refs.comboboxRef.getBoundingClientRect();
       this.dropdownLeft = rect.left;
       this.dropdownWidth = rect.width;
-      if (rect.bottom + 24 * this.listItem.length < window.innerHeight) {
+      let height =
+        24 * this.listItem.length < 300 ? 24 * this.listItem.length : 300;
+      if (rect.bottom + height < window.innerHeight) {
         this.dropdownTop = rect.top + rect.height;
       } else {
-        this.dropdownTop = rect.top - 24 * this.listItem.length;
+        this.dropdownTop = rect.top - height;
       }
     },
+  },
+  created() {
+    this.comboboxClass = ["combobox", this.hideBorder ? "hide-border" : null];
+    if (this.columnShow) {
+      this.show = this.columnShow;
+    } else {
+      this.show = `${this.tableName}Name`;
+    }
   },
   mounted() {
     if (this.value && !this.selectedItem && this.listItem.length !== 0) {
       this.selectedItem = this.listItem.find((item) => {
         return item[`${this.tableName}ID`] == this.value;
       });
-      this.$refs.comboboxInput.value =
-        this.selectedItem[`${this.tableName}Name`];
+      this.$refs.comboboxInput.value = this.selectedItem[this.show];
     }
     if (this.focus) {
       this.$refs.comboboxInput.focus();
@@ -261,8 +315,7 @@ export default {
       this.selectedItem = this.listItem.find((item) => {
         return item[`${this.tableName}ID`] == this.value;
       });
-      this.$refs.comboboxInput.value =
-        this.selectedItem[`${this.tableName}Name`];
+      this.$refs.comboboxInput.value = this.selectedItem[this.show];
     }
   },
 };

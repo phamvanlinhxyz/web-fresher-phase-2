@@ -150,3 +150,72 @@ fieldset {
 .pdf-right .button {
   margin-left: 8px;
 }
+
+.pdi-2-header {
+  margin-bottom: 4px;
+}
+
+.pdi-2-info {
+  display: flex;
+  margin-top: 6px;
+}
+
+.pdi-2-message {
+  margin-left: 8px;
+}
+
+.pdi-2-body {
+  width: auto;
+  height: 246px;
+  border: 1px solid #c1c1c1;
+  overflow: auto;
+}
+
+.pdi-table {
+  border-spacing: 0;
+  min-width: 100%;
+  overflow: unset;
+  position: relative;
+}
+
+.pdi-table thead td {
+  text-align: center;
+  border-bottom: 1px solid #c1c1c1;
+  background-color: #ededed;
+  min-height: 29px;
+  margin: 0;
+  padding: 0;
+}
+
+.pdi-table thead td div {
+  padding: 7px 10px;
+}
+
+.pdi-table thead td:not(:last-child) {
+  border-right: 1px solid #c1c1c1;
+}
+
+.pdi-table tbody td {
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid #c1c1c1;
+  width: fit-content;
+}
+
+.pdi-table tbody td:not(:last-child) {
+  border-right: 1px solid #c1c1c1;
+}
+
+.pdi-2-footer {
+  margin-top: 2px;
+  display: flex;
+}
+
+.pdi-2-footer .button {
+  margin-right: 4px;
+}
+
+.pdi-table .combobox {
+  width: calc(100% - 1px);
+}

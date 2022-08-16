@@ -11,6 +11,15 @@
   padding: 0 5px;
   font-size: 12px;
   flex: 1;
+  color: #000;
+}
+
+.input:disabled {
+  background-color: #ececec;
+}
+
+.input.hide-border {
+  border-color: transparent;
 }
 
 .input:focus {

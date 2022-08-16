@@ -13,11 +13,27 @@
 
 <script>
 export default {
-  props: ["content", "type", "icon"],
+  props: ["content", "type", "icon", "disabled"],
   data() {
     return {
       buttonClass: ["button", this.type ? `button-${this.type}` : "button-1"],
     };
+  },
+  watch: {
+    disabled(newVal) {
+      if (newVal) {
+        this.buttonClass = [
+          "button",
+          this.type ? `button-${this.type}` : "button-1",
+          this.disabled ? "disabled" : null,
+        ];
+      } else {
+        this.buttonClass = [
+          "button",
+          this.type ? `button-${this.type}` : "button-1",
+        ];
+      }
+    },
   },
 };
 </script>

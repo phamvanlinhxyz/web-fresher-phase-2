@@ -168,7 +168,105 @@
               </div>
             </div>
             <!-- Input tab 2 -->
-            <div class="pdi-2" v-show="popupTab == 2">Tab 2 nay</div>
+            <div class="pdi-2" v-show="popupTab == 2">
+              <div class="pdi-2-header">
+                <div>Món ăn</div>
+                <div class="pdi-2-info">
+                  <base-icon iconName="info" />
+                  <div class="pdi-2-message">
+                    Giá vốn được tự động cập nhật theo giá vốn các NVL thành
+                    phần.
+                  </div>
+                </div>
+              </div>
+              <div class="pdi-2-body">
+                <table class="pdi-table">
+                  <thead>
+                    <tr>
+                      <td style="width: 108px">
+                        <div>Mã NVL</div>
+                      </td>
+                      <td style="width: 214px"><div>Nguyên vật liệu</div></td>
+                      <td style="width: 100px"><div>Đơn vị tính</div></td>
+                      <td style="width: 100px"><div>Số lượng</div></td>
+                      <td style="width: 100px"><div>Giá vốn</div></td>
+                      <td style="width: 100px"><div>Thành tiền</div></td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      v-for="(material, index) of dishMaterial"
+                      :key="index"
+                      @click="handleClickRow(index)"
+                    >
+                      <td>
+                        <base-combobox
+                          :listItem="materials"
+                          tableName="Material"
+                          :addIcon="true"
+                          :hideBorder="true"
+                          :dropdownType="1"
+                          columnShow="MaterialCode"
+                          :value="material.MaterialID"
+                          @change="handleChangeMaterial"
+                        />
+                      </td>
+                      <td>
+                        <base-input
+                          :hideBorder="true"
+                          :disabled="true"
+                          v-model="material.MaterialName"
+                        />
+                      </td>
+                      <td>
+                        <base-input
+                          :hideBorder="true"
+                          :disabled="true"
+                          v-model="material.UnitName"
+                        />
+                      </td>
+                      <td>
+                        <base-input
+                          :hideBorder="true"
+                          type="money"
+                          v-model="material.MaterialAmount"
+                          @change="calcTotalPrice"
+                        />
+                      </td>
+                      <td>
+                        <base-input
+                          :hideBorder="true"
+                          type="money"
+                          v-model="material.MaterialPurchasePrice"
+                          @change="calcTotalPrice"
+                        />
+                      </td>
+                      <td>
+                        <base-input
+                          :hideBorder="true"
+                          :disabled="true"
+                          type="money"
+                          v-model="material.TotalPrice"
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="pdi-2-footer">
+                <base-button
+                  content="Thêm dòng"
+                  icon="insert"
+                  @click="addRowMaterial"
+                />
+                <base-button
+                  content="Xóa dòng"
+                  icon="x-close-red"
+                  @click="handleDeleteRow"
+                  :disabled="dishMaterial.length == 0"
+                />
+              </div>
+            </div>
           </div>
           <div class="popup-dish-footer">
             <div class="pdf-left">
@@ -192,10 +290,8 @@ import resources from "@/resources";
 import enums from "@/enums";
 import { constants } from "@/config";
 import { mapActions, mapState } from "vuex";
-import BaseIcon from "../../components/base/BaseIcon.vue";
 
 export default {
-  components: { BaseIcon },
   data() {
     return {
       popupTab: 1,
@@ -208,6 +304,13 @@ export default {
       },
       focusElm: "DishName",
       formTitle: "Thêm món",
+      dishMaterial: [],
+      dishMaterialFocus: 0,
+      defaultMaterial: {
+        MaterialAmount: 1,
+        MaterialPurchasePrice: 0,
+        TotalPrice: 0,
+      },
     };
   },
   computed: mapState({
@@ -215,6 +318,7 @@ export default {
     menuGroups: (state) => state.dish.menuGroups,
     units: (state) => state.dish.units,
     kitchens: (state) => state.dish.kitchens,
+    materials: (state) => state.dish.materials,
     selectedDish: (state) => state.dish.selectedDish,
     formMode: (state) => state.dish.formMode,
   }),
@@ -225,7 +329,75 @@ export default {
       "loadAllUnit",
       "loadAllKitchen",
       "insertDish",
+      "loadAllMaterial",
     ]),
+    /**
+     * Tính toán thành tiền
+     * Author: linhpv (16/08/2022)
+     */
+    calcTotalPrice() {
+      // Lấy ra nguyên vật liệu đang tính
+      let material = this.dishMaterial[this.dishMaterialFocus];
+      // Nếu người dùng không nhập số lượng => set số lượng là 0
+      if (!material.MaterialAmount) {
+        material.MaterialAmount = 0;
+        material.TotalPrice = 0;
+        return;
+      }
+      // Nếu người dùng không nhập giá vốn => set giá vốn = 0
+      if (!material.MaterialPurchasePrice) {
+        material.MaterialPurchasePrice = 0;
+        material.TotalPrice = 0;
+        return;
+      }
+      material.TotalPrice =
+        parseFloat(material.MaterialAmount.replaceAll(".", "")) *
+        parseFloat(material.MaterialPurchasePrice.replaceAll(".", ""));
+    },
+    /**
+     * Xóa 1 dòng nguyên vật liệu
+     * Author: linhpv (16/08/2022)
+     */
+    handleDeleteRow() {
+      // Nếu số lượng khác không thì xóa
+      if (this.dishMaterial.length > 0) {
+        this.dishMaterial.splice(this.dishMaterialFocus, 1);
+        // Nếu focus nằm ngoài số lượng nguyên vật liệu => chọn cái cuối
+        if (this.dishMaterialFocus >= this.dishMaterial.length) {
+          this.dishMaterialFocus = this.dishMaterial.length - 1;
+        }
+      }
+    },
+    /**
+     * Sự kiện người dùng ấn chọn dòng
+     * @param {int} index vị trí index của dòng click
+     * Author: linhpv (16/08/2022)
+     */
+    handleClickRow(index) {
+      this.dishMaterialFocus = index;
+    },
+    /**
+     * Thêm một hàng nguyê/n vật liệu
+     * Author: linhpv (16/08/2022)
+     */
+    addRowMaterial() {
+      // Thêm một dòng mới
+      this.dishMaterial.push(JSON.parse(JSON.stringify(this.defaultMaterial)));
+      // Set focus mặc định vào dòng mới thêm
+      this.dishMaterialFocus = this.dishMaterial.length - 1;
+    },
+    /**
+     * Người dúng chọn nguyên vật liệu khác
+     * @param {*} material
+     * Author: linhpv (16/08/2022)
+     */
+    handleChangeMaterial(material) {
+      this.dishMaterial[this.dishMaterialFocus].MaterialID =
+        material.MaterialID;
+      this.dishMaterial[this.dishMaterialFocus].MaterialName =
+        material.MaterialName;
+      this.dishMaterial[this.dishMaterialFocus].UnitName = material.UnitName;
+    },
     /**
      * Người dùng ấn cất
      * Author: linhpv (12/08/2022)
@@ -390,10 +562,15 @@ export default {
    * Author: linhpv (12/08/2022)
    */
   created() {
+    // Load các dữ liệu cần thiết
     this.loadAllMenuGroup();
     this.loadAllUnit();
     this.loadAllKitchen();
+    this.loadAllMaterial();
+    // Set món ăn ban đầu
     this.singleDish = this.selectedDish;
+    // Set mặc định của định lượng nguyên vật liệu
+    this.dishMaterial.push(JSON.parse(JSON.stringify(this.defaultMaterial)));
   },
   /**
    * Xử lý các sự kiện khi mount component

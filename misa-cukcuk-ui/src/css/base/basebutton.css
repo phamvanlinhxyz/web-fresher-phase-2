@@ -6,12 +6,20 @@
   justify-content: center;
   padding: 0 10px;
   outline: none;
-  border-radius: 2px;
+  /* border-radius: 2px; */
   border: 1px solid;
+  cursor: pointer;
 }
 
-.button:disabled {
-  opacity: 0.3;
+.button.disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.button.disabled:hover,
+.button.disabled:active {
+  background-color: #fafafa !important;
+  border-color: #ccc !important;
 }
 
 .button-1 {

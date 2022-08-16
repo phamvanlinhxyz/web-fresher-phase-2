@@ -40,6 +40,18 @@ namespace MISA.CUKCUK.Core.Models
         /// Tên nguyên vật liệu
         /// </summary>
         public string? MaterialName { get; set; }
+        /// <summary>
+        /// Số lượng
+        /// </summary>
+        public decimal? MaterialAmount { get; set; }
+        /// <summary>
+        /// Giá vốn 
+        /// </summary>
+        public decimal? MaterialPurchasePrice { get; set; }
+        /// <summary>
+        /// Thành tiền
+        /// </summary>
+        public decimal? TotalPrice { get; set; }
         #endregion
     }
 }

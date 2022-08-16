@@ -18,6 +18,7 @@ const state = {
   menuGroups: [],
   units: [],
   kitchens: [],
+  materials: [],
 };
 
 const mutations = {
@@ -51,6 +52,9 @@ const mutations = {
   },
   TOGGLE_MG_POPUP(state) {
     state.isShowMGPopup = !state.isShowMGPopup;
+  },
+  LOAD_ALL_MATERIAL(state, payload) {
+    state.materials = payload;
   },
   LOAD_ALL_KITCHEN(state, payload) {
     state.kitchens = payload;
@@ -89,9 +93,23 @@ const mutations = {
 
 const actions = {
   /**
+   * Lấy tất cả nguyên vật liệu
+   * @param {*} ctx context
+   * Author: linhpv (16/08/2022)
+   */
+  async loadAllMaterial(ctx) {
+    const res = await axios.get(
+      `${constants.API_URL}/api/${constants.API_VERSION}/Material`
+    );
+
+    if (res.data.Success) {
+      ctx.commit("LOAD_ALL_MATERIAL", res.data.Data);
+    }
+  },
+  /**
    * Thêm đơn vị tính mới
    * @param {*} ctx context
-   * @param {*} unit đơn vị tính
+   * @param {object} unit đơn vị tính
    * Author: linhpv (15/08/2022)
    */
   async insertUnit(ctx, unit) {
@@ -108,7 +126,7 @@ const actions = {
   /**
    * Thêm nhóm thực đơn mới
    * @param {*} ctx context
-   * @param {*} menuGroup món ăn mới
+   * @param {object} menuGroup món ăn mới
    * Author: linhpv (15/08/2022)
    */
   async insertMenuGroup(ctx, menuGroup) {
@@ -125,7 +143,7 @@ const actions = {
   /**
    * Thay đổi form mode
    * @param {*} ctx context
-   * @param {*} formMode form mode mới
+   * @param {int} formMode form mode mới
    * Author: linhpv (15/08/2022)
    */
   setFormMode(ctx, formMode) {
@@ -134,7 +152,7 @@ const actions = {
   /**
    * Thêm món ăn mới
    * @param {*} ctx context
-   * @param {*} dish món ăn mới
+   * @param {object} dish món ăn mới
    * Author: linhpv (14/08/2022)
    */
   async insertDish(ctx, dish) {
@@ -151,7 +169,7 @@ const actions = {
   /**
    * Xóa món ăn
    * @param {*} ctx context
-   * @param {*} dishID id món ăn
+   * @param {string} dishID id món ăn
    * Author: linhpv (11/08/2022)
    */
   async deleteDish(ctx, dishID) {
@@ -165,8 +183,8 @@ const actions = {
   },
   /**
    * Chọn món ăn
-   * @param {*} ctx
-   * @param {*} dish
+   * @param {*} ctx context
+   * @param {object} dish món ăn
    * Author: linhpv (11/08/2022)
    */
   selectDish(ctx, dish) {
@@ -174,7 +192,7 @@ const actions = {
   },
   /**
    * Đóng mở popup thêm đơn vị tính
-   * @param {*} ctx
+   * @param {*} ctx context
    * Author: linhpv (11/08/2022)
    */
   toggleUnitPopup(ctx) {
@@ -182,7 +200,7 @@ const actions = {
   },
   /**
    * Đóng mở popup thêm nhóm thực đơn
-   * @param {*} ctx
+   * @param {*} ctx context
    * Author: linhpv (11/08/2022)
    */
   toggleMenuGroupPopup(ctx) {
@@ -190,55 +208,49 @@ const actions = {
   },
   /**
    * Lấy tất cả các bếp
-   * @param {*} ctx
+   * @param {*} ctx context
    * Author: linhpv (11/08/2022)
    */
   async loadAllKitchen(ctx) {
-    try {
-      const res = await axios.get(
-        `${constants.API_URL}/api/${constants.API_VERSION}/Kitchen`
-      );
+    const res = await axios.get(
+      `${constants.API_URL}/api/${constants.API_VERSION}/Kitchen`
+    );
 
+    if (res.data.Success) {
       ctx.commit("LOAD_ALL_KITCHEN", res.data.Data);
-    } catch (error) {
-      console.log(error);
     }
   },
   /**
    * Lấy tất cả đơn vị tính
-   * @param {*} ctx
+   * @param {*} ctx context
    * Author: linhpv (11/08/2022)
    */
   async loadAllUnit(ctx) {
-    try {
-      const res = await axios.get(
-        `${constants.API_URL}/api/${constants.API_VERSION}/Unit`
-      );
+    const res = await axios.get(
+      `${constants.API_URL}/api/${constants.API_VERSION}/Unit`
+    );
 
+    if (res.data.Success) {
       ctx.commit("LOAD_ALL_UNIT", res.data.Data);
-    } catch (error) {
-      console.log(error);
     }
   },
   /**
    * Lấy tất cả nhóm thực đơn
-   * @param {*} ctx
+   * @param {*} ctx context
    * Author: linhpv (11/08/2022)
    */
   async loadAllMenuGroup(ctx) {
-    try {
-      const res = await axios.get(
-        `${constants.API_URL}/api/${constants.API_VERSION}/MenuGroup`
-      );
+    const res = await axios.get(
+      `${constants.API_URL}/api/${constants.API_VERSION}/MenuGroup`
+    );
 
+    if (res.data.Success) {
       ctx.commit("LOAD_ALL_MENU_GROUP", res.data.Data);
-    } catch (error) {
-      console.log(error);
     }
   },
   /**
    * Đóng mở popup thêm món ăn
-   * @param {*} ctx
+   * @param {*} ctx context
    * Author: linhpv (10/08/2022)
    */
   toggleDishPopup(ctx) {
@@ -246,8 +258,8 @@ const actions = {
   },
   /**
    * Cập nhật filter object
-   * @param {*} ctx
-   * @param {*} filterObjects
+   * @param {*} ctx context
+   * @param {object} filterObjects object lọc
    * Author: linhpv (10/08/2022)
    */
   updateFilterObjects(ctx, filterObjects) {
@@ -255,8 +267,8 @@ const actions = {
   },
   /**
    * Cập nhật số bản ghi trên 1 trang
-   * @param {*} ctx
-   * @param {*} pageSize
+   * @param {*} ctx context
+   * @param {int} pageSize số bản ghi trên 1 trang
    * Author: linhpv (10/08/2022)
    */
   updatePageSize(ctx, pageSize) {
@@ -264,8 +276,8 @@ const actions = {
   },
   /**
    * Cập nhật số trang
-   * @param {*} ctx
-   * @param {*} pageIndex
+   * @param {*} ctx context
+   * @param {int} pageIndex số trang
    * Author: linhpv (10/08/2022)
    */
   updatePageIndex(ctx, pageIndex) {
@@ -273,23 +285,21 @@ const actions = {
   },
   /**
    * Lấy tất cả món ăn trong db
-   * @param {*} ctx
+   * @param {*} ctx context
    * Author: linhpv (09/08/2022)
    */
   async loadAllDish(ctx) {
-    try {
-      const res = await axios.get(
-        `${constants.API_URL}/api/${constants.API_VERSION}/Dish`
-      );
+    const res = await axios.get(
+      `${constants.API_URL}/api/${constants.API_VERSION}/Dish`
+    );
 
+    if (res.data.Data) {
       ctx.commit("LOAD_ALL_DISH", res.data.Data);
-    } catch (error) {
-      console.log(error);
     }
   },
   /**
    * Lấy dữ liệu theo phân trang tìm kiếm,...
-   * @param {*} ctx
+   * @param {*} ctx context
    * Author: linhpv (09/08/2022)
    */
   async loadDishsByPaging(ctx) {

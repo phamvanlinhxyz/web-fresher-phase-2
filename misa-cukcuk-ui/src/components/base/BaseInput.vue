@@ -20,7 +20,14 @@
 
 <script>
 export default {
-  props: ["type", "errorMessage", "modelValue", "disabled", "focus"],
+  props: [
+    "type",
+    "errorMessage",
+    "modelValue",
+    "disabled",
+    "focus",
+    "hideBorder",
+  ],
   data() {
     return {
       inputClass: ["input", this.errorMessage ? "input-error" : null],
@@ -30,9 +37,13 @@ export default {
   watch: {
     errorMessage(newVal) {
       if (newVal == null) {
-        this.inputClass = ["input"];
+        this.inputClass = ["input", this.hideBorder ? "hide-border" : null];
       } else {
-        this.inputClass = ["input", this.errorMessage ? "input-error" : null];
+        this.inputClass = [
+          "input",
+          this.hideBorder ? "hide-border" : null,
+          this.errorMessage ? "input-error" : null,
+        ];
       }
     },
     focus(newVal) {
@@ -48,9 +59,6 @@ export default {
      * Author: linhpv (15/08/2022)
      */
     formatMoney(money) {
-      if (typeof money === "number") {
-        money = Math.round(money);
-      }
       return money
         .toString()
         .replace(/\D/g, "")
@@ -92,6 +100,9 @@ export default {
     changeValue(event) {
       this.$emit("changeValue", event.target.value);
     },
+  },
+  created() {
+    this.inputClass = ["input", this.hideBorder ? "hide-border" : null];
   },
   mounted() {
     if (this.focus) {

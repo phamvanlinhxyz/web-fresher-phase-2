@@ -18,7 +18,7 @@
                 v-model="newUnit.UnitName"
                 @write="checkInputRequired('UnitName', $event.target.value)"
                 :errorMessage="errorList.UnitName"
-                :focus="focusElm == 'UnitName'"
+                :focus="focusElm === 'UnitName'"
               />
             </div>
             <div class="form-input">
@@ -69,7 +69,7 @@ export default {
      * Author: linhpv (15/08/2022)
      */
     handleStoreUnit() {
-      this.focusElm = null;
+      this.focusElm = undefined;
       if (this.validateData()) {
         this.insertUnit(this.newUnit);
       }
