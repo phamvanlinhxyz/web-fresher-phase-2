@@ -553,8 +553,7 @@ export default {
       let imgPreview = this.$refs.imagePreview;
       URL.revokeObjectURL(imgPreview);
       const file = e.target.files[0];
-      file.preview = URL.createObjectURL(file);
-      imgPreview.src = file.preview;
+      imgPreview.src = URL.createObjectURL(file);
     },
   },
   /**
