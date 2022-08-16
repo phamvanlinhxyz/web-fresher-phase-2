@@ -135,12 +135,14 @@ export default {
         ];
       }
     },
-    value(newVal) {
-      this.selectedItem = this.listItem.find((item) => {
-        return item[`${this.tableName}ID`] == newVal;
-      });
-      this.$refs.comboboxInput.value = this.selectedItem[this.show];
-    },
+    // value(newVal) {
+    //   this.selectedItem = this.listItem.find((item) => {
+    //     return item[`${this.tableName}ID`] == newVal;
+    //   });
+    //   if (this.selectedItem) {
+    //     this.$refs.comboboxInput.value = this.selectedItem[this.show];
+    //   }
+    // },
   },
   methods: {
     /**

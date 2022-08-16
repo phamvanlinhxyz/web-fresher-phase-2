@@ -46,6 +46,7 @@
     <dish-detail v-if="isShowDishPopup" />
     <menu-group-form v-if="isShowMGPopup" />
     <unit-form v-if="isShowUnitPopup" />
+    <material-form v-if="isShowMaterialPopup" />
     <!-- Dialog -->
     <menu-dialog v-if="isShowDialog" />
   </div>
@@ -60,6 +61,7 @@ import UnitForm from "./UnitForm.vue";
 import MenuDialog from "./MenuDialog.vue";
 import { mapActions, mapState } from "vuex";
 import enums from "@/enums";
+import MaterialForm from "./MaterialForm.vue";
 
 export default {
   components: {
@@ -69,12 +71,14 @@ export default {
     MenuGroupForm,
     UnitForm,
     MenuDialog,
+    MaterialForm,
   },
   computed: mapState({
     isShowDialog: (state) => state.app.isShowDialog,
     isShowDishPopup: (state) => state.dish.isShowDishPopup,
     isShowMGPopup: (state) => state.dish.isShowMGPopup,
     isShowUnitPopup: (state) => state.dish.isShowUnitPopup,
+    isShowMaterialPopup: (state) => state.dish.isShowMaterialPopup,
   }),
   methods: {
     ...mapActions([

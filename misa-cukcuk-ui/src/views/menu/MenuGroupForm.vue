@@ -97,7 +97,7 @@ export default {
     kitchens: (state) => state.dish.kitchens,
   }),
   methods: {
-  ...mapActions([
+    ...mapActions([
       "loadAllKitchen",
       "toggleMenuGroupPopup",
       "insertMenuGroup",
@@ -155,9 +155,9 @@ export default {
     },
     /**
      * Set giá trị cho các cột lấy từ combobox
-     * @param {*} tableName
-     * @param {*} value
-     * Author: linhpv (15/08/2022)
+     * @param {string} tableName tên bảng
+     * @param {object} value giá trị
+     * Author: linhpv (16/08/2022)
      */
     setValueCombobox(tableName, value) {
       if (!value) {

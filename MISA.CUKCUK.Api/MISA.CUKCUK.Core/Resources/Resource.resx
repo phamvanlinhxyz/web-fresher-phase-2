@@ -141,6 +141,10 @@
     <value>Mã món &lt;&lt;{0}&gt;&gt; đã tồn tại trong hệ thống.</value>
     <comment>Mã món ăn bị trùng</comment>
   </data>
+  <data name="VN_Duplicate_MaterialCode" xml:space="preserve">
+    <value>Mã NVL &lt;&lt;{0}&gt;&gt; đã tồn tại trong hệ thống.</value>
+    <comment>Mã nguyên vật liệu trùng</comment>
+  </data>
   <data name="VN_Duplicate_MenuGroupCode" xml:space="preserve">
     <value>Mã nhóm &lt;&lt;{0}&gt;&gt; đã tồn tại trong hệ thống.</value>
     <comment>Mã nhóm thực đơn bị trùng</comment>
@@ -152,6 +156,14 @@
   <data name="VN_Duplicate_UnitName" xml:space="preserve">
     <value>Đơn vị tính &lt;&lt;{0}&gt;&gt; đã tồn tại trong hệ thống.</value>
     <comment>Trùng đơn vị tính</comment>
+  </data>
+  <data name="VN_MaterialCode_Empty" xml:space="preserve">
+    <value>Mã NVL không được phép để trống.</value>
+    <comment>Mã NVL trống</comment>
+  </data>
+  <data name="VN_MaterialName_Empty" xml:space="preserve">
+    <value>Tên NVL không được phép để trống.</value>
+    <comment>Tên NVL trống</comment>
   </data>
   <data name="VN_MenuGroupCode_Empty" xml:space="preserve">
     <value>Mã nhóm thực đơn không được phép để trống.</value>

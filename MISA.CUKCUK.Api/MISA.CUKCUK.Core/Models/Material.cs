@@ -33,34 +33,6 @@ namespace MISA.CUKCUK.Core.Models
         /// </summary>
         public string MaterialName { get; set; }
         /// <summary>
-        /// Thuộc tính nguyên vật liệu
-        /// </summary>
-        public string MaterialProperty { get; set; }
-        /// <summary>
-        /// ID nhóm nguyên vật liệu
-        /// </summary>
-        public Guid? MaterialGroupID { get; set; }
-        /// <summary>
-        /// Tên nhóm nguyên vật liệu
-        /// </summary>
-        public string? MaterialGroupName { get; set; }
-        /// <summary>
-        /// ID kho
-        /// </summary>
-        public Guid? RepositoryID { get; set; }
-        /// <summary>
-        /// Tên kho
-        /// </summary>
-        public string? RepositoryName { get; set; }
-        /// <summary>
-        /// Thời gian hết hạn
-        /// </summary>
-        public int? Expiry { get; set; }
-        /// <summary>
-        /// Loại thời gian: ngày, tháng, năm
-        /// </summary>
-        public int? ExpiryType { get; set; }
-        /// <summary>
         /// ID đơn vị tính
         /// </summary>
         public Guid UnitID { get; set; }
@@ -68,10 +40,6 @@ namespace MISA.CUKCUK.Core.Models
         /// Tên đơn vị tính
         /// </summary>
         public string? UnitName { get; set; }
-        /// <summary>
-        /// Tồn kho tối thiểu
-        /// </summary>
-        public decimal? MinumumInvetory { get; set; }
         /// <summary>
         /// Ghi chú
         /// </summary>

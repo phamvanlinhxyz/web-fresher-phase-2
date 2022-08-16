@@ -115,6 +115,15 @@ namespace MISA.CUKCUK.Core.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mã NVL &lt;&lt;{0}&gt;&gt; đã tồn tại trong hệ thống..
+        /// </summary>
+        public static string VN_Duplicate_MaterialCode {
+            get {
+                return ResourceManager.GetString("VN_Duplicate_MaterialCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mã nhóm &lt;&lt;{0}&gt;&gt; đã tồn tại trong hệ thống..
         /// </summary>
         public static string VN_Duplicate_MenuGroupCode {
@@ -138,6 +147,24 @@ namespace MISA.CUKCUK.Core.Resources {
         public static string VN_Duplicate_UnitName {
             get {
                 return ResourceManager.GetString("VN_Duplicate_UnitName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mã NVL không được phép để trống..
+        /// </summary>
+        public static string VN_MaterialCode_Empty {
+            get {
+                return ResourceManager.GetString("VN_MaterialCode_Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tên NVL không được phép để trống..
+        /// </summary>
+        public static string VN_MaterialName_Empty {
+            get {
+                return ResourceManager.GetString("VN_MaterialName_Empty", resourceCulture);
             }
         }
         
