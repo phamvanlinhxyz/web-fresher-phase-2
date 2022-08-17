@@ -57,7 +57,10 @@ namespace MISA.CUKCUK.Core.Service
                 {
                     dish.MaterialQuantified = Enum.MaterialQuantified.Quantified;
                 }
-                return new Response(data: _repository.Insert(dish), success: true, errorCode: Enum.ErrorCode.NoError, userMsg: "", devMsg: "");
+                // Gọi repo lấy kết quả
+                var newID = _repository.Insert(dish);
+                // Check có ID trả về hay không
+                return new Response(data: newID, success: newID != Guid.Empty, errorCode: Enum.ErrorCode.NoError, userMsg: "", devMsg: "");
             }
             else
             {

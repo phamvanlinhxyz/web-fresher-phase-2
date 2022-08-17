@@ -442,6 +442,17 @@ export default {
       });
       // Set focus vào thằng cuối cùng
       this.dishMaterialFocus = this.dishMaterial.length - 1;
+      // Xử lý định dạng số
+      this.dishMaterial.forEach((dm) => {
+        if (typeof dm.MaterialAmount === "string") {
+          dm.MaterialAmount = parseFloat(dm.MaterialAmount.replaceAll(".", ""));
+        }
+        if (typeof dm.MaterialPurchasePrice === "string") {
+          dm.MaterialPurchasePrice = parseFloat(
+            dm.MaterialPurchasePrice.replaceAll(".", "")
+          );
+        }
+      });
       // Thêm định lượng nguyên vật liệu vào món ăn
       this.singleDish.DishMaterials = this.dishMaterial;
     },
