@@ -551,7 +551,7 @@ export default {
      */
     handleChangeImage(e) {
       let imgPreview = this.$refs.imagePreview;
-      URL.revokeObjectURL(imgPreview);
+      URL.revokeObjectURL(imgPreview.src);
       const file = e.target.files[0];
       imgPreview.src = URL.createObjectURL(file);
     },

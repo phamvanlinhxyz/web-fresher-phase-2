@@ -13,10 +13,11 @@ namespace MISA.CUKCUK.Core.Service
     /// <summary>
     /// Dish service
     /// </summary>
-    public class DishService : BaseService<Dish>, IDishService
+    public class DishService : IDishService
     {
         #region Variable
         IDishRepository _repository;
+        IBaseRepository<Dish> _baseRepository;
         #endregion
 
         #region Contructor
@@ -25,13 +26,45 @@ namespace MISA.CUKCUK.Core.Service
         /// </summary>
         /// <param name="repository">repo</param>
         /// Created by: linhpv (15/08/2022)
-        public DishService(IDishRepository repository) : base(repository)
+        public DishService(IDishRepository repository, IBaseRepository<Dish> baseRepository)
         {
             _repository = repository;   
+            _baseRepository = baseRepository;
         }
         #endregion
 
         #region Service
+        /// <summary>
+        /// Thêm món ăn mới
+        /// </summary>
+        /// <param name="dish">Món ăn mới</param>
+        /// <param name="dishMaterials">Danh sách nguyên vật liệu</param>
+        /// <returns>Trả về ID mới</returns>
+        /// Created by: linhpv (17/08/2022)
+        public Response InsertService(Dish dish)
+        {
+            // Validate dữ liệu
+            string? valid = Validate(dish);
+
+            if (string.IsNullOrEmpty(valid))
+            {
+                // Nếu không có nguyên vật liệu thì set định lượng nguyên vật liệu = 0 nếu đã định lượng set = 1
+                if (dish.DishMaterials == null || dish.DishMaterials.Count == 0)
+                {
+                    dish.MaterialQuantified = Enum.MaterialQuantified.NotQuantified;
+                } 
+                else
+                {
+                    dish.MaterialQuantified = Enum.MaterialQuantified.Quantified;
+                }
+                return new Response(data: _repository.Insert(dish), success: true, errorCode: Enum.ErrorCode.NoError, userMsg: "", devMsg: "");
+            }
+            else
+            {
+                return new Response(data: null, success: false, errorCode: Enum.ErrorCode.BadRequest, userMsg: valid, devMsg: valid);
+            }
+        }
+
         /// <summary>
         /// Tự động sinh mã 
         /// </summary>
@@ -51,7 +84,7 @@ namespace MISA.CUKCUK.Core.Service
                 }
             }
             newCode = RemoveVietnameseTone(newCode).ToUpper();
-            if (_repository.CheckDuplicate(Guid.Empty, newCode, "DishCode"))
+            if (_baseRepository.CheckDuplicate(Guid.Empty, newCode, "DishCode"))
             {
                 newCode = "";
                 foreach (var word in words)
@@ -66,7 +99,7 @@ namespace MISA.CUKCUK.Core.Service
                     }
                 }
 
-                if (_repository.CheckDuplicate(Guid.Empty, newCode, "DishCode"))
+                if (_baseRepository.CheckDuplicate(Guid.Empty, newCode, "DishCode"))
                 {
                     newCode = DishName.Replace(" ", "");
                 } 
@@ -171,29 +204,43 @@ namespace MISA.CUKCUK.Core.Service
         /// </summary>
         /// <param name="dish">Món ăn</param>
         /// <returns>null - nếu valid, thông báo - nếu không valid</returns>
-        protected override string? Validate(Dish dish)
+        private string? Validate(Dish dish)
         {
             var langCode = Common.LanguageCode;
+            // Khởi tạo string lỗi
+            string errorMsg = "";
             // Check tên món ăn trống
             if (string.IsNullOrEmpty(dish.DishName))
             {
-                return Resources.Resource.ResourceManager.GetString($"{langCode}_DishName_Empty");
+                errorMsg += Resources.Resource.ResourceManager.GetString($"{langCode}_DishName_Empty");
             }
             // Check mã món ăn trống
             if (string.IsNullOrEmpty(dish.DishCode))
             {
-                return Resources.Resource.ResourceManager.GetString($"{langCode}_DishCode_Empty");
+                if (!string.IsNullOrEmpty(errorMsg))
+                {
+                    errorMsg += ", ";
+                }
+                errorMsg += Resources.Resource.ResourceManager.GetString($"{langCode}_DishCode_Empty");
             }
             // Check đơn vị tính trống
             if (dish.UnitID == Guid.Empty)
             {
-                return Resources.Resource.ResourceManager.GetString($"{langCode}_Unit_Empty");
+                if (!string.IsNullOrEmpty(errorMsg))
+                {
+                    errorMsg += ", ";
+                }
+                errorMsg += Resources.Resource.ResourceManager.GetString($"{langCode}_Unit_Empty");
             }
             // Check trùng mã món ăn
-            if (_repository.CheckDuplicate(Guid.Empty, dish.DishCode, "DishCode")) {
-                return string.Format(Resources.Resource.ResourceManager.GetString($"{langCode}_Duplicate_DishCode"), dish.DishCode);
+            if (_baseRepository.CheckDuplicate(Guid.Empty, dish.DishCode, "DishCode")) {
+                if (!string.IsNullOrEmpty(errorMsg))
+                {
+                    errorMsg += ", ";
+                }
+                errorMsg += string.Format(Resources.Resource.ResourceManager.GetString($"{langCode}_Duplicate_DishCode"), dish.DishCode);
             }
-            return null;
+            return errorMsg;
         }
         #endregion
 

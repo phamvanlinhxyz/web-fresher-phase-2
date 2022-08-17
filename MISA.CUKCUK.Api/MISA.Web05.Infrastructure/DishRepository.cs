@@ -9,15 +9,25 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Dapper.SqlMapper;
 
 namespace MISA.Web05.Infrastructure
 {
-    public class DishRepository : BaseRepository<Dish>, IDishRepository
+    public class DishRepository : IDishRepository
     {
-        public DishRepository(IConfiguration configuration) : base(configuration)
-        {
-        }
+        #region Variable
+        protected string ConnectionString;
+        protected MySqlConnection SqlConnection;
+        #endregion
 
+        #region Contructor
+        public DishRepository(IConfiguration configuration)
+        {
+            ConnectionString = configuration.GetConnectionString("ConnectionStrings");
+        }
+        #endregion
+
+        #region Repository
         /// <summary>
         /// Xóa bản ghi
         /// </summary>
@@ -38,6 +48,73 @@ namespace MISA.Web05.Infrastructure
 
                 // Trả về kết quả
                 return res;
+            }
+        }
+
+        /// <summary>
+        /// Thêm món ăn mới
+        /// </summary>
+        /// <param name="dish">Món ăn mới</param>
+        /// <param name="dishMaterials">Danh sách nguyên vật liệu</param>
+        /// <returns>ID món ăn mới</returns>
+        /// Created by: linhpv (17/08/2022)
+        public Guid Insert(Dish dish)
+        {
+            using (SqlConnection = new MySqlConnection(ConnectionString))
+            {
+                SqlConnection.Open();
+
+                // Khởi tạo transaction
+                using (var transaction = SqlConnection.BeginTransaction())
+                {
+                    try
+                    {
+                        var sqlQuery = "Proc_InsertDish";
+
+                        // Lấy ra nguyên vật liệu
+                        List<DishMaterial>? dishMaterials = dish.DishMaterials;
+                        dish.DishMaterials = null;
+
+                        // Add params
+                        var parameters = new DynamicParameters(dish);
+                        parameters.Add("$newID", dbType: DbType.Guid, direction: ParameterDirection.Output);
+
+                        // Lấy kết quả
+                        SqlConnection.Query<Dish>(sql: sqlQuery, param: parameters, transaction: transaction, commandType: CommandType.StoredProcedure);
+                        var newID = parameters.Get<Guid>("$newID");
+
+                        // Kiểm tra nguyên vật liệu
+                        if (dishMaterials != null && dishMaterials.Count > 0)
+                        {
+                            // Nếu có nguyên vật liệu thì thêm
+                            var sqlQueryMaterial = "Proc_InsertDishMaterial";
+
+                            foreach (DishMaterial dishMaterial in dishMaterials) 
+                            {
+                                // Tạo param
+                                var param = new DynamicParameters();
+                                param.Add("$DishID", newID);
+                                param.Add("$MaterialID", dishMaterial.MaterialID);
+                                param.Add("$MaterialAmount", dishMaterial.MaterialAmount);
+                                param.Add("$MaterialPurchasePrice", dishMaterial.MaterialPurchasePrice);
+                                param.Add("$TotalPrice", dishMaterial.MaterialAmount * dishMaterial.MaterialPurchasePrice);
+
+                                // Query
+                                SqlConnection.Query<DishMaterial>(sql: sqlQueryMaterial, param: param, transaction: transaction, commandType: CommandType.StoredProcedure);
+                            }
+                        }
+
+                        // Nếu thêm tất cả thành công thì mới Commit
+                        transaction.Commit();
+                        // Trả về kết quả
+                        return newID;
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
             }
         }
 
@@ -64,7 +141,7 @@ namespace MISA.Web05.Infrastructure
                 parameters.Add("$TotalPage", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
                 // Kết quả
-                var dishs = SqlConnection.Query(sql: sqlQuery,param: parameters, commandType: CommandType.StoredProcedure).ToList();
+                var dishs = SqlConnection.Query(sql: sqlQuery, param: parameters, commandType: CommandType.StoredProcedure).ToList();
 
                 // Các biến đầu ra
                 var totalRecord = parameters.Get<int>("$TotalRecord");
@@ -80,5 +157,6 @@ namespace MISA.Web05.Infrastructure
                 return result;
             }
         }
+        #endregion
     }
 }

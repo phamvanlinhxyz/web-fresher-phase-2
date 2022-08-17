@@ -16,14 +16,14 @@ namespace MISA.CUKCUK.Api.Controllers
                 var extention = "." + image.FileName.Split('.')[image.FileName.Split('.').Length - 1];
                 fileName = DateTime.Now.Ticks + extention;
 
-                var pathBuild = Path.Combine(Directory.GetCurrentDirectory(), "Upload\\Images");
+                var pathBuild = Path.Combine(Directory.GetCurrentDirectory(), "Upload\\Dish");
 
                 if (!Directory.Exists(pathBuild))
                 {
                     Directory.CreateDirectory(pathBuild);
                 }
 
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "Upload\\Images", fileName);
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "Upload\\Dish", fileName);
 
                 using(var stream = new FileStream(path, FileMode.Create))
                 {

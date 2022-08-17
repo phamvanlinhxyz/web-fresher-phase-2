@@ -37,7 +37,7 @@ namespace MISA.CUKCUK.Core.Service
         public Response InsertService(T entity)
         {
             // Validate dữ liệu
-            string valid = Validate(entity);
+            string? valid = Validate(entity);
 
             if (string.IsNullOrEmpty(valid)) {
                 return new Response(data: _repository.Insert(entity), success: true, errorCode: Enum.ErrorCode.NoError, userMsg: "", devMsg: "");

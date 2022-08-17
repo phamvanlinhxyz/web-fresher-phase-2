@@ -11,8 +11,17 @@ namespace MISA.CUKCUK.Core.Interfaces.Services
     /// Interface c/ho các service của bảng món ăn
     /// </summary>/
     /// Created by: linhpv (08/08/2022)
-    public interface IDishService : IBaseService<Dish>
+    public interface IDishService
     {
+        /// <summary>
+        /// Service thêm món ăn mới
+        /// </summary>
+        /// <param name="dish">Món ăn mới</param>
+        /// <param name="dishMaterials">Danh sách nguyên vật liệu</param>
+        /// <returns>ID món ăn mới</returns>
+        /// Created by: linhpv (17/08/2022)
+        public Response InsertService(Dish dish);
+
         /// <summary>
         /// Tự động sinh mã 
         /// </summary>

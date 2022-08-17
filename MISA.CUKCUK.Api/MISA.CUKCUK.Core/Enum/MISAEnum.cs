@@ -45,6 +45,7 @@ namespace MISA.CUKCUK.Core.Enum
     /// <summary>
     /// Kiểu lọc
     /// </summary>
+    /// Created by: linhpv (11/08/2022)
     public enum FilterType
     {
         /// <summary>
@@ -103,5 +104,21 @@ namespace MISA.CUKCUK.Core.Enum
         /// Lỗi server
         /// </summary>
         ServerInternal = 500,
+    }
+
+    /// <summary>
+    /// Đã định lượng nguyên vật liệu
+    /// </summary>
+    /// Created by: linhpv (17/08/2022)
+    public enum MaterialQuantified
+    {
+        /// <summary>
+        /// Đã định lượng
+        /// </summary>
+        Quantified = 1,
+        /// <summary>
+        /// Chưa định lượng
+        /// </summary>
+        NotQuantified = 0,
     }
 }

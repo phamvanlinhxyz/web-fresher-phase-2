@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MISA.CUKCUK.Core.Enum;
+using MISA.CUKCUK.Core;
 using MISA.CUKCUK.Core.Interfaces.Repositories;
 using MISA.CUKCUK.Core.Interfaces.Services;
 using MISA.CUKCUK.Core.Models;
+using MISA.CUKCUK.Core.Resources;
 using Newtonsoft.Json;
 
 namespace MISA.CUKCUK.Api.Controllers
@@ -13,7 +16,7 @@ namespace MISA.CUKCUK.Api.Controllers
     /// Created by: linhpv (08/08/2022)
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class DishController : BaseController<Dish>
+    public class DishController : ControllerBase
     {
         #region Variable
         IDishRepository _repository;
@@ -21,7 +24,7 @@ namespace MISA.CUKCUK.Api.Controllers
         #endregion
 
         #region Contructor
-        public DishController(IDishRepository repository, IDishService service) : base(repository, service)
+        public DishController(IDishRepository repository, IDishService service) 
         {
             _repository = repository;
             _service = service;
@@ -29,6 +32,20 @@ namespace MISA.CUKCUK.Api.Controllers
         #endregion
 
         #region Controller
+        [HttpPost] 
+        public IActionResult Post(Dish dish)
+        {
+            try
+            {
+                var res = _service.InsertService(dish);
+                return Ok(JsonConvert.SerializeObject(res, Formatting.Indented));
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
+        }
+
         /// <summary>
         /// Lấy mã mới theo tên
         /// </summary>
@@ -66,7 +83,7 @@ namespace MISA.CUKCUK.Api.Controllers
             {
                 // Lấy dữ liệu và khởi tạo response
                 var data = _repository.Delete(entityID);
-                Response res = new Response(data, true, Core.Enum.ErrorCode.NoError, "", "");
+                Response res = new Response(data, true, ErrorCode.NoError, "", "");
 
                 // Trả về response
                 return Ok(JsonConvert.SerializeObject(res, Formatting.Indented));
@@ -92,7 +109,7 @@ namespace MISA.CUKCUK.Api.Controllers
             {
                 // Lấy dữ liệu và khởi tạo response
                 var data = _service.PagingService(pageIndex, pageSize, filterObjects);
-                Response res = new Response(data: data, success: true, errorCode: Core.Enum.ErrorCode.NoError, userMsg: "", devMsg: "");
+                Response res = new Response(data: data, success: true, errorCode: ErrorCode.NoError, userMsg: "", devMsg: "");
 
                 // Trả về response
                 return Ok(JsonConvert.SerializeObject(res, Formatting.Indented));
@@ -101,6 +118,15 @@ namespace MISA.CUKCUK.Api.Controllers
             {
                 return HandleException(ex);
             }
+        }
+        #endregion
+
+        #region Function
+        private IActionResult HandleException(Exception ex)
+        {
+            var langCode = Common.LanguageCode;
+            Response res = new Response(null, false, ErrorCode.ServerInternal, Resource.ResourceManager.GetString($"{langCode}_Server_Error"), ex.Message);
+            return Ok(JsonConvert.SerializeObject(res, Formatting.Indented));
         }
         #endregion
     }

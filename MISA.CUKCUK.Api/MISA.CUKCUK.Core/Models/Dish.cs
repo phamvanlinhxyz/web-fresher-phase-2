@@ -35,7 +35,7 @@ namespace MISA.CUKCUK.Core.Models
         /// <summary>
         /// ID nhóm thực đơn
         /// </summary>
-        public Guid MenuGroupID { get; set; }
+        public Guid? MenuGroupID { get; set; }
         /// <summary>
         /// Tên nhóm thực đơn
         /// </summary>
@@ -79,7 +79,11 @@ namespace MISA.CUKCUK.Core.Models
         /// <summary>
         /// Đã định lượng nguyên vật liệu
         /// </summary>
-        public int? MaterialQuantified { get; set; }
+        public Enum.MaterialQuantified? MaterialQuantified { get; set; }
+        /// <summary>
+        /// Danh sách nguyên vật liệu
+        /// </summary>
+        public List<DishMaterial>? DishMaterials { get; set; }
         #endregion
     }
 }

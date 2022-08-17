@@ -11,8 +11,17 @@ namespace MISA.CUKCUK.Core.Interfaces.Repositories
     /// Interface của dish repository
     /// </summary>
     /// Created by: linhpv (09/08/2022)
-    public interface IDishRepository : IBaseRepository<Dish>
+    public interface IDishRepository
     {
+        /// <summary>
+        /// Thêm món ăn mới
+        /// </summary>
+        /// <param name="dish">Món ăn cần thêm</param>
+        /// <param name="dishMaterials">Các định lượng nguyên vật liệu</param>
+        /// <returns>Trả về ID món ăn mới</returns>
+        /// Created by: linhpv (17/08/2022)
+        Guid Insert(Dish dish);
+
         /// <summary>
         /// Xóa bản ghi
         /// </summary>
