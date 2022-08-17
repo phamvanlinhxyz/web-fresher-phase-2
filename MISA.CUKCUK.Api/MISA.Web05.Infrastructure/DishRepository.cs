@@ -52,6 +52,29 @@ namespace MISA.Web05.Infrastructure
         }
 
         /// <summary>
+        /// Lấy danh sách nguyên vật liệu theo ID món
+        /// </summary>
+        /// <param name="dishID">ID món ăn</param>
+        /// <returns>Danh sách nguyên vật liệu</returns>
+        /// Created by: linhpv(17/08/2022)
+        public List<DishMaterial> GetListMaterial(Guid dishID)
+        {
+            using (SqlConnection = new MySqlConnection(ConnectionString))
+            {
+                // Khởi tạo query và param
+                var sqlQuery = "Proc_GetMaterialByDish";
+                var parameters = new DynamicParameters();
+                parameters.Add("$DishID", dishID);
+
+                // Lấy kết quả
+                var res = SqlConnection.Query<DishMaterial>(sql: sqlQuery, param: parameters, commandType: CommandType.StoredProcedure);
+
+                // Trả về controller
+                return res.ToList();
+            }
+        }
+
+        /// <summary>
         /// Thêm món ăn mới
         /// </summary>
         /// <param name="dish">Món ăn mới</param>
@@ -62,7 +85,10 @@ namespace MISA.Web05.Infrastructure
         {
             using (SqlConnection = new MySqlConnection(ConnectionString))
             {
-                SqlConnection.Open();
+                if (SqlConnection.State != ConnectionState.Open)
+                {
+                    SqlConnection.Open();
+                }
 
                 // Khởi tạo transaction
                 using (var transaction = SqlConnection.BeginTransaction())
@@ -80,39 +106,63 @@ namespace MISA.Web05.Infrastructure
                         parameters.Add("$newID", dbType: DbType.Guid, direction: ParameterDirection.Output);
 
                         // Lấy kết quả
-                        SqlConnection.Query<Dish>(sql: sqlQuery, param: parameters, transaction: transaction, commandType: CommandType.StoredProcedure);
+                        bool isSuccess = SqlConnection.Execute(sql: sqlQuery, param: parameters, transaction: transaction, commandType: CommandType.StoredProcedure) > 0;
                         var newID = parameters.Get<Guid>("$newID");
-
-                        // Kiểm tra nguyên vật liệu
-                        if (dishMaterials != null && dishMaterials.Count > 0)
+                        // Nếu thêm món ăn thành công thì mới thêm tiếp định lượng nguyên vật liệu
+                        if (isSuccess)
                         {
-                            // Nếu có nguyên vật liệu thì thêm
-                            var sqlQueryMaterial = "Proc_InsertDishMaterial";
-
-                            foreach (DishMaterial dishMaterial in dishMaterials) 
+                            // Kiểm tra nguyên vật liệu
+                            if (dishMaterials != null && dishMaterials.Count > 0)
                             {
-                                // Tạo param
-                                var param = new DynamicParameters();
-                                param.Add("$DishID", newID);
-                                param.Add("$MaterialID", dishMaterial.MaterialID);
-                                param.Add("$MaterialAmount", dishMaterial.MaterialAmount);
-                                param.Add("$MaterialPurchasePrice", dishMaterial.MaterialPurchasePrice);
-                                param.Add("$TotalPrice", dishMaterial.MaterialAmount * dishMaterial.MaterialPurchasePrice);
+                                // Nếu có nguyên vật liệu thì thêm
+                                var sqlQueryMaterial = "Proc_InsertDishMaterial";
 
-                                // Query
-                                SqlConnection.Query<DishMaterial>(sql: sqlQueryMaterial, param: param, transaction: transaction, commandType: CommandType.StoredProcedure);
+                                foreach (DishMaterial dishMaterial in dishMaterials)
+                                {
+                                    // Tạo param
+                                    var param = new DynamicParameters();
+                                    param.Add("$DishID", newID);
+                                    param.Add("$MaterialID", dishMaterial.MaterialID);
+                                    param.Add("$MaterialAmount", dishMaterial.MaterialAmount);
+                                    param.Add("$MaterialPurchasePrice", dishMaterial.MaterialPurchasePrice);
+                                    param.Add("$TotalPrice", dishMaterial.MaterialAmount * dishMaterial.MaterialPurchasePrice);
+
+                                    // Query
+                                    isSuccess = SqlConnection.Execute(sql: sqlQueryMaterial, param: param, transaction: transaction, commandType: CommandType.StoredProcedure) > 0;
+
+                                    // Nếu không thành công thì Rollback
+                                    if (!isSuccess)
+                                    {
+                                        transaction.Rollback();
+                                        return Guid.Empty;
+                                    }
+                                }
                             }
+                        } 
+                        if (isSuccess)
+                        {
+                            transaction.Commit();
+                        } 
+                        else
+                        {
+                            newID = Guid.Empty;
+                            transaction.Rollback();
                         }
 
-                        // Nếu thêm tất cả thành công thì mới Commit
-                        transaction.Commit();
                         // Trả về kết quả
                         return newID;
                     }
                     catch (Exception)
                     {
                         transaction.Rollback();
-                        throw;
+                        return Guid.Empty;
+                    }
+                    finally
+                    {
+                        if (SqlConnection.State != ConnectionState.Closed)
+                        {
+                            SqlConnection.Close();
+                        }
                     }
                 }
             }

@@ -332,6 +332,19 @@ export default {
       "loadAllMaterial",
     ]),
     /**
+     * Lấy định lượng nguyên vật liệu
+     * @param {string} dishID Id món ăn
+     * Author: linhpv (17/08/2022)
+     */
+    async loadDishMaterial(dishID) {
+      const res = await axios.get(
+        `${constants.API_URL}/api/${constants.API_VERSION}/Dish/ListMaterial?dishID=${dishID}`
+      );
+      if (res.data.Success) {
+        this.dishMaterial = res.data.Data;
+      }
+    },
+    /**
      * Tính toán thành tiền
      * Author: linhpv (16/08/2022)
      */
@@ -408,6 +421,8 @@ export default {
       if (valid) {
         // Format lại các định dạng giá tiền
         this.formatData();
+        // Xử lý định lượng nguyên vật liệu
+        this.handleDishMaterial();
         // Check formMode
         if (this.formMode == enums.formMode.Add) {
           this.insertDish(this.singleDish);
@@ -415,6 +430,20 @@ export default {
           console.log(this.singleDish);
         }
       }
+    },
+    /**
+     * Xử lý định lượng nguyên vật liệu
+     * Author: linhpv (17/08/2022)
+     */
+    handleDishMaterial() {
+      // Kiểm tra các định lượng có nguyên vật liệu chưa, nếu chưa => xóa
+      this.dishMaterial = this.dishMaterial.filter((dm) => {
+        return dm.MaterialID;
+      });
+      // Set focus vào thằng cuối cùng
+      this.dishMaterialFocus = this.dishMaterial.length - 1;
+      // Thêm định lượng nguyên vật liệu vào món ăn
+      this.singleDish.DishMaterials = this.dishMaterial;
     },
     /**
      * Format lại một số dữ liệu cần thiết
@@ -568,8 +597,14 @@ export default {
     this.loadAllMaterial();
     // Set món ăn ban đầu
     this.singleDish = this.selectedDish;
-    // Set mặc định của định lượng nguyên vật liệu
-    this.dishMaterial.push(JSON.parse(JSON.stringify(this.defaultMaterial)));
+    // Nếu thêm thì set mặc nguyên vật liệu
+    if (this.formMode === enums.formMode.Add) {
+      // Set mặc định của định lượng nguyên vật liệu
+      this.dishMaterial.push(JSON.parse(JSON.stringify(this.defaultMaterial)));
+    } else if (this.formMode === enums.formMode.Edit) {
+      // Nếu sửa thì gọi api lấy các nguyên vật liệu
+      this.loadDishMaterial(this.singleDish.DishID);
+    }
   },
   /**
    * Xử lý các sự kiện khi mount component

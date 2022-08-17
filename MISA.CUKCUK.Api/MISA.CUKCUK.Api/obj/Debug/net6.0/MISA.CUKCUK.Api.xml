@@ -32,6 +32,22 @@
             </summary>
             Created by: linhpv (08/08/2022)
         </member>
+        <member name="M:MISA.CUKCUK.Api.Controllers.DishController.GetListMaterial(System.Guid)">
+            <summary>
+            Lấy nguyên vật liệu theo món ăn
+            </summary>
+            <param name="dishID">ID món ăn</param>
+            <returns>Danh sách nguyên vật liệu</returns>
+            Created by: linhpv (17/08/2022)
+        </member>
+        <member name="M:MISA.CUKCUK.Api.Controllers.DishController.Put(MISA.CUKCUK.Core.Models.Dish)">
+            <summary>
+            Sửa thông tin món ăn 
+            </summary>
+            <param name="dish">Món ăn cần sửa</param>
+            <returns>ID món ăn đã sửa</returns>
+            Created by: linhpv (17/08/2022)
+        </member>
         <member name="M:MISA.CUKCUK.Api.Controllers.DishController.Post(MISA.CUKCUK.Core.Models.Dish)">
             <summary>
             Thêm bản ghi mới

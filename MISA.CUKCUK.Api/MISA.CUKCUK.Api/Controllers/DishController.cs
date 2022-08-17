@@ -32,6 +32,43 @@ namespace MISA.CUKCUK.Api.Controllers
         #endregion
 
         #region Controller
+        /// <summary>
+        /// Lấy nguyên vật liệu theo món ăn
+        /// </summary>
+        /// <param name="dishID">ID món ăn</param>
+        /// <returns>Danh sách nguyên vật liệu</returns>
+        /// Created by: linhpv (17/08/2022)
+        [HttpGet("ListMaterial")]
+        public IActionResult GetListMaterial(Guid dishID) 
+        {
+            try
+            {
+                // Lấy dữ liệu từ repo
+                var data = _repository.GetListMaterial(dishID);
+
+                // Xử lý response
+                Response res = new Response(data, true, ErrorCode.NoError, "", "");
+
+                // Trả kết quả cho client
+                return Ok(JsonConvert.SerializeObject(res, Formatting.Indented));
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
+        }
+
+        /// <summary>
+        /// Sửa thông tin món ăn 
+        /// </summary>
+        /// <param name="dish">Món ăn cần sửa</param>
+        /// <returns>ID món ăn đã sửa</returns>
+        /// Created by: linhpv (17/08/2022)
+        [HttpPut]
+        public IActionResult Put(Dish dish)
+        {
+            return Ok(1);
+        }
 
         /// <summary>
         /// Thêm bản ghi mới
@@ -44,7 +81,10 @@ namespace MISA.CUKCUK.Api.Controllers
         {
             try
             {
+                // Lấy kết quả
                 var res = _service.InsertService(dish);
+
+                // Trả lại kết quả cho client
                 return Ok(JsonConvert.SerializeObject(res, Formatting.Indented));
             }
             catch (Exception ex)
@@ -66,7 +106,7 @@ namespace MISA.CUKCUK.Api.Controllers
             {
                 // Lấy dữ liệu và khởi tạo response
                 string newCode = _service.AutoGenDishCode(DishName);
-                Response res = new Response(newCode, true, Core.Enum.ErrorCode.NoError, "", "");
+                Response res = new Response(newCode, true, ErrorCode.NoError, "", "");
 
                 // Trả về response
                 return Ok(JsonConvert.SerializeObject(res, Formatting.Indented));
