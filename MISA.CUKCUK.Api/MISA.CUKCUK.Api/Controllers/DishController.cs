@@ -32,6 +32,13 @@ namespace MISA.CUKCUK.Api.Controllers
         #endregion
 
         #region Controller
+
+        /// <summary>
+        /// Thêm bản ghi mới
+        /// </summary>
+        /// <param name="dish">Món ăn</param>
+        /// <returns>Response</returns>
+        /// Created by: linhpv (17/08/2022)
         [HttpPost] 
         public IActionResult Post(Dish dish)
         {

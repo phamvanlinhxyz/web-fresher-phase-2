@@ -33,6 +33,12 @@ namespace MISA.CUKCUK.Api.Controllers
         #endregion
 
         #region Controller
+        /// <summary>
+        /// Thêm bản ghi mới
+        /// </summary>
+        /// <param name="entity">Bản ghi</param>
+        /// <returns>ID bản ghi mới</returns>
+        /// Created by: linhpv (17/08/2022)
         [HttpPost]
         public IActionResult Post(T entity)
         {

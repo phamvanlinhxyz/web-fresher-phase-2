@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MISA.CUKCUK.Api</name>
+    </assembly>
+    <members>
+        <member name="T:MISA.CUKCUK.Api.Controllers.BaseController`1">
+            <summary>
+            Lớp controller cơ sở
+            </summary>
+            <typeparam name="T">Tên bảng trong db</typeparam>
+            Created by: linhpv (07/08/2022)
+        </member>
+        <member name="M:MISA.CUKCUK.Api.Controllers.BaseController`1.Post(`0)">
+            <summary>
+            Thêm bản ghi mới
+            </summary>
+            <param name="entity">Bản ghi</param>
+            <returns>ID bản ghi mới</returns>
+            Created by: linhpv (17/08/2022)
+        </member>
+        <member name="M:MISA.CUKCUK.Api.Controllers.BaseController`1.Get">
+            <summary>
+            Lấy tất cả bản ghi
+            </summary>
+            <returns>Tất cả dữ liệu</returns>
+            Created by: linhpv (12/08/2022)
+        </member>
+        <member name="T:MISA.CUKCUK.Api.Controllers.DishController">
+            <summary>
+            Controller xử lý liên quan đến món ăn
+            </summary>
+            Created by: linhpv (08/08/2022)
+        </member>
+        <member name="M:MISA.CUKCUK.Api.Controllers.DishController.Post(MISA.CUKCUK.Core.Models.Dish)">
+            <summary>
+            Thêm bản ghi mới
+            </summary>
+            <param name="dish">Món ăn</param>
+            <returns>Response</returns>
+            Created by: linhpv (17/08/2022)
+        </member>
+        <member name="M:MISA.CUKCUK.Api.Controllers.DishController.GetNewCode(System.String)">
+            <summary>
+            Lấy mã mới theo tên
+            </summary>
+            <param name="DishName">Tên món ăn</param>
+            <returns>Trả về mã món ăn</returns>
+            Created by: linhpv (12/08/2022)
+        </member>
+        <member name="M:MISA.CUKCUK.Api.Controllers.DishController.Delete(System.Guid)">
+            <summary>
+            Xóa bản ghi theo ID
+            </summary>
+            <param name="entityID">Id bản ghi</param>
+            <returns>số bản ghi đã xóa</returns>
+            Created by: linhpv (11/08/2022)
+        </member>
+        <member name="M:MISA.CUKCUK.Api.Controllers.DishController.Paging(System.Int32,System.Int32,MISA.CUKCUK.Core.Models.FilterObject[])">
+            <summary>
+            Lấy dữ liệu theo phân trang, tìm kiếm
+            </summary>
+            <param name="pageIndex">Số trang</param>
+            <param name="pageSize">Số bản ghi trên trang</param>
+            <param name="filterObjects">Mảng các điều kiện lọc</param>
+            <returns>Tổng số bản ghi, tổng số trang, các bản ghi thỏa mãn</returns>
+        </member>
+    </members>
+</doc>

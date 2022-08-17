@@ -17,7 +17,11 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    var filePath = Path.Combine(AppContext.BaseDirectory, "MISA.CUKCUK.API.xml");
+    c.IncludeXmlComments(filePath);
+});
 
 builder.Services.AddScoped<IDishRepository, DishRepository>();
 builder.Services.AddScoped<IDishService, DishService>();
