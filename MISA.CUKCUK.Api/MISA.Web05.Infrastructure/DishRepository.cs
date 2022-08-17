@@ -38,16 +38,54 @@ namespace MISA.Web05.Infrastructure
         {
             using (SqlConnection = new MySqlConnection(ConnectionString))
             {
-                // Query và params
-                var sqlQuery = "Proc_DeleteDish";
-                var parameters = new DynamicParameters();
-                parameters.Add("$DishID", entityID);
+                if (SqlConnection.State != ConnectionState.Open) {
+                    SqlConnection.Open();
+                }
 
-                // Lấy kết quả
-                var res = SqlConnection.Execute(sql: sqlQuery, param: parameters, commandType: CommandType.StoredProcedure);
+                // Khởi tạo transaction
+                using (var transaction = SqlConnection.BeginTransaction())
+                {
+                    try 
+                    {
+                        // Query và params
+                        var sqlQuery = "Proc_DeleteDish";
+                        var parameters = new DynamicParameters();
+                        parameters.Add("$DishID", entityID);
 
-                // Trả về kết quả
-                return res;
+                        // Kiểm tra có xóa thành công không
+                        bool isSuccess = SqlConnection.Execute(sql: sqlQuery, param: parameters, transaction: transaction, commandType: CommandType.StoredProcedure) > 0;
+                        
+                        // Nếu đã xóa thành công món ăn thì xóa hết các định lượng nguyên vật liệu
+                        if (isSuccess) 
+                        {
+                            sqlQuery = "Proc_DeleteDishMaterial";
+                            isSuccess = SqlConnection.Execute(sql: sqlQuery, param: parameters, transaction: transaction, commandType: CommandType.StoredProcedure) > 0;
+                        }
+                        if (isSuccess) 
+                        {
+                            transaction.Commit();
+                        }
+                        else
+                        {
+                            transaction.Rollback();
+                            return 0;
+                        }
+                        // Trả về kết quả
+                        return 1;
+                    }
+                    catch (Exception) 
+                    {
+                        transaction.Rollback();
+                        return 0;
+                    }
+                    finally
+                    {
+                        if (SqlConnection.State != ConnectionState.Closed)
+                        {
+                            SqlConnection.Close();
+                        }
+                    }
+                }
             }
         }
 
