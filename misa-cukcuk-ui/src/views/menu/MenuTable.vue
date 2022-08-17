@@ -67,6 +67,8 @@
             <div class="filter-type">≤</div>
             <input
               class="input"
+              type="number"
+              style="text-align: right"
               @change="
                 handleChangeFilterObject('Price', $event.target.value, 1, 6)
               "

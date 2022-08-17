@@ -113,9 +113,9 @@ export default {
     };
   },
   watch: {
-    selectedItem(newItem) {
-      this.$emit("change", newItem);
-    },
+    // selectedItem(newItem) {
+    //   this.$emit("change", newItem);
+    // },
     focus(newVal) {
       if (newVal) {
         this.$refs.comboboxInput.focus();
@@ -135,14 +135,15 @@ export default {
         ];
       }
     },
-    // value(newVal) {
-    //   this.selectedItem = this.listItem.find((item) => {
-    //     return item[`${this.tableName}ID`] == newVal;
-    //   });
-    //   if (this.selectedItem) {
-    //     this.$refs.comboboxInput.value = this.selectedItem[this.show];
-    //   }
-    // },
+    value(newVal) {
+      this.selectedItem = this.listItem.find((item) => {
+        return item[`${this.tableName}ID`] == newVal;
+      });
+      if (this.selectedItem) {
+        this.$refs.comboboxInput.value = this.selectedItem[this.show];
+        this.$emit("change", this.selectedItem);
+      }
+    },
   },
   methods: {
     /**
@@ -191,6 +192,7 @@ export default {
         if (this.filterItems.length > 0) {
           this.selectedItem = this.filterItems[this.selectedIndex];
           event.target.value = this.selectedItem[this.show];
+          this.$emit("change", this.selectedItem);
         }
       }
     },
@@ -223,6 +225,7 @@ export default {
     handleSelect(item) {
       this.$refs.comboboxInput.value = item[this.show];
       this.selectedItem = item;
+      this.$emit("change", this.selectedItem);
       this.toggleDropdown();
     },
     /**
@@ -251,7 +254,6 @@ export default {
       } else {
         this.filterItems = [];
       }
-
       // Nếu lọc có giá trị thì select cái đầu tiên
       if (this.filterItems.length > 0) {
         this.selectedIndex = 0;
@@ -313,12 +315,13 @@ export default {
     if (!this.filterItems) {
       this.filterItems = this.listItem;
     }
-    if (this.value && !this.selectedItem) {
-      this.selectedItem = this.listItem.find((item) => {
-        return item[`${this.tableName}ID`] == this.value;
-      });
-      this.$refs.comboboxInput.value = this.selectedItem[this.show];
-    }
+    // if (this.value && !this.selectedItem) {
+    //   this.selectedItem = this.listItem.find((item) => {
+    //     return item[`${this.tableName}ID`] == this.value;
+    //   });
+    //   this.$refs.comboboxInput.value = this.selectedItem[this.show];
+    //   this.$emit("change", this.selectedItem);
+    // }
   },
 };
 </script>
