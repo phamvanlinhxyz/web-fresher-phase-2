@@ -35,6 +35,38 @@ namespace MISA.CUKCUK.Core.Service
 
         #region Service
         /// <summary>
+        /// Service sửa thông tin món ăn
+        /// </summary>
+        /// <param name="dish">Món ăn cần sửa</param>
+        /// <returns>responst</returns>
+        /// Created by: linhpv (18/08/2022)
+        public Response UpdateService(Dish dish)
+        {
+            // Validate dữ liệu
+            string? valid = Validate(dish, dish.DishID);
+            if (string.IsNullOrEmpty(valid))
+            {
+                // Nếu không có nguyên vật liệu thì set định lượng nguyên vật liệu = 0 nếu đã định lượng set = 1
+                if (dish.DishMaterials == null || dish.DishMaterials.Count == 0)
+                {
+                    dish.MaterialQuantified = Enum.MaterialQuantified.NotQuantified;
+                }
+                else
+                {
+                    dish.MaterialQuantified = Enum.MaterialQuantified.Quantified;
+                }
+                // Gọi repo lấy kết quả
+                var newID = _repository.Update(dish);
+                // Check có ID trả về hay không
+                return new Response(data: newID, success: newID != Guid.Empty, errorCode: Enum.ErrorCode.NoError, userMsg: "", devMsg: "");
+            }
+            else
+            {
+                return new Response(data: null, success: false, errorCode: Enum.ErrorCode.BadRequest, userMsg: valid, devMsg: valid);
+            }
+        }
+
+        /// <summary>
         /// Thêm món ăn mới
         /// </summary>
         /// <param name="dish">Món ăn mới</param>
@@ -44,7 +76,7 @@ namespace MISA.CUKCUK.Core.Service
         public Response InsertService(Dish dish)
         {
             // Validate dữ liệu
-            string? valid = Validate(dish);
+            string? valid = Validate(dish, Guid.Empty);
 
             if (string.IsNullOrEmpty(valid))
             {
@@ -201,13 +233,15 @@ namespace MISA.CUKCUK.Core.Service
         }
         #endregion
 
-        #region Override
+        #region Function
         /// <summary>
-        /// ghi đè phương thức validate
+        /// Validate dữ liệu
         /// </summary>
         /// <param name="dish">Món ăn</param>
+        /// <param name="dishID">ID món ăn</param>
         /// <returns>null - nếu valid, thông báo - nếu không valid</returns>
-        private string? Validate(Dish dish)
+        /// Created by: linhpv (18/08/2022)
+        private string? Validate(Dish dish, Guid? dishID)
         {
             var langCode = Common.LanguageCode;
             // Khởi tạo string lỗi
@@ -236,7 +270,8 @@ namespace MISA.CUKCUK.Core.Service
                 errorMsg += Resources.Resource.ResourceManager.GetString($"{langCode}_Unit_Empty");
             }
             // Check trùng mã món ăn
-            if (_baseRepository.CheckDuplicate(Guid.Empty, dish.DishCode, "DishCode")) {
+            if (_baseRepository.CheckDuplicate(dishID, dish.DishCode, "DishCode"))
+            {
                 if (!string.IsNullOrEmpty(errorMsg))
                 {
                     errorMsg += ", ";
@@ -245,16 +280,14 @@ namespace MISA.CUKCUK.Core.Service
             }
             return errorMsg;
         }
-        #endregion
 
-        #region Function
         /// <summary>
         /// Xử lý các chữ có dấu
         /// </summary>
         /// <param name="text">Đầu vào</param>
         /// <returns>Dữ liệu sau khi sử lý</returns>
         /// Created by: linhpv (12/08/2022)
-        public string RemoveVietnameseTone(string text)
+        private string RemoveVietnameseTone(string text)
         {
             string result = text.ToLower();
             result = Regex.Replace(result, "à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ|/g", "a");

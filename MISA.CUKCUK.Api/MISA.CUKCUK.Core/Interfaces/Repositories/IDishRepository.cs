@@ -14,17 +14,25 @@ namespace MISA.CUKCUK.Core.Interfaces.Repositories
     public interface IDishRepository
     {
         /// <summary>
+        /// Cập nhật món ăn
+        /// </summary>
+        /// <param name="dish">Món ăn cần cập nhật</param>
+        /// <returns>ID món ăn đã cập nhật</returns>
+        /// Created by: linhpv (18/08/2022)
+        Guid Update(Dish dish);
+
+        /// <summary>
         /// Lấy danh sách nguyên vật liệu
         /// </summary>
         /// <param name="dishID">Id món ăn </param>
         /// <returns>Danh sách nguyên vật liệu</returns>
         /// Created by: linhpv (17/08/2022)
         List<DishMaterial> GetListMaterial(Guid dishID);
+
         /// <summary>
         /// Thêm món ăn mới
         /// </summary>
         /// <param name="dish">Món ăn cần thêm</param>
-        /// <param name="dishMaterials">Các định lượng nguyên vật liệu</param>
         /// <returns>Trả về ID món ăn mới</returns>
         /// Created by: linhpv (17/08/2022)
         Guid Insert(Dish dish);

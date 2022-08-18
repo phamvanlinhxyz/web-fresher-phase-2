@@ -14,13 +14,20 @@ namespace MISA.CUKCUK.Core.Interfaces.Services
     public interface IDishService
     {
         /// <summary>
+        /// Service sửa thông tin món ăn
+        /// </summary>
+        /// <param name="dish">Món ăn cần sửa</param>
+        /// <returns>responst</returns>
+        /// Created by: linhpv (18/08/2022)
+        Response UpdateService(Dish dish);
+
+        /// <summary>
         /// Service thêm món ăn mới
         /// </summary>
         /// <param name="dish">Món ăn mới</param>
-        /// <param name="dishMaterials">Danh sách nguyên vật liệu</param>
-        /// <returns>ID món ăn mới</returns>
+        /// <returns>response</returns>
         /// Created by: linhpv (17/08/2022)
-        public Response InsertService(Dish dish);
+        Response InsertService(Dish dish);
 
         /// <summary>
         /// Tự động sinh mã 
@@ -28,7 +35,7 @@ namespace MISA.CUKCUK.Core.Interfaces.Services
         /// <param name="DishName">Tên món ăn</param>
         /// <returns>Trả về mã code đã sinh</returns>
         /// Created by: linhpv (12/08/2022)
-        public string AutoGenDishCode(string DishName);
+        string AutoGenDishCode(string DishName);
 
         /// <summary>
         /// Xử lý phân trang, lọc dữ liệu
@@ -38,6 +45,6 @@ namespace MISA.CUKCUK.Core.Interfaces.Services
         /// <param name="filterObjects">Mảng lọc</param>
         /// <returns>Trả về các bản ghi thỏa mãn</returns>
         /// Created by: linhpv (09/08/2022)
-        public object PagingService(int pageIndex, int pageSize, FilterObject[] filterObjects); 
+        object PagingService(int pageIndex, int pageSize, FilterObject[] filterObjects); 
     }
 }

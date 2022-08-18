@@ -67,7 +67,18 @@ namespace MISA.CUKCUK.Api.Controllers
         [HttpPut]
         public IActionResult Put(Dish dish)
         {
-            return Ok(1);
+            try
+            {
+                // Lấy kết quả
+                var res = _service.UpdateService(dish);
+
+                // Trả lại kết quả cho client
+                return Ok(JsonConvert.SerializeObject(res, Formatting.Indented));
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
         }
 
         /// <summary>

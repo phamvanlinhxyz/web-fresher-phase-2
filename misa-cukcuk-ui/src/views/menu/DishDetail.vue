@@ -521,8 +521,6 @@ export default {
           resources.validateError[`${this.langCode}_Required_Error`];
         valid = false;
       }
-      // Gán tạm cho định lượng NVL = 0;
-      this.singleDish.MaterialQuantified = enums.yesNo.No;
       return valid;
     },
     /**

@@ -33,8 +33,6 @@ builder.Services.AddScoped<IMenuGroupRepository, MenuGroupRepository>();
 builder.Services.AddScoped<IMenuGroupService, MenuGroupService>();
 builder.Services.AddScoped<IUnitRepository, UnitRepository>();
 builder.Services.AddScoped<IUnitService, UnitService>();
-builder.Services.AddScoped<IDishMaterialRepository, DishMaterialRepository>();
-builder.Services.AddScoped<IDishMaterialService, DishMaterialService>();
 builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 builder.Services.AddScoped(typeof(IBaseService<>), typeof(BaseService<>));
 
