@@ -330,6 +330,7 @@ export default {
       "loadAllKitchen",
       "insertDish",
       "loadAllMaterial",
+      "updateDish",
     ]),
     /**
      * Lấy định lượng nguyên vật liệu
@@ -427,7 +428,8 @@ export default {
         if (this.formMode == enums.formMode.Add) {
           this.insertDish(this.singleDish);
         } else if (this.formMode == enums.formMode.Edit) {
-          console.log(this.singleDish);
+          this.updateDish(this.singleDish);
+          // console.log(this.singleDish);
         }
       }
     },

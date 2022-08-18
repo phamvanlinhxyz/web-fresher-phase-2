@@ -98,9 +98,14 @@ namespace MISA.Web05.Infrastructure
                                     }
                                 }
                             }
+                            transaction.Commit();
+                            return dish.DishID;
+                        } 
+                        else
+                        {
+                            transaction.Rollback();
+                            return Guid.Empty;
                         }
-                        transaction.Commit();
-                        return dish.DishID;
                     }
                     catch (Exception)
                     {
@@ -265,9 +270,6 @@ namespace MISA.Web05.Infrastructure
                                     }
                                 }
                             }
-                        } 
-                        if (isSuccess)
-                        {
                             transaction.Commit();
                         } 
                         else
@@ -282,7 +284,7 @@ namespace MISA.Web05.Infrastructure
                     catch (Exception)
                     {
                         transaction.Rollback();
-                        return Guid.Empty;
+                        throw;
                     }
                     finally
                     {

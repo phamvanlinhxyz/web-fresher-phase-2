@@ -1,7 +1,7 @@
 const state = {
-  langCode: "VN",
-  isShowMenu: true,
-  isShowDialog: false,
+  langCode: "VN", // Mã ngôn ngữ
+  isShowMenu: true, // Trạng thái hiển thị menu
+  isShowDialog: false, // Trạng thái hiển thị dialog
 };
 
 const mutations = {

@@ -29,7 +29,7 @@
         <div class="toolbar-button-text">Xóa</div>
       </div>
       <div class="separator-hor"></div>
-      <div class="toolbar-button">
+      <div class="toolbar-button" @click="handleReload">
         <div class="toolbar-button-icon">
           <base-icon iconName="reload" />
         </div>
@@ -86,7 +86,19 @@ export default {
       "toggleDialog",
       "selectDish",
       "setFormMode",
+      "updatePageIndex",
+      "loadDishsByPaging",
     ]),
+    /**
+     * Người dùng nạp lại dữ liệu
+     * Author: linhpv (18/08/2022)
+     */
+    handleReload() {
+      // Về trang đầu
+      this.updatePageIndex(1);
+      // Load lại dữ liệu
+      this.loadDishsByPaging();
+    },
     /**
      * Người dùng ấn sửa
      * Author: linhpv (15/08/2022)

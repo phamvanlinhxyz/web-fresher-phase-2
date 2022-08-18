@@ -3,26 +3,30 @@ import enums from "@/enums";
 import axios from "axios";
 
 const state = {
-  dishs: [],
-  selectedDish: {},
-  pageSize: 100,
-  pageIndex: 1,
-  filterObjects: [],
-  isLoadingDish: false,
-  totalRecord: 0,
-  totalPage: 0,
-  isShowDishPopup: false,
-  isShowMGPopup: false,
-  isShowUnitPopup: false,
-  isShowMaterialPopup: false,
-  formMode: enums.formMode.Add,
-  menuGroups: [],
-  units: [],
-  kitchens: [],
-  materials: [],
+  dishs: [], // Danh sách món ăn theo phân trang
+  selectedDish: {}, // Món ăn được chọn
+  pageSize: 100, // Số lượng món ăn trên 1 trang 
+  pageIndex: 1, // Số trang
+  filterObjects: [], // Object các trường lọc
+  isLoadingDish: false, // Trạng thái đang load món ăn
+  totalRecord: 0, // Tổng số món ăn
+  totalPage: 0, // Tổng số trang
+  isShowDishPopup: false, // Trạng thái show popup thêm sửa món ăn
+  isShowMGPopup: false, // Trang thái show popup thêm nhóm thực đơn
+  isShowUnitPopup: false, // Trạng thái show popup thêm đơn vị tính
+  isShowMaterialPopup: false, // Trạng thái show popup thêm nguyên vật liệu
+  formMode: enums.formMode.Add, // Mode của form
+  menuGroups: [], // Danh sách nhóm thực đơn 
+  units: [], // Danh sách đơn vị tính
+  kitchens: [], // Danh sách bếp
+  materials: [], // Danh sách nguyên vật liệu
 };
 
 const mutations = {
+  UPDATE_DISH(state, payload) {
+    state.selectedDish = payload
+    state.isShowDishPopup = false;
+  },
   INSERT_MATERIAL(state, payload) {
     state.materials.unshift(payload);
     state.isShowMaterialPopup = false;
@@ -100,6 +104,19 @@ const mutations = {
 };
 
 const actions = {
+  /**
+   * Cập nhật thông tin món ăn
+   * @param {*} ctx context
+   * @param {object} dish món ăn
+   * Author: linhpv (18/08/2022)
+   */
+  async updateDish(ctx, dish) {
+    const res = await axios.put(`${constants.API_URL}/api/${constants.API_VERSION}/Dish`, dish);
+    
+    if (res.data.Success) {
+      ctx.commit("UPDATE_DISH", dish);
+    }
+  },
   /**
    * Thêm nguyên vật liệu mới
    * @param {*} ctx  context
