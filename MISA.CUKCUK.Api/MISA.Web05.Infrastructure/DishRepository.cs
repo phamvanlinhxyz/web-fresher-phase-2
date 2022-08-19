@@ -54,21 +54,49 @@ namespace MISA.Web05.Infrastructure
 
                         // Lấy danh sách nguyên vật liệu
                         List<DishMaterial>? dishMaterials = dish.DishMaterials;
+                        // Lấy danh sách nguyên vật liệu bị xóa
+                        List<Guid>? deletedDM = dish.DeletedDM;
+                        // Set các danh sách = null
                         dish.DishMaterials = null;
+                        dish.DeletedDM = null;
 
                         var parameters = new DynamicParameters(dish);
 
                         // Query và lấy kết quả
                         bool isSuccess = SqlConnection.Execute(sql: sqlQuery, param: parameters, transaction: transaction, commandType: CommandType.StoredProcedure) > 0;
 
-                        // Nếu đã sửa thành công
+                        // Nếu đã sửa thành công thông tin món ăn
                         if (isSuccess)
                         {
+                            // Xóa những nguyên vật liệu đã bỏ
+                            // Kiểm tra danh sách xóa nguyên vật liệu có null hay không
+                            if (deletedDM != null && deletedDM.Count > 0)
+                            {
+                                sqlQuery = "Proc_DeleteDMByID";
+                                foreach (Guid DMID in deletedDM)
+                                {
+                                    parameters = new DynamicParameters();
+                                    parameters.Add("$DMID", DMID);
+
+                                    isSuccess = SqlConnection.Execute(sql: sqlQuery, param: parameters, transaction: transaction, commandType: CommandType.StoredProcedure) > 0;
+                                    // Nếu không thành công thì rollback
+                                    if (!isSuccess)
+                                    {
+                                        transaction.Rollback();
+                                        return Guid.Empty;
+                                    }
+                                }
+                            }
+                            
+
+
+
+
                             // Xóa danh sách nguyên vật liệu cũ
                             sqlQuery = "Proc_DeleteMaterialByDish";
                             parameters = new DynamicParameters();
                             parameters.Add("$DishID", dish.DishID);
-                            SqlConnection.Execute(sql: sqlQuery, param: parameters, transaction: transaction, commandType: CommandType.StoredProcedure); ;
+                            SqlConnection.Execute(sql: sqlQuery, param: parameters, transaction: transaction, commandType: CommandType.StoredProcedure); 
 
                             // Thêm nguyên vật liệu mới
                             // Kiểm tra nguyên vật liệu

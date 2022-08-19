@@ -330,6 +330,7 @@ export default {
         MaterialPurchasePrice: 0,
         TotalPrice: 0,
       },
+      deletedDMList: [],
       isShowConfirmDialog: false,
       dialogMsg: "",
     };
@@ -409,6 +410,12 @@ export default {
     handleDeleteRow() {
       // Nếu số lượng khác không thì xóa
       if (this.dishMaterial.length > 0) {
+        // Nếu xóa nguyên vật liệu đã thêm vào bảng thì lấy danh sách
+        if (this.dishMaterial[this.dishMaterialFocus].DishMaterialID) {
+          this.deletedDMList.unshift(
+            this.dishMaterial[this.dishMaterialFocus].DishMaterialID
+          );
+        }
         this.dishMaterial.splice(this.dishMaterialFocus, 1);
         // Nếu focus nằm ngoài số lượng nguyên vật liệu => chọn cái cuối
         if (this.dishMaterialFocus >= this.dishMaterial.length) {
@@ -500,6 +507,8 @@ export default {
       } else {
         this.singleDish.MaterialQuantified = enums.yesNo.No;
       }
+      // Thêm danh sách các nguyên vật liệu đã bị xóa
+      this.singleDish.DeletedDM = this.deletedDMList;
     },
     /**
      * Format lại một số dữ liệu cần thiết

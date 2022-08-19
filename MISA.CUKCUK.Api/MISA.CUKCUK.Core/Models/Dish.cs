@@ -84,6 +84,10 @@ namespace MISA.CUKCUK.Core.Models
         /// Danh sách nguyên vật liệu
         /// </summary>
         public List<DishMaterial>? DishMaterials { get; set; }
+        /// <summary>
+        /// Danh sách nguyên vật liệu bị xóa
+        /// </summary>
+        public List<Guid>? DeletedDM { get; set; }
         #endregion
     }
 }
