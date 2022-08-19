@@ -4,7 +4,7 @@
       <div class="mgf-inner">
         <div class="popup-dish-header">
           <div>Thêm nhóm thực đơn</div>
-          <div @click="toggleMenuGroupPopup">
+          <div @click="handleClosePopup">
             <base-icon iconName="x-close" />
           </div>
         </div>
@@ -75,11 +75,30 @@
       </div>
     </div>
   </div>
+  <!-- Dialog confirm đóng popup -->
+  <base-dialog
+    v-if="isShowConfirmDialog"
+    :message="dialogMsg"
+    :rightButton="[
+      { content: 'Có', type: 'confirm' },
+      { content: 'Không', type: 'no-confirm' },
+      { content: 'Hủy bỏ', type: 'cancel' },
+    ]"
+    @confirm="
+      () => {
+        this.isShowConfirmDialog = false;
+        this.handleStoreMenuGroup();
+      }
+    "
+    @no-confirm="toggleMenuGroupPopup"
+    @cancel="() => (this.isShowConfirmDialog = false)"
+  />
 </template>
 
 <script>
 import resources from "@/resources";
 import { mapActions, mapState } from "vuex";
+import { objectEqual } from "@/utils";
 
 export default {
   data() {
@@ -90,6 +109,8 @@ export default {
       },
       newMenuGroup: {},
       focusElm: "MenuGroupCode",
+      isShowConfirmDialog: false,
+      dialogMsg: "",
     };
   },
   computed: mapState({
@@ -102,6 +123,18 @@ export default {
       "toggleMenuGroupPopup",
       "insertMenuGroup",
     ]),
+    /**
+     * Người dùng ấn đóng popup
+     * Author: linhpv (19/08/2022)
+     */
+    handleClosePopup() {
+      if (objectEqual(this.newMenuGroup, {})) {
+        this.toggleMenuGroupPopup();
+      } else {
+        this.dialogMsg = resources[`${this.langCode}_Data_Changed`];
+        this.isShowConfirmDialog = true;
+      }
+    },
     /**
      * Thêm nhóm thực đơn mới
      * Author: linhpv (15/08/2022)

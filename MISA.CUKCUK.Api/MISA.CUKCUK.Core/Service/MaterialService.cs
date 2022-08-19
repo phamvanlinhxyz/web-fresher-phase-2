@@ -49,7 +49,7 @@ namespace MISA.CUKCUK.Core.Service
             // Check trùng mã NVL
             if (_repository.CheckDuplicate(Guid.Empty, entity.MaterialCode, "MaterialCode"))
             {
-                return string.Format(Resources.Resource.ResourceManager.GetString($"{langCode}MaterialCode"), entity.MaterialCode);
+                return string.Format(Resources.Resource.ResourceManager.GetString($"{langCode}_Duplicate_MaterialCode"), entity.MaterialCode);
             }
             return null;
         }

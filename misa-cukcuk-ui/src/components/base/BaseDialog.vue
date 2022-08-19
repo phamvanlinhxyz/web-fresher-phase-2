@@ -10,7 +10,14 @@
             <base-icon :iconName="dialogIcon" />
           </div>
           <div class="dialog-message">
-            {{ message }}
+            <!-- Nếu message là tring -->
+            <div v-if="typeof message == 'string'">
+              {{ message }}
+            </div>
+            <!-- Nếu masage là array -->
+            <ul v-if="typeof message == 'object'">
+              <li v-for="(msg, index) of message" :key="index">{{ msg }}</li>
+            </ul>
           </div>
         </div>
         <div class="dialog-footer">
@@ -41,12 +48,16 @@ export default {
      */
     handleButtonClick(buttonType) {
       // Gửi emit lên thằng cha
-      console.log(buttonType);
-      this.$emit(`${buttonType}`)      
+      this.$emit(`${buttonType}`);
     },
   },
   created() {
     this.dialogIcon = this.type ? `${this.type}-32` : "question-32";
+    console.log(typeof this.message);
   },
 };
 </script>
+
+<style scoped>
+@import url(@/css/base/basedialog.css);
+</style>

@@ -58,6 +58,14 @@
       @confirm="handleConfirmDelete"
       @no-confirm="() => (this.isShowConfirmDialog = false)"
     />
+    <!-- Dialog thông báo lỗi từ BE chung cho tât cả các component -->
+    <base-dialog
+      v-if="isShowDialog"
+      type="warning"
+      :message="dialogContent"
+      :rightButton="[{ content: 'Đông ý', type: 'confirm' }]"
+      @confirm="toggleDialog"
+    />
   </div>
 </template>
 
@@ -67,7 +75,6 @@ import DishDetail from "./DishDetail.vue";
 import MenuPagination from "./MenuPagination.vue";
 import MenuGroupForm from "./MenuGroupForm.vue";
 import UnitForm from "./UnitForm.vue";
-import MenuDialog from "./MenuDialog.vue";
 import { mapActions, mapState } from "vuex";
 import enums from "@/enums";
 import resources from "@/resources";
@@ -80,7 +87,6 @@ export default {
     MenuPagination,
     MenuGroupForm,
     UnitForm,
-    MenuDialog,
     MaterialForm,
   },
   data() {
@@ -92,6 +98,7 @@ export default {
   computed: mapState({
     langCode: (state) => state.app.langCode,
     isShowDialog: (state) => state.app.isShowDialog,
+    dialogContent: (state) => state.app.dialogContent,
     isShowDishPopup: (state) => state.dish.isShowDishPopup,
     isShowMGPopup: (state) => state.dish.isShowMGPopup,
     isShowUnitPopup: (state) => state.dish.isShowUnitPopup,

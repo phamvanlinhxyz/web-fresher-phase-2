@@ -4,7 +4,7 @@
       <div class="mgf-inner">
         <div class="popup-dish-header">
           <div>Thêm đơn vị tính</div>
-          <div @click="toggleUnitPopup">
+          <div @click="handleClosePopup">
             <base-icon iconName="x-close" />
           </div>
         </div>
@@ -43,11 +43,30 @@
       </div>
     </div>
   </div>
+  <!-- Dialog confirm đóng popup -->
+  <base-dialog
+    v-if="isShowConfirmDialog"
+    :message="dialogMsg"
+    :rightButton="[
+      { content: 'Có', type: 'confirm' },
+      { content: 'Không', type: 'no-confirm' },
+      { content: 'Hủy bỏ', type: 'cancel' },
+    ]"
+    @confirm="
+      () => {
+        this.isShowConfirmDialog = false;
+        this.handleStoreUnit();
+      }
+    "
+    @no-confirm="toggleUnitPopup"
+    @cancel="() => (this.isShowConfirmDialog = false)"
+  />
 </template>
 
 <script>
 import resources from "@/resources";
 import { mapActions, mapState } from "vuex";
+import { objectEqual } from "@/utils";
 
 export default {
   data() {
@@ -57,12 +76,26 @@ export default {
         UnitName: null,
       },
       focusElm: "UnitName",
+      isShowConfirmDialog: false,
+      dialogMsg: "",
     };
   },
   computed: mapState({
     langCode: (state) => state.app.langCode,
   }),
   methods: {
+    /**
+     * Người dùng ấn đóng popup
+     * Author: linhpv (19/08/2022)
+     */
+    handleClosePopup() {
+      if (objectEqual(this.newUnit, {})) {
+        this.toggleUnitPopup();
+      } else {
+        this.dialogMsg = resources[`${this.langCode}_Data_Changed`];
+        this.isShowConfirmDialog = true;
+      }
+    },
     ...mapActions(["toggleUnitPopup", "insertUnit"]),
     /**
      * Thêm đơn vị tính mới

@@ -4,7 +4,7 @@
       <div class="mgf-inner">
         <div class="popup-dish-header">
           <div>Thêm nguyên vật liệu</div>
-          <div @click="toggleMaterialPopup">
+          <div @click="handleClosePopup">
             <base-icon iconName="x-close" />
           </div>
         </div>
@@ -60,7 +60,7 @@
             <base-button content="Giúp" icon="question-circle" />
           </div>
           <div class="pdf-right">
-            <base-button content="Cất" icon="save" @click="handleStoreUnit" />
+            <base-button content="Cất" icon="save" @click="handleStoreMaterial" />
             <base-button
               content="Hủy"
               icon="cancel"
@@ -71,11 +71,30 @@
       </div>
     </div>
   </div>
+  <!-- Dialog confirm đóng popup -->
+  <base-dialog
+    v-if="isShowConfirmDialog"
+    :message="dialogMsg"
+    :rightButton="[
+      { content: 'Có', type: 'confirm' },
+      { content: 'Không', type: 'no-confirm' },
+      { content: 'Hủy bỏ', type: 'cancel' },
+    ]"
+    @confirm="
+      () => {
+        this.isShowConfirmDialog = false;
+        this.handleStoreMaterial();
+      }
+    "
+    @no-confirm="toggleMaterialPopup"
+    @cancel="() => (this.isShowConfirmDialog = false)"
+  />
 </template>
 
 <script>
 import resources from "@/resources";
 import { mapActions, mapState } from "vuex";
+import { objectEqual } from "@/utils";
 
 export default {
   data() {
@@ -86,6 +105,8 @@ export default {
         MaterialName: null,
       },
       focusElm: "MaterialCode",
+      isShowConfirmDialog: false,
+      dialogMsg: "",
     };
   },
   computed: mapState({
@@ -95,10 +116,22 @@ export default {
   methods: {
     ...mapActions(["toggleMaterialPopup", "loadAllUnit", "insertMaterial"]),
     /**
+     * Người dùng ấn đóng popup
+     * Author: linhpv (19/08/2022)
+     */
+    handleClosePopup() {
+      if (objectEqual(this.newMaterial, {})) {
+        this.toggleMaterialPopup();
+      } else {
+        this.dialogMsg = resources[`${this.langCode}_Data_Changed`];
+        this.isShowConfirmDialog = true;
+      }
+    },
+    /**
      * Thêm đơn vị tính mới
      * Author: linhpv (15/08/2022)
      */
-    handleStoreUnit() {
+    handleStoreMaterial() {
       this.focusElm = undefined;
       if (this.validateData()) {
         this.insertMaterial(this.newMaterial);

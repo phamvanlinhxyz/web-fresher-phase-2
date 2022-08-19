@@ -1,11 +1,12 @@
 import { constants } from "@/config";
 import enums from "@/enums";
+import resources from "@/resources";
 import axios from "axios";
 
 const state = {
   dishs: [], // Danh sách món ăn theo phân trang
   selectedDish: {}, // Món ăn được chọn
-  pageSize: 100, // Số lượng món ăn trên 1 trang 
+  pageSize: 100, // Số lượng món ăn trên 1 trang
   pageIndex: 1, // Số trang
   filterObjects: [], // Object các trường lọc
   isLoadingDish: false, // Trạng thái đang load món ăn
@@ -16,7 +17,7 @@ const state = {
   isShowUnitPopup: false, // Trạng thái show popup thêm đơn vị tính
   isShowMaterialPopup: false, // Trạng thái show popup thêm nguyên vật liệu
   formMode: enums.formMode.Add, // Mode của form
-  menuGroups: [], // Danh sách nhóm thực đơn 
+  menuGroups: [], // Danh sách nhóm thực đơn
   units: [], // Danh sách đơn vị tính
   kitchens: [], // Danh sách bếp
   materials: [], // Danh sách nguyên vật liệu
@@ -24,7 +25,12 @@ const state = {
 
 const mutations = {
   UPDATE_DISH(state, payload) {
-    state.selectedDish = payload
+    state.dishs = state.dishs.map((dish) => {
+      if (dish.DishID == payload.DishID) {
+        return payload;
+      }
+      return dish;
+    });
     state.isShowDishPopup = false;
   },
   INSERT_MATERIAL(state, payload) {
@@ -111,10 +117,15 @@ const actions = {
    * Author: linhpv (18/08/2022)
    */
   async updateDish(ctx, dish) {
-    const res = await axios.put(`${constants.API_URL}/api/${constants.API_VERSION}/Dish`, dish);
-    
+    const res = await axios.put(
+      `${constants.API_URL}/api/${constants.API_VERSION}/Dish`,
+      dish
+    );
+
     if (res.data.Success) {
       ctx.commit("UPDATE_DISH", dish);
+    } else {
+      handleError(ctx, res);
     }
   },
   /**
@@ -132,6 +143,8 @@ const actions = {
     if (res.data.Success) {
       material.MaterialID = res.data.Data;
       ctx.commit("INSERT_MATERIAL", material);
+    } else {
+      handleError(ctx, res);
     }
   },
   /**
@@ -171,6 +184,8 @@ const actions = {
     if (res.data.Success) {
       unit.UnitID = res.data.Data;
       ctx.commit("INSERT_UNIT", unit);
+    } else {
+      handleError(ctx, res);
     }
   },
   /**
@@ -188,6 +203,8 @@ const actions = {
     if (res.data.Success) {
       menuGroup.MenuGroupID = res.data.Data;
       ctx.commit("INSERT_MENU_GROUP", menuGroup);
+    } else {
+      handleError(ctx, res);
     }
   },
   /**
@@ -214,6 +231,8 @@ const actions = {
     if (res.data.Success) {
       dish.DishID = res.data.Data;
       ctx.commit("INSERT_DISH", dish);
+    } else {
+      handleError(ctx, res);
     }
   },
   /**
@@ -229,6 +248,8 @@ const actions = {
 
     if (res.data.Success) {
       ctx.commit("DELETE_DISH", dishID);
+    } else {
+      handleError(ctx, res);
     }
   },
   /**
@@ -361,10 +382,33 @@ const actions = {
 
     if (res.data.Success) {
       ctx.commit("LOAD_DISHS_BY_PAGING", res.data.Data);
+    } else {
+      handleError(ctx, res);
     }
 
     ctx.commit("TOGGLE_LOADING");
   },
+};
+
+/**
+ * Xử lý lỗi trả về
+ * @param {*} ctx context
+ * @param {*} res response trả về
+ * Author: linhpv (19/08/2022)
+ */
+const handleError = (ctx, res) => {
+  let msg = res.data.UserMsg;
+  // Nếu msg trả về trống => hiển thị thông báo đã có lỗi
+  if (!msg || msg == "") {
+    msg = resources.VN_Error_Msg;
+  }
+
+  // Commit dialog
+  ctx.commit(
+    "CHANGE_DIALOG_CONTENT",
+    msg.split(";").map((m) => m.trim())
+  );
+  ctx.commit("TOGGLE_DIALOG");
 };
 
 export default {

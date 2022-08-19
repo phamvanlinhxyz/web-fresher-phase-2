@@ -6,7 +6,7 @@
           <div>
             {{ formTitle }}
           </div>
-          <div @click="toggleDishPopup">
+          <div @click="handleClosePopup">
             <base-icon iconName="x-close" />
           </div>
         </div>
@@ -282,6 +282,24 @@
       </div>
     </div>
   </div>
+  <!-- Dialog confirm đóng popup -->
+  <base-dialog
+    v-if="isShowConfirmDialog"
+    :message="dialogMsg"
+    :rightButton="[
+      { content: 'Có', type: 'confirm' },
+      { content: 'Không', type: 'no-confirm' },
+      { content: 'Hủy bỏ', type: 'cancel' },
+    ]"
+    @confirm="
+      () => {
+        this.isShowConfirmDialog = false;
+        this.handleStore();
+      }
+    "
+    @no-confirm="toggleDishPopup"
+    @cancel="() => (this.isShowConfirmDialog = false)"
+  />
 </template>
 
 <script>
@@ -290,6 +308,7 @@ import resources from "@/resources";
 import enums from "@/enums";
 import { constants } from "@/config";
 import { mapActions, mapState } from "vuex";
+import { objectEqual } from "@/utils";
 
 export default {
   data() {
@@ -311,6 +330,8 @@ export default {
         MaterialPurchasePrice: 0,
         TotalPrice: 0,
       },
+      isShowConfirmDialog: false,
+      dialogMsg: "",
     };
   },
   computed: mapState({
@@ -332,6 +353,19 @@ export default {
       "loadAllMaterial",
       "updateDish",
     ]),
+    /**
+     * Người dùng ấn đóng popup
+     * Author: linhpv (19/08/2022)
+     */
+    handleClosePopup() {
+      if (objectEqual(this.singleDish, this.selectedDish)) {
+        this.toggleDishPopup();
+      } else {
+        this.dialogMsg = resources[`${this.langCode}_Data_Changed`];
+        this.isShowConfirmDialog = true;
+      }
+    },
+
     /**
      * Lấy định lượng nguyên vật liệu
      * @param {string} dishID Id món ăn
@@ -647,5 +681,5 @@ export default {
 </script>
 
 <style scoped>
-@import url(@/css/view/dishdetail.css);
+@import url(@/css/view/menu/dishdetail.css);
 </style>
