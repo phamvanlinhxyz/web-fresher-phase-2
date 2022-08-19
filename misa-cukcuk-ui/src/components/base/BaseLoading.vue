@@ -2,7 +2,7 @@
   <div class="loading-wrapper">
     <div class="loading">
       <img
-        src="http://cukcukcomnew.misacdn.net/QLNH/resources/images/loadmask/loading.gif"
+        src="@/assets/images/loading.gif"
         width="16"
         height="16"
       />

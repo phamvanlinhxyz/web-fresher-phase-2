@@ -256,7 +256,7 @@ namespace MISA.CUKCUK.Core.Service
             {
                 if (!string.IsNullOrEmpty(errorMsg))
                 {
-                    errorMsg += ", ";
+                    errorMsg += "; ";
                 }
                 errorMsg += Resources.Resource.ResourceManager.GetString($"{langCode}_DishCode_Empty");
             }
@@ -265,7 +265,7 @@ namespace MISA.CUKCUK.Core.Service
             {
                 if (!string.IsNullOrEmpty(errorMsg))
                 {
-                    errorMsg += ", ";
+                    errorMsg += "; ";
                 }
                 errorMsg += Resources.Resource.ResourceManager.GetString($"{langCode}_Unit_Empty");
             }
@@ -274,7 +274,7 @@ namespace MISA.CUKCUK.Core.Service
             {
                 if (!string.IsNullOrEmpty(errorMsg))
                 {
-                    errorMsg += ", ";
+                    errorMsg += "; ";
                 }
                 errorMsg += string.Format(Resources.Resource.ResourceManager.GetString($"{langCode}_Duplicate_DishCode"), dish.DishCode);
             }

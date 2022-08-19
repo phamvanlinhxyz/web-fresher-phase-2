@@ -1,39 +1,39 @@
 <template>
   <div class="menu-list">
     <!-- Tiêu đề -->
-    <div class="menu-list-title">Thực đơn</div>
+    <div class="menu-list-title">{{ contentTitle.menu }}</div>
     <!-- Thanh công cụ -->
     <div class="toolbar">
       <div class="toolbar-button" @click="handleAddDish">
         <div class="toolbar-button-icon">
           <base-icon iconName="insert" />
         </div>
-        <div class="toolbar-button-text">Thêm</div>
+        <div class="toolbar-button-text">{{ toolbarContent.add }}</div>
       </div>
       <div class="toolbar-button" @click="handleReplicateDish">
         <div class="toolbar-button-icon">
           <base-icon iconName="duplicate" />
         </div>
-        <div class="toolbar-button-text">Nhân bản</div>
+        <div class="toolbar-button-text">{{ toolbarContent.copy }}</div>
       </div>
       <div class="toolbar-button" @click="handleEditDish">
         <div class="toolbar-button-icon">
           <base-icon iconName="edit" />
         </div>
-        <div class="toolbar-button-text">Sửa</div>
+        <div class="toolbar-button-text">{{ toolbarContent.edit }}</div>
       </div>
       <div class="toolbar-button" @click="handleDeleteDish">
         <div class="toolbar-button-icon">
           <base-icon iconName="delete" />
         </div>
-        <div class="toolbar-button-text">Xóa</div>
+        <div class="toolbar-button-text">{{ toolbarContent.delete }}</div>
       </div>
       <div class="separator-hor"></div>
       <div class="toolbar-button" @click="handleReload">
         <div class="toolbar-button-icon">
           <base-icon iconName="reload" />
         </div>
-        <div class="toolbar-button-text">Nạp</div>
+        <div class="toolbar-button-text">{{ toolbarContent.reload }}</div>
       </div>
     </div>
     <!-- Bảng -->
@@ -93,6 +93,8 @@ export default {
     return {
       isShowConfirmDialog: false,
       dialogMsg: "",
+      toolbarContent: null,
+      contentTitle: null,
     };
   },
   computed: mapState({
@@ -172,6 +174,10 @@ export default {
       this.setFormMode(enums.formMode.Add);
       this.toggleDishPopup();
     },
+  },
+  created() {
+    this.contentTitle = resources[`${this.langCode}_Menu_Item`];
+    this.toolbarContent = resources[`${this.langCode}_Toolbar`];
   },
 };
 </script>

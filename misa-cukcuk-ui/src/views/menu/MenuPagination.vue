@@ -4,35 +4,35 @@
       <div
         class="pagination-icon"
         @click="handleFirstPage"
-        :class="{ disabled: pageIndex == 1 }"
+        :class="{ disabled: pageIndex == 1 || pageNumber == 0 }"
       >
         <base-icon iconName="page-first" />
       </div>
       <div
         class="pagination-icon"
         @click="handlePrevPage"
-        :class="{ disabled: pageIndex == 1 }"
+        :class="{ disabled: pageIndex == 1 || pageNumber == 0 }"
       >
         <base-icon iconName="page-prev" />
       </div>
       <div class="separator-hor"></div>
-      <div class="pagination-icon">Trang</div>
+      <div class="pagination-icon">{{ pagiContent.page }}</div>
       <form @submit="handleSubmitForm">
         <base-input v-model="pageNumber" />
       </form>
-      <div class="pagination-icon">trên {{ totalPage }}</div>
+      <div class="pagination-icon">{{ pagiContent.of }} {{ totalPage }}</div>
       <div class="separator-hor"></div>
       <div
         class="pagination-icon"
         @click="handleNextPage"
-        :class="{ disabled: pageIndex == totalPage }"
+        :class="{ disabled: pageNumber == totalPage }"
       >
         <base-icon iconName="page-next" />
       </div>
       <div
         class="pagination-icon"
         @click="handleLastPage"
-        :class="{ disabled: pageIndex == totalPage }"
+        :class="{ disabled: pageNumber == totalPage }"
       >
         <base-icon iconName="page-last" />
       </div>
@@ -50,22 +50,25 @@
       />
     </div>
     <div class="menu-pagination-right">
-      <div v-if="!isLoadingDish">
-        Hiển thị {{ (pageIndex - 1) * pageSize + 1 }} -
+      <div v-if="!isLoadingDish && totalRecord != 0">
         {{
-          pageIndex * pageSize < totalRecord
-            ? pageIndex * pageSize
-            : totalRecord
+          pagiContent.record(
+            `${(pageIndex - 1) * pageSize + 1} -  ${
+              pageIndex * pageSize < totalRecord
+                ? pageIndex * pageSize
+                : totalRecord
+            }`,
+            totalRecord
+          )
         }}
-        trên {{ totalRecord }} kết quả
       </div>
-      <div v-if="isLoadingDish">Không có dữ liệu</div>
+      <div v-if="isLoadingDish || totalRecord == 0">{{ pagiContent.noData }}</div>
     </div>
   </div>
 </template>
 
 <script>
-import { thisExpression } from "@babel/types";
+import resources from "@/resources";
 import { mapActions, mapState } from "vuex";
 
 export default {
@@ -86,9 +89,11 @@ export default {
           totalRecordName: 100,
         },
       ],
+      pagiContent: null,
     };
   },
   computed: mapState({
+    langCode: (state) => state.app.langCode,
     pageIndex: (state) => state.dish.pageIndex,
     pageSize: (state) => state.dish.pageSize,
     totalPage: (state) => state.dish.totalPage,
@@ -98,6 +103,13 @@ export default {
   watch: {
     pageIndex(newVal) {
       this.pageNumber = newVal;
+    },
+    totalRecord(newVal) {
+      if (newVal === 0) {
+        this.pageNumber = 0;
+      } else {
+        this.pageNumber = this.pageIndex;
+      }
     },
   },
   methods: {
@@ -174,6 +186,9 @@ export default {
       this.updatePageIndex(this.pageNumber);
       this.loadDishsByPaging();
     },
+  },
+  created() {
+    this.pagiContent = resources[`${this.langCode}_Pagination`];
   },
   mounted() {
     this.pageNumber = this.pageIndex;

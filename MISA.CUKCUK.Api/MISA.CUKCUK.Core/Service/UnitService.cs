@@ -36,17 +36,22 @@ namespace MISA.CUKCUK.Core.Service
         protected override string? Validate(Unit unit)
         {
             var langCode = Common.LanguageCode;
+            string errorMsg = ""; 
             // Check đơn vị tính trống
             if (string.IsNullOrEmpty(unit.UnitName))
-            {
-                return Resources.Resource.ResourceManager.GetString($"{langCode}_Unit_Empty");
+            {   
+                errorMsg += Resources.Resource.ResourceManager.GetString($"{langCode}_Unit_Empty");
             }
             // Check trùng đơn vị tính
             if (_repository.CheckDuplicate(Guid.Empty, unit.UnitName, "UnitName"))
             {
-                return string.Format(Resources.Resource.ResourceManager.GetString($"{langCode}_Duplicate_UnitName"), unit.UnitName);
+                if (!string.IsNullOrEmpty(errorMsg))
+                {
+                    errorMsg += "; ";
+                }
+                errorMsg += string.Format(Resources.Resource.ResourceManager.GetString($"{langCode}_Duplicate_UnitName"), unit.UnitName);
             }
-            return null;
+            return errorMsg;
         }
         #endregion
     }

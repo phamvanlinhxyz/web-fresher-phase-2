@@ -470,7 +470,6 @@ export default {
           this.insertDish(this.singleDish);
         } else if (this.formMode == enums.formMode.Edit) {
           this.updateDish(this.singleDish);
-          // console.log(this.singleDish);
         }
       }
     },

@@ -167,6 +167,7 @@ namespace MISA.CUKCUK.Api.Controllers
             {
                 // Lấy dữ liệu và khởi tạo response
                 var data = _service.PagingService(pageIndex, pageSize, filterObjects);
+
                 Response res = new Response(data: data, success: true, errorCode: ErrorCode.NoError, userMsg: "", devMsg: "");
 
                 // Trả về response

@@ -36,26 +36,39 @@ namespace MISA.CUKCUK.Core.Service
         protected override string? Validate(MenuGroup menuGroup)
         {
             var langCode = Common.LanguageCode;
+            string errorMsg = "";
             // Check mã nhóm trống
             if (string.IsNullOrEmpty(menuGroup.MenuGroupCode))
             {
-                return Resources.Resource.ResourceManager.GetString($"{langCode}_MenuGroupCode_Empty");
+                errorMsg += Resources.Resource.ResourceManager.GetString($"{langCode}_MenuGroupCode_Empty");
             }
             // Check tên nhóm trống
             if (string.IsNullOrEmpty(menuGroup.MenuGroupName))
             {
-                return Resources.Resource.ResourceManager.GetString($"{langCode}_MenuGroupName_Empty");
+                if (!string.IsNullOrEmpty(errorMsg))
+                {
+                    errorMsg += "; ";
+                }
+                errorMsg += Resources.Resource.ResourceManager.GetString($"{langCode}_MenuGroupName_Empty");
             }
             // Check trùng mã nhóm
             if (_repository.CheckDuplicate(Guid.Empty, menuGroup.MenuGroupCode, "MenuGroupCode"))
             {
-                return string.Format(Resources.Resource.ResourceManager.GetString($"{langCode}_Duplicate_MenuGroupCode"), menuGroup.MenuGroupCode);
+                if (!string.IsNullOrEmpty(errorMsg))
+                {
+                    errorMsg += "; ";
+                }
+                errorMsg += string.Format(Resources.Resource.ResourceManager.GetString($"{langCode}_Duplicate_MenuGroupCode"), menuGroup.MenuGroupCode);
             }
             // Check trùng tên nhóm
             if (_repository.CheckDuplicate(Guid.Empty, menuGroup.MenuGroupName, "MenuGroupName")) {
-                return string.Format(Resources.Resource.ResourceManager.GetString($"{langCode}_Duplicate_MenuGroupName"), menuGroup.MenuGroupName);
+                if (!string.IsNullOrEmpty(errorMsg))
+                {
+                    errorMsg += "; ";
+                }
+                errorMsg += string.Format(Resources.Resource.ResourceManager.GetString($"{langCode}_Duplicate_MenuGroupName"), menuGroup.MenuGroupName);
             }
-            return null;
+            return errorMsg;
         }
         #endregion
     }

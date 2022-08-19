@@ -12,24 +12,32 @@
 </template>
 
 <script>
+import resources from "@/resources";
+import { mapState } from "vuex";
 import BaseIcon from "../base/BaseIcon.vue";
 export default {
   components: { BaseIcon },
+  computed: mapState({
+    langCode: (state) => state.app.langCode,
+  }),
   data() {
     return {
-      menuItems: [
-        {
-          path: "/",
-          name: "Tổng quan",
-          icon: "dashboard",
-        },
-        {
-          path: "/menu",
-          name: "Thực đơn",
-          icon: "menu",
-        },
-      ],
+      menuItems: [],
     };
+  },
+  created() {
+    this.menuItems = [
+      {
+        path: "/",
+        name: resources[`${this.langCode}_Menu_Item`].dashboard,
+        icon: "dashboard",
+      },
+      {
+        path: "/menu",
+        name: resources[`${this.langCode}_Menu_Item`].menu,
+        icon: "menu",
+      },
+    ];
   },
 };
 </script>

@@ -3,13 +3,13 @@
     <thead class="table-header">
       <tr>
         <td style="min-width: 159px">
-          <div class="table-column">Loại món</div>
+          <div class="table-column">{{ tableColumn.dishType }}</div>
           <div class="table-filter">
             <input class="input" value="Món ăn" disabled />
           </div>
         </td>
         <td style="min-width: 179px">
-          <div class="table-column">Mã món</div>
+          <div class="table-column">{{ tableColumn.dishCode }}</div>
           <div class="table-filter">
             <div class="filter-type">*</div>
             <input
@@ -21,7 +21,7 @@
           </div>
         </td>
         <td style="min-width: 149px">
-          <div class="table-column">Tên món</div>
+          <div class="table-column">{{ tableColumn.dishName }}</div>
           <div class="table-filter">
             <div class="filter-type">*</div>
             <input
@@ -33,7 +33,7 @@
           </div>
         </td>
         <td style="min-width: 149px">
-          <div class="table-column">Nhóm thực đơn</div>
+          <div class="table-column">{{ tableColumn.menuGroup }}</div>
           <div class="table-filter">
             <div class="filter-type">*</div>
             <input
@@ -50,7 +50,7 @@
           </div>
         </td>
         <td style="min-width: 89px">
-          <div class="table-column">Đơn vị tính</div>
+          <div class="table-column">{{ tableColumn.unit }}</div>
           <div class="table-filter">
             <div class="filter-type">*</div>
             <input
@@ -62,7 +62,7 @@
           </div>
         </td>
         <td style="min-width: 119px">
-          <div class="table-column">Giá bán</div>
+          <div class="table-column">{{ tableColumn.price }}</div>
           <div class="table-filter">
             <div class="filter-type">≤</div>
             <input
@@ -76,31 +76,31 @@
           </div>
         </td>
         <td style="min-width: 150px">
-          <div class="table-column">Thay đổi theo thời giá</div>
+          <div class="table-column">{{ tableColumn.seasonalPrice }}</div>
           <div class="table-filter">
             <input class="input" />
           </div>
         </td>
         <td style="min-width: 149px">
-          <div class="table-column">Điều chỉnh tự do</div>
+          <div class="table-column">{{ tableColumn.flexiblePrice }}</div>
           <div class="table-filter">
             <input class="input" />
           </div>
         </td>
         <td style="min-width: 139px">
-          <div class="table-column">Định lượng NVL</div>
+          <div class="table-column">{{ tableColumn.materialQuantified }}</div>
           <div class="table-filter">
             <input class="input" />
           </div>
         </td>
         <td style="min-width: 149px">
-          <div class="table-column">Hiển thị trên thực đơn</div>
+          <div class="table-column">{{ tableColumn.showOnMenu }}</div>
           <div class="table-filter">
             <input class="input" />
           </div>
         </td>
         <td style="min-width: 89px">
-          <div class="table-column">Ngừng bán</div>
+          <div class="table-column">{{ tableColumn.stopSale }}</div>
           <div class="table-filter">
             <input class="input" value="Không" />
           </div>
@@ -137,15 +137,21 @@
       <base-loading content="Đang lấy dữ liệu" />
     </div>
   </table>
- 
 </template>
 
 <script>
 import enums from "@/enums";
+import resources from "@/resources";
 import { mapActions, mapState } from "vuex";
 
 export default {
+  data() {
+    return {
+      tableColumn: null,
+    };
+  },
   computed: mapState({
+    langCode: (state) => state.app.langCode,
     dishs: (state) => state.dish.dishs,
     selectedDish: (state) => state.dish.selectedDish,
     isLoadingDish: (state) => state.dish.isLoadingDish,
@@ -238,6 +244,7 @@ export default {
   },
   created() {
     this.loadDishsByPaging();
+    this.tableColumn = resources[`${this.langCode}_Table_Column`];
   },
 };
 </script>

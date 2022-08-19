@@ -88,36 +88,33 @@ namespace MISA.Web05.Infrastructure
                                 }
                             }
                             
-
-
-
-
-                            // Xóa danh sách nguyên vật liệu cũ
-                            sqlQuery = "Proc_DeleteMaterialByDish";
-                            parameters = new DynamicParameters();
-                            parameters.Add("$DishID", dish.DishID);
-                            SqlConnection.Execute(sql: sqlQuery, param: parameters, transaction: transaction, commandType: CommandType.StoredProcedure); 
-
-                            // Thêm nguyên vật liệu mới
-                            // Kiểm tra nguyên vật liệu
+                            // Duyệt danh sách định lượng nguyên vật liệu
+                            // Kiểm tra nguyên vật liệu có trống hay không
                             if (dishMaterials != null && dishMaterials.Count > 0)
                             {
-                                // Nếu có nguyên vật liệu thì thêm
-                                var sqlQueryMaterial = "Proc_InsertDishMaterial";
-
                                 foreach (DishMaterial dishMaterial in dishMaterials)
                                 {
-                                    // Tạo param
-                                    var param = new DynamicParameters();
-                                    param.Add("$DishID", dish.DishID);
-                                    param.Add("$MaterialID", dishMaterial.MaterialID);
-                                    param.Add("$MaterialAmount", dishMaterial.MaterialAmount);
-                                    param.Add("$MaterialPurchasePrice", dishMaterial.MaterialPurchasePrice);
-                                    param.Add("$TotalPrice", dishMaterial.MaterialAmount * dishMaterial.MaterialPurchasePrice);
+                                    // Add parameter
+                                    parameters = new DynamicParameters();
+                                    parameters.Add("$DishID", dish.DishID);
+                                    parameters.Add("$MaterialID", dishMaterial.MaterialID);
+                                    parameters.Add("$MaterialAmount", dishMaterial.MaterialAmount);
+                                    parameters.Add("$MaterialPurchasePrice", dishMaterial.MaterialPurchasePrice);
+                                    parameters.Add("$TotalPrice", dishMaterial.MaterialAmount * dishMaterial.MaterialPurchasePrice);
 
+                                    // Check định lượng nguyên vật liệu đã được gán id món ăn chưa
+                                    // Nếu chưa thì thêm mới, rồi thì cập nhật
+                                    if (dishMaterial.DishID == Guid.Empty)
+                                    {
+                                        sqlQuery = "Proc_InsertDishMaterial"; 
+                                    } 
+                                    else
+                                    {
+                                        sqlQuery = "Proc_UpdateDishMaterial";
+                                        parameters.Add("$DishMaterialID", dishMaterial.DishMaterialID);
+                                    }
                                     // Query
-                                    isSuccess = SqlConnection.Execute(sql: sqlQueryMaterial, param: param, transaction: transaction, commandType: CommandType.StoredProcedure) > 0;
-
+                                    isSuccess = SqlConnection.Execute(sql: sqlQuery, param: parameters, transaction: transaction, commandType: CommandType.StoredProcedure) > 0;
                                     // Nếu không thành công thì Rollback
                                     if (!isSuccess)
                                     {
