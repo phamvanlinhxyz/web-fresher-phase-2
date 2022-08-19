@@ -71,11 +71,15 @@
 }
 
 .table-body tr.selected {
-  background-color: #d9e9f4;
+  background-color: #d9e9f4!important;
 }
 
 .table-loading {
   width: 100%;
   height: calc(100% - 63px);
   position: absolute;
+}
+
+.table-body tr:nth-child(even) {
+  background-color: #fafafa;
 }

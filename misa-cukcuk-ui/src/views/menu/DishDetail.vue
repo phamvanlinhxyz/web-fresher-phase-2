@@ -457,6 +457,15 @@ export default {
       });
       // Thêm định lượng nguyên vật liệu vào món ăn
       this.singleDish.DishMaterials = this.dishMaterial;
+      // Thay đổi thuộc tính định lượng nguyên vật liệu
+      if (
+        this.singleDish.DishMaterials &&
+        this.singleDish.DishMaterials.length > 0
+      ) {
+        this.singleDish.MaterialQuantified = enums.yesNo.Yes;
+      } else {
+        this.singleDish.MaterialQuantified = enums.yesNo.No;
+      }
     },
     /**
      * Format lại một số dữ liệu cần thiết
@@ -607,11 +616,22 @@ export default {
     this.loadAllKitchen();
     this.loadAllMaterial();
     // Set món ăn ban đầu
-    this.singleDish = this.selectedDish;
+    this.singleDish = JSON.parse(JSON.stringify(this.selectedDish))
     // Nếu thêm thì set mặc nguyên vật liệu
     if (this.formMode === enums.formMode.Add) {
-      // Set mặc định của định lượng nguyên vật liệu
-      this.dishMaterial.push(JSON.parse(JSON.stringify(this.defaultMaterial)));
+      // Nếu đã đã có món ăn được chọn => nhân bản
+      if (this.singleDish.DishID) {
+        // Lấy nguyên vật liệu của món ăn được nhân bản
+        this.loadDishMaterial(this.singleDish.DishID);
+        // Lấy mã món ăn mới
+        this.getNewCode(this.singleDish.DishName);
+      } else {
+        // Ngược lại là thêm mới
+        // Set mặc định của định lượng nguyên vật liệu
+        this.dishMaterial.push(
+          JSON.parse(JSON.stringify(this.defaultMaterial))
+        );
+      }
     } else if (this.formMode === enums.formMode.Edit) {
       // Nếu sửa thì gọi api lấy các nguyên vật liệu
       this.loadDishMaterial(this.singleDish.DishID);
