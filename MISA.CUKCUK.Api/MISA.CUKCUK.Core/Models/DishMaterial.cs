@@ -33,6 +33,10 @@ namespace MISA.CUKCUK.Core.Models
         /// </summary>
         public string? DishName { get; set; }
         /// <summary>
+        /// Đơn vị tính
+        /// </summary>
+        public string? UnitName { get; set; }
+        /// <summary>
         /// ID nguyên vật liệu
         /// </summary>
         public Guid MaterialID { get; set; }

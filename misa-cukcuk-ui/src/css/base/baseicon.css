@@ -182,6 +182,12 @@
   height: 32px;
 }
 
+.icon-warning-32 {
+  background: url(@/assets/images/icon-warning.png) no-repeat;
+  width: 32px;
+  height: 32px;
+}
+
 .icon-info {
   background: url(@/assets/images/ic_thongtingiavon.png) no-repeat;
   height: 18px;

@@ -138,23 +138,23 @@
     <comment>Tên món ăn bị trống</comment>
   </data>
   <data name="VN_Duplicate_DishCode" xml:space="preserve">
-    <value>Mã món &lt;&lt;{0}&gt;&gt; đã tồn tại trong hệ thống.</value>
+    <value>Mã món &lt;{0}&gt; đã tồn tại trong hệ thống.</value>
     <comment>Mã món ăn bị trùng</comment>
   </data>
   <data name="VN_Duplicate_MaterialCode" xml:space="preserve">
-    <value>Mã NVL &lt;&lt;{0}&gt;&gt; đã tồn tại trong hệ thống.</value>
+    <value>Mã NVL &lt;{0}&gt; đã tồn tại trong hệ thống.</value>
     <comment>Mã nguyên vật liệu trùng</comment>
   </data>
   <data name="VN_Duplicate_MenuGroupCode" xml:space="preserve">
-    <value>Mã nhóm &lt;&lt;{0}&gt;&gt; đã tồn tại trong hệ thống.</value>
+    <value>Mã nhóm &lt;{0}&gt; đã tồn tại trong hệ thống.</value>
     <comment>Mã nhóm thực đơn bị trùng</comment>
   </data>
   <data name="VN_Duplicate_MenuGroupName" xml:space="preserve">
-    <value>Tên nhóm &lt;&lt;{0}&gt;&gt; đã tồn tại trong hệ thống.</value>
+    <value>Tên nhóm &lt;{0}&gt; đã tồn tại trong hệ thống.</value>
     <comment>Tên nhóm thực đơn bị trùng</comment>
   </data>
   <data name="VN_Duplicate_UnitName" xml:space="preserve">
-    <value>Đơn vị tính &lt;&lt;{0}&gt;&gt; đã tồn tại trong hệ thống.</value>
+    <value>Đơn vị tính &lt;{0}&gt; đã tồn tại trong hệ thống.</value>
     <comment>Trùng đơn vị tính</comment>
   </data>
   <data name="VN_MaterialCode_Empty" xml:space="preserve">

@@ -8,6 +8,7 @@ import BaseButton from "./components/base/BaseButton";
 import BaseInput from "./components/base/BaseInput";
 import BaseCombobox from "./components/base/BaseCombobox";
 import BaseLoading from "./components/base/BaseLoading";
+import BaseDialog from "./components/base/BaseDialog";
 
 createApp(App)
   .component("base-icon", BaseIcon)
@@ -15,6 +16,7 @@ createApp(App)
   .component("base-input", BaseInput)
   .component("base-combobox", BaseCombobox)
   .component("base-loading", BaseLoading)
+  .component("base-dialog", BaseDialog)
   .use(store)
   .use(router)
   .mount("#app");

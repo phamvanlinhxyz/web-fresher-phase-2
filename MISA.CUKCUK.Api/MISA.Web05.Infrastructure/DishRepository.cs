@@ -247,20 +247,20 @@ namespace MISA.Web05.Infrastructure
                             if (dishMaterials != null && dishMaterials.Count > 0)
                             {
                                 // Nếu có nguyên vật liệu thì thêm
-                                var sqlQueryMaterial = "Proc_InsertDishMaterial";
+                                sqlQuery = "Proc_InsertDishMaterial";
 
                                 foreach (DishMaterial dishMaterial in dishMaterials)
                                 {
                                     // Tạo param
-                                    var param = new DynamicParameters();
-                                    param.Add("$DishID", newID);
-                                    param.Add("$MaterialID", dishMaterial.MaterialID);
-                                    param.Add("$MaterialAmount", dishMaterial.MaterialAmount);
-                                    param.Add("$MaterialPurchasePrice", dishMaterial.MaterialPurchasePrice);
-                                    param.Add("$TotalPrice", dishMaterial.MaterialAmount * dishMaterial.MaterialPurchasePrice);
+                                    parameters = new DynamicParameters();
+                                    parameters.Add("$DishID", newID);
+                                    parameters.Add("$MaterialID", dishMaterial.MaterialID);
+                                    parameters.Add("$MaterialAmount", dishMaterial.MaterialAmount);
+                                    parameters.Add("$MaterialPurchasePrice", dishMaterial.MaterialPurchasePrice);
+                                    parameters.Add("$TotalPrice", dishMaterial.MaterialAmount * dishMaterial.MaterialPurchasePrice);
 
                                     // Query
-                                    isSuccess = SqlConnection.Execute(sql: sqlQueryMaterial, param: param, transaction: transaction, commandType: CommandType.StoredProcedure) > 0;
+                                    isSuccess = SqlConnection.Execute(sql: sqlQuery, param: parameters, transaction: transaction, commandType: CommandType.StoredProcedure) > 0;
 
                                     // Nếu không thành công thì Rollback
                                     if (!isSuccess)

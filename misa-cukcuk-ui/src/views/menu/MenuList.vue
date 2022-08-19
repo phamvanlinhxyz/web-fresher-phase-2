@@ -10,7 +10,7 @@
         </div>
         <div class="toolbar-button-text">Thêm</div>
       </div>
-      <div class="toolbar-button">
+      <div class="toolbar-button" @click="handleReplicateDish">
         <div class="toolbar-button-icon">
           <base-icon iconName="duplicate" />
         </div>
@@ -22,7 +22,7 @@
         </div>
         <div class="toolbar-button-text">Sửa</div>
       </div>
-      <div class="toolbar-button" @click="toggleDialog">
+      <div class="toolbar-button" @click="handleDeleteDish">
         <div class="toolbar-button-icon">
           <base-icon iconName="delete" />
         </div>
@@ -47,8 +47,17 @@
     <menu-group-form v-if="isShowMGPopup" />
     <unit-form v-if="isShowUnitPopup" />
     <material-form v-if="isShowMaterialPopup" />
-    <!-- Dialog -->
-    <menu-dialog v-if="isShowDialog" />
+    <!-- Dialog confirm xóa -->
+    <base-dialog
+      v-if="isShowConfirmDialog"
+      :message="dialogMsg"
+      :rightButton="[
+        { content: 'Có', type: 'confirm' },
+        { content: 'Không', type: 'no-confirm' },
+      ]"
+      @confirm="handleConfirmDelete"
+      @no-confirm="() => (this.isShowConfirmDialog = false)"
+    />
   </div>
 </template>
 
@@ -61,6 +70,7 @@ import UnitForm from "./UnitForm.vue";
 import MenuDialog from "./MenuDialog.vue";
 import { mapActions, mapState } from "vuex";
 import enums from "@/enums";
+import resources from "@/resources";
 import MaterialForm from "./MaterialForm.vue";
 
 export default {
@@ -73,12 +83,20 @@ export default {
     MenuDialog,
     MaterialForm,
   },
+  data() {
+    return {
+      isShowConfirmDialog: false,
+      dialogMsg: "",
+    };
+  },
   computed: mapState({
+    langCode: (state) => state.app.langCode,
     isShowDialog: (state) => state.app.isShowDialog,
     isShowDishPopup: (state) => state.dish.isShowDishPopup,
     isShowMGPopup: (state) => state.dish.isShowMGPopup,
     isShowUnitPopup: (state) => state.dish.isShowUnitPopup,
     isShowMaterialPopup: (state) => state.dish.isShowMaterialPopup,
+    selectedDish: (state) => state.dish.selectedDish,
   }),
   methods: {
     ...mapActions([
@@ -88,7 +106,35 @@ export default {
       "setFormMode",
       "updatePageIndex",
       "loadDishsByPaging",
+      "deleteDish",
     ]),
+    /**
+     * Người dùng xác nhận xóa món ăn
+     * Author: linhpv (19/08/2022)
+     */
+    handleConfirmDelete() {
+      this.isShowConfirmDialog = false;
+      this.deleteDish(this.selectedDish.DishID);
+    },
+    /**
+     * Người dùng ấn xóa
+     * Author: linhpv (19/08/2022)
+     */
+    handleDeleteDish() {
+      this.isShowConfirmDialog = true;
+      this.dialogMsg = resources[`${this.langCode}_Confirm_Delete`](
+        this.selectedDish.DishCode,
+        this.selectedDish.DishName
+      );
+    },
+    /**
+     * Người dùng ấn nhân bản
+     * Author: linhpv (19/08/2022)
+     */
+    handleReplicateDish() {
+      this.setFormMode(enums.formMode.Add);
+      this.toggleDishPopup();
+    },
     /**
      * Người dùng nạp lại dữ liệu
      * Author: linhpv (18/08/2022)

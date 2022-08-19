@@ -137,6 +137,7 @@
       <base-loading content="Đang lấy dữ liệu" />
     </div>
   </table>
+ 
 </template>
 
 <script>

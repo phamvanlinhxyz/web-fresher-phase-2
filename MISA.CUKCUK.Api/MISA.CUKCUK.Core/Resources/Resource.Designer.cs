@@ -106,7 +106,7 @@ namespace MISA.CUKCUK.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mã món &lt;&lt;{0}&gt;&gt; đã tồn tại trong hệ thống..
+        ///   Looks up a localized string similar to Mã món &lt;{0}&gt; đã tồn tại trong hệ thống..
         /// </summary>
         public static string VN_Duplicate_DishCode {
             get {
@@ -115,7 +115,7 @@ namespace MISA.CUKCUK.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mã NVL &lt;&lt;{0}&gt;&gt; đã tồn tại trong hệ thống..
+        ///   Looks up a localized string similar to Mã NVL &lt;{0}&gt; đã tồn tại trong hệ thống..
         /// </summary>
         public static string VN_Duplicate_MaterialCode {
             get {
@@ -124,7 +124,7 @@ namespace MISA.CUKCUK.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mã nhóm &lt;&lt;{0}&gt;&gt; đã tồn tại trong hệ thống..
+        ///   Looks up a localized string similar to Mã nhóm &lt;{0}&gt; đã tồn tại trong hệ thống..
         /// </summary>
         public static string VN_Duplicate_MenuGroupCode {
             get {
@@ -133,7 +133,7 @@ namespace MISA.CUKCUK.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tên nhóm &lt;&lt;{0}&gt;&gt; đã tồn tại trong hệ thống..
+        ///   Looks up a localized string similar to Tên nhóm &lt;{0}&gt; đã tồn tại trong hệ thống..
         /// </summary>
         public static string VN_Duplicate_MenuGroupName {
             get {
@@ -142,7 +142,7 @@ namespace MISA.CUKCUK.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Đơn vị tính &lt;&lt;{0}&gt;&gt; đã tồn tại trong hệ thống..
+        ///   Looks up a localized string similar to Đơn vị tính &lt;{0}&gt; đã tồn tại trong hệ thống..
         /// </summary>
         public static string VN_Duplicate_UnitName {
             get {

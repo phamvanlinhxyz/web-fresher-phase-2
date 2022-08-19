@@ -28,8 +28,15 @@ const dropdownType = {
   Table: 1,
 };
 
+const dialogButtonType = {
+  NoConfirm: "no-confirm",
+  Confirm: "confirm",
+  Cancel: "cancel",
+};
+
 export default {
   formMode,
   yesNo,
   dropdownType,
+  dialogButtonType,
 };

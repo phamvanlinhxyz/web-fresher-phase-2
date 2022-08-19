@@ -117,7 +117,7 @@ export default {
           this.focusElm = "MaterialCode";
         }
         this.errorList.MaterialCode =
-          resources.validateError[`${this.langCode}_Required_Error`];
+          resources[`${this.langCode}_Required_Error`];
         valid = false;
       }
       if (!this.newMaterial.MaterialName) {
@@ -125,15 +125,14 @@ export default {
           this.focusElm = "MaterialName";
         }
         this.errorList.MaterialName =
-          resources.validateError[`${this.langCode}_Required_Error`];
+          resources[`${this.langCode}_Required_Error`];
         valid = false;
       }
       if (!this.newMaterial.UnitID) {
         if (!this.focusElm) {
           this.focusElm = "UnitID";
         }
-        this.errorList.UnitID =
-          resources.validateError[`${this.langCode}_Required_Error`];
+        this.errorList.UnitID = resources[`${this.langCode}_Required_Error`];
         valid = false;
       }
 
@@ -145,8 +144,7 @@ export default {
      */
     checkInputRequired(column, value) {
       if (!value) {
-        this.errorList[column] =
-          resources.validateError[`${this.langCode}_Required_Error`];
+        this.errorList[column] = resources[`${this.langCode}_Required_Error`];
       } else {
         this.errorList[column] = null;
       }
@@ -160,7 +158,7 @@ export default {
     setValueCombobox(tableName, value) {
       if (!value) {
         this.errorList[`${tableName}ID`] =
-          resources.validateError[`${this.langCode}_Required_Error`];
+          resources[`${this.langCode}_Required_Error`];
         this.newMaterial[`${tableName}ID`] = null;
         this.newMaterial[`${tableName}Name`] = null;
       } else {

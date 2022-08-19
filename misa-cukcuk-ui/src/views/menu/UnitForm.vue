@@ -82,8 +82,7 @@ export default {
         if (!this.focusElm) {
           this.focusElm = "UnitName";
         }
-        this.errorList.UnitName =
-          resources.validateError[`${this.langCode}_Required_Error`];
+        this.errorList.UnitName = resources[`${this.langCode}_Required_Error`];
         valid = false;
       }
 
@@ -95,8 +94,7 @@ export default {
      */
     checkInputRequired(column, value) {
       if (!value) {
-        this.errorList[column] =
-          resources.validateError[`${this.langCode}_Required_Error`];
+        this.errorList[column] = resources[`${this.langCode}_Required_Error`];
       } else {
         this.errorList[column] = null;
       }

@@ -501,8 +501,7 @@ export default {
         if (!this.focusElm) {
           this.focusElm = "DishName";
         }
-        this.errorList.DishName =
-          resources.validateError[`${this.langCode}_Required_Error`];
+        this.errorList.DishName = resources[`${this.langCode}_Required_Error`];
         valid = false;
       }
       // 2. Mã món ăn
@@ -510,8 +509,7 @@ export default {
         if (!this.focusElm) {
           this.focusElm = "DishCode";
         }
-        this.errorList.DishCode =
-          resources.validateError[`${this.langCode}_Required_Error`];
+        this.errorList.DishCode = resources[`${this.langCode}_Required_Error`];
         valid = false;
       }
       // 3. Đơn vị tính
@@ -519,8 +517,7 @@ export default {
         if (!this.focusElm) {
           this.focusElm = "UnitID";
         }
-        this.errorList.UnitID =
-          resources.validateError[`${this.langCode}_Required_Error`];
+        this.errorList.UnitID = resources[`${this.langCode}_Required_Error`];
         valid = false;
       }
       // 4. Giá bán
@@ -528,8 +525,7 @@ export default {
         if (!this.focusElm) {
           this.focusElm = "Price";
         }
-        this.errorList.Price =
-          resources.validateError[`${this.langCode}_Required_Error`];
+        this.errorList.Price = resources[`${this.langCode}_Required_Error`];
         valid = false;
       }
       return valid;
@@ -558,7 +554,7 @@ export default {
     checkComboboxRequired(tableName, value) {
       if (!value) {
         this.errorList[`${tableName}ID`] =
-          resources.validateError[`${this.langCode}_Required_Error`];
+          resources[`${this.langCode}_Required_Error`];
       } else {
         this.errorList[`${tableName}ID`] = null;
       }
@@ -570,8 +566,7 @@ export default {
      */
     checkInputRequired(column, value) {
       if (!value) {
-        this.errorList[column] =
-          resources.validateError[`${this.langCode}_Required_Error`];
+        this.errorList[column] = resources[`${this.langCode}_Required_Error`];
       } else {
         this.errorList[column] = null;
       }
@@ -616,7 +611,7 @@ export default {
     this.loadAllKitchen();
     this.loadAllMaterial();
     // Set món ăn ban đầu
-    this.singleDish = JSON.parse(JSON.stringify(this.selectedDish))
+    this.singleDish = JSON.parse(JSON.stringify(this.selectedDish));
     // Nếu thêm thì set mặc nguyên vật liệu
     if (this.formMode === enums.formMode.Add) {
       // Nếu đã đã có món ăn được chọn => nhân bản

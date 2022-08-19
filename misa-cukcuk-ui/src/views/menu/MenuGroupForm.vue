@@ -127,7 +127,7 @@ export default {
           this.focusElm = "MenuGroupCode";
         }
         this.errorList.MenuGroupCode =
-          resources.validateError[`${this.langCode}_Required_Error`];
+          resources[`${this.langCode}_Required_Error`];
         valid = false;
       }
       // 2. Tên nhóm thực đơn
@@ -136,7 +136,7 @@ export default {
           this.focusElm = "MenuGroupName";
         }
         this.errorList.MenuGroupName =
-          resources.validateError[`${this.langCode}_Required_Error`];
+          resources[`${this.langCode}_Required_Error`];
         valid = false;
       }
       return valid;
@@ -147,8 +147,7 @@ export default {
      */
     checkInputRequired(column, value) {
       if (!value) {
-        this.errorList[column] =
-          resources.validateError[`${this.langCode}_Required_Error`];
+        this.errorList[column] = resources[`${this.langCode}_Required_Error`];
       } else {
         this.errorList[column] = null;
       }
