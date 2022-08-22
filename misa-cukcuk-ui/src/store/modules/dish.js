@@ -13,25 +13,10 @@ const state = {
   totalRecord: 0, // Tổng số món ăn
   totalPage: 0, // Tổng số trang
   isShowDishPopup: false, // Trạng thái show popup thêm sửa món ăn
-  isShowMGPopup: false, // Trang thái show popup thêm nhóm thực đơn
-  isShowUnitPopup: false, // Trạng thái show popup thêm đơn vị tính
-  isShowMaterialPopup: false, // Trạng thái show popup thêm nguyên vật liệu
-  isShowKitchenPopup: false, // Trạng thái show popup thêm bếp
   formMode: enums.formMode.Add, // Mode của form
-  menuGroups: [], // Danh sách nhóm thực đơn
-  units: [], // Danh sách đơn vị tính
-  kitchens: [], // Danh sách bếp
-  materials: [], // Danh sách nguyên vật liệu
 };
 
 const mutations = {
-  TOGGLE_KITCHEN_POPUP(state) {
-    state.isShowKitchenPopup = !state.isShowKitchenPopup;
-  },
-  INSERT_KITCHEN(state, payload) {
-    state.kitchens.unshift(payload);
-    state.isShowKitchenPopup = false;
-  },
   UPDATE_DISH(state, payload) {
     state.dishs = state.dishs.map((dish) => {
       if (dish.DishID == payload.DishID) {
@@ -40,20 +25,6 @@ const mutations = {
       return dish;
     });
     state.isShowDishPopup = false;
-  },
-  INSERT_MATERIAL(state, payload) {
-    state.materials.unshift(payload);
-    state.isShowMaterialPopup = false;
-  },
-  INSERT_UNIT(state, payload) {
-    state.units.unshift(payload);
-    state.selectedDish.UnitID = payload.UnitID;
-    state.isShowUnitPopup = false;
-  },
-  INSERT_MENU_GROUP(state, payload) {
-    state.menuGroups.unshift(payload);
-    state.selectedDish.MenuGroupID = payload.MenuGroupID;
-    state.isShowMGPopup = false;
   },
   SET_FORM_MODE(state, payload) {
     state.formMode = payload;
@@ -69,27 +40,6 @@ const mutations = {
   },
   SELECT_DISH(state, payload) {
     state.selectedDish = payload;
-  },
-  TOGGLE_MATERIAL_POPUP(state) {
-    state.isShowMaterialPopup = !state.isShowMaterialPopup;
-  },
-  TOGGLE_UNIT_POPUP(state) {
-    state.isShowUnitPopup = !state.isShowUnitPopup;
-  },
-  TOGGLE_MG_POPUP(state) {
-    state.isShowMGPopup = !state.isShowMGPopup;
-  },
-  LOAD_ALL_MATERIAL(state, payload) {
-    state.materials = payload;
-  },
-  LOAD_ALL_KITCHEN(state, payload) {
-    state.kitchens = payload;
-  },
-  LOAD_ALL_UNIT(state, payload) {
-    state.units = payload;
-  },
-  LOAD_ALL_MENU_GROUP(state, payload) {
-    state.menuGroups = payload;
   },
   TOGGLE_DISH_POPUP(state) {
     state.isShowDishPopup = !state.isShowDishPopup;
@@ -119,33 +69,6 @@ const mutations = {
 
 const actions = {
   /**
-   * Thêm bếp mới
-   * @param {*} ctx context
-   * @param {*} kitchen bếp
-   * Created by: linhpv (22/08/2022)
-   */
-  async insertKitchen(ctx, kitchen) {
-    const res = await axios.post(
-      `${constants.API_URL}/api/${constants.API_VERSION}/Kitchen`,
-      kitchen
-    );
-
-    if (res.data.Success) {
-      kitchen.KitchenID = res.data.Data;
-      ctx.commit("INSERT_KITCHEN", kitchen);
-    } else {
-      handleError(ctx, res);
-    }
-  },
-  /**
-   * Đóng mở popup thêm bếp
-   * @param {*} ctx context
-   * Created by: linhpv (22/08/2022)
-   */
-  toggleKitchenPopup(ctx) {
-    ctx.commit("TOGGLE_KITCHEN_POPUP");
-  },
-  /**
    * Cập nhật thông tin món ăn
    * @param {*} ctx context
    * @param {object} dish món ăn
@@ -163,85 +86,7 @@ const actions = {
       handleError(ctx, res);
     }
   },
-  /**
-   * Thêm nguyên vật liệu mới
-   * @param {*} ctx  context
-   * @param {object} material nguyên vật liệu mới
-   * Author: linhpv (16/08/2022)
-   */
-  async insertMaterial(ctx, material) {
-    const res = await axios.post(
-      `${constants.API_URL}/api/${constants.API_VERSION}/Material`,
-      material
-    );
-
-    if (res.data.Success) {
-      material.MaterialID = res.data.Data;
-      ctx.commit("INSERT_MATERIAL", material);
-    } else {
-      handleError(ctx, res);
-    }
-  },
-  /**
-   * Đóng, mở popup thêm nguyên vật liệu
-   * @param {*} ctx context
-   * Author: linhpv (16/08/2022)
-   */
-  toggleMaterialPopup(ctx) {
-    ctx.commit("TOGGLE_MATERIAL_POPUP");
-  },
-  /**
-   * Lấy tất cả nguyên vật liệu
-   * @param {*} ctx context
-   * Author: linhpv (16/08/2022)
-   */
-  async loadAllMaterial(ctx) {
-    const res = await axios.get(
-      `${constants.API_URL}/api/${constants.API_VERSION}/Material`
-    );
-
-    if (res.data.Success) {
-      ctx.commit("LOAD_ALL_MATERIAL", res.data.Data);
-    }
-  },
-  /**
-   * Thêm đơn vị tính mới
-   * @param {*} ctx context
-   * @param {object} unit đơn vị tính
-   * Author: linhpv (15/08/2022)
-   */
-  async insertUnit(ctx, unit) {
-    const res = await axios.post(
-      `${constants.API_URL}/api/${constants.API_VERSION}/Unit`,
-      unit
-    );
-
-    if (res.data.Success) {
-      unit.UnitID = res.data.Data;
-      ctx.commit("INSERT_UNIT", unit);
-    } else {
-      handleError(ctx, res);
-    }
-  },
-  /**
-   * Thêm nhóm thực đơn mới
-   * @param {*} ctx context
-   * @param {object} menuGroup món ăn mới
-   * Author: linhpv (15/08/2022)
-   */
-  async insertMenuGroup(ctx, menuGroup) {
-    const res = await axios.post(
-      `${constants.API_URL}/api/${constants.API_VERSION}/MenuGroup`,
-      menuGroup
-    );
-
-    if (res.data.Success) {
-      menuGroup.MenuGroupID = res.data.Data;
-      ctx.commit("INSERT_MENU_GROUP", menuGroup);
-    } else {
-      handleError(ctx, res);
-    }
-  },
+ 
   /**
    * Thay đổi form mode
    * @param {*} ctx context
@@ -295,64 +140,6 @@ const actions = {
    */
   selectDish(ctx, dish) {
     ctx.commit("SELECT_DISH", dish);
-  },
-  /**
-   * Đóng mở popup thêm đơn vị tính
-   * @param {*} ctx context
-   * Author: linhpv (11/08/2022)
-   */
-  toggleUnitPopup(ctx) {
-    ctx.commit("TOGGLE_UNIT_POPUP");
-  },
-  /**
-   * Đóng mở popup thêm nhóm thực đơn
-   * @param {*} ctx context
-   * Author: linhpv (11/08/2022)
-   */
-  toggleMenuGroupPopup(ctx) {
-    ctx.commit("TOGGLE_MG_POPUP");
-  },
-  /**
-   * Lấy tất cả các bếp
-   * @param {*} ctx context
-   * Author: linhpv (11/08/2022)
-   */
-  async loadAllKitchen(ctx) {
-    const res = await axios.get(
-      `${constants.API_URL}/api/${constants.API_VERSION}/Kitchen`
-    );
-
-    if (res.data.Success) {
-      ctx.commit("LOAD_ALL_KITCHEN", res.data.Data);
-    }
-  },
-  /**
-   * Lấy tất cả đơn vị tính
-   * @param {*} ctx context
-   * Author: linhpv (11/08/2022)
-   */
-  async loadAllUnit(ctx) {
-    const res = await axios.get(
-      `${constants.API_URL}/api/${constants.API_VERSION}/Unit`
-    );
-
-    if (res.data.Success) {
-      ctx.commit("LOAD_ALL_UNIT", res.data.Data);
-    }
-  },
-  /**
-   * Lấy tất cả nhóm thực đơn
-   * @param {*} ctx context
-   * Author: linhpv (11/08/2022)
-   */
-  async loadAllMenuGroup(ctx) {
-    const res = await axios.get(
-      `${constants.API_URL}/api/${constants.API_VERSION}/MenuGroup`
-    );
-
-    if (res.data.Success) {
-      ctx.commit("LOAD_ALL_MENU_GROUP", res.data.Data);
-    }
   },
   /**
    * Đóng mở popup thêm món ăn

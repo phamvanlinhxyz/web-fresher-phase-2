@@ -10,19 +10,25 @@
     <h1>Input</h1>
     <base-input type="text" v-model="testBind" />
     <br />
+    <base-input type="text" disabled="true" />
+    <br />
     <base-input
       type="text"
       errorMessage="Trường này không được phép để trống"
-      disabled="true"
     />
     <br />
     <h1>Combobox</h1>
     <base-combobox :listItem="testData" tableName="Material" />
     <br />
-    <base-combobox :listItem="testData" :addIcon="true" tableName="Material" disabled="true" />
+    <base-combobox
+      :listItem="testData"
+      :addIcon="true"
+      tableName="Material"
+      disabled="true"
+    />
     <br />
     <h1>Loading</h1>
-    <div style="position: relative; width: 100%; height: 200px">
+    <div style="position: relative; width: 100%; height: 180px">
       <base-loading content="Đang lấy dữ liệu" />
     </div>
   </div>
@@ -52,7 +58,7 @@ export default {
           MaterialName: "Thịt gà",
         },
       ],
-      testBind: "ádsad",
+      testBind: "Binding dữ liệu",
     };
   },
 };

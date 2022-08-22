@@ -102,7 +102,11 @@ export default {
     },
   },
   created() {
-    this.inputClass = ["input", this.hideBorder ? "hide-border" : null];
+    this.inputClass = [
+      "input",
+      this.hideBorder ? "hide-border" : null,
+      this.errorMessage ? "input-error" : null,
+    ];
   },
   mounted() {
     if (this.focus) {

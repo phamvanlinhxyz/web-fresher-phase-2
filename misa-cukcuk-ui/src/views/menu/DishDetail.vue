@@ -139,12 +139,16 @@
                   <div style="display: flex; margin-top: 6px">
                     <div class="pdi-image">
                       <img
+                        v-if="!singleDish.LinkImage"
                         ref="imagePreview"
-                        :src="
-                          singleDish.LinkImage
-                            ? `${serverLink}${singleDish.LinkImage}`
-                            : 'https://misathai.cukcuk.com/Handler/ImageHandler.ashx?FileType=1&IsTemp=True&W=160&H=120&IsFit=true'
-                        "
+                        src="@/assets/images/ImageHandler.png"
+                        width="160"
+                        height="120"
+                      />
+                      <img
+                        v-if="singleDish.LinkImage"
+                        ref="imagePreview"
+                        :src="`${serverLink}${singleDish.LinkImage}`"
                         width="160"
                         height="120"
                       />
@@ -339,14 +343,15 @@ export default {
       isShowConfirmDialog: false,
       dialogMsg: "",
       serverLink: "",
+      imageFile: null,
     };
   },
   computed: mapState({
     langCode: (state) => state.app.langCode,
-    menuGroups: (state) => state.dish.menuGroups,
-    units: (state) => state.dish.units,
-    kitchens: (state) => state.dish.kitchens,
-    materials: (state) => state.dish.materials,
+    menuGroups: (state) => state.menuGroup.menuGroups,
+    units: (state) => state.unit.units,
+    kitchens: (state) => state.kitchen.kitchens,
+    materials: (state) => state.material.materials,
     selectedDish: (state) => state.dish.selectedDish,
     formMode: (state) => state.dish.formMode,
   }),
@@ -465,7 +470,7 @@ export default {
      * Người dùng ấn cất
      * Author: linhpv (12/08/2022)
      */
-    handleStore() {
+    async handleStore() {
       this.focusElm = "";
       var valid = this.validateData();
       if (valid) {
@@ -473,6 +478,13 @@ export default {
         this.formatData();
         // Xử lý định lượng nguyên vật liệu
         this.handleDishMaterial();
+        // Upload ảnh và lấy link
+        let formData = new FormData();
+        formData.append("image", this.imageFile);
+        const link = await this.handleUploadImage(formData);
+        if (link) {
+          this.singleDish.LinkImage = link;
+        }
         // Check formMode
         if (this.formMode == enums.formMode.Add) {
           this.insertDish(this.singleDish);
@@ -676,7 +688,7 @@ export default {
      * @param {*} e
      * Author: linhpv (10/08/2022)
      */
-    async handleChangeImage(e) {
+    handleChangeImage(e) {
       const file = e.target.files[0];
 
       // Kiểm tra dung lượng ảnh có hợp lệ hay không
@@ -690,14 +702,7 @@ export default {
         URL.revokeObjectURL(imgPreview.src);
         imgPreview.src = URL.createObjectURL(file);
 
-        let formData = new FormData();
-        formData.append("image", file);
-
-        const link = await this.handleUploadImage(formData);
-
-        if (link) {
-          this.singleDish.LinkImage = link;
-        }
+        this.imageFile = file;
       }
       e.target.value = null;
     },
@@ -706,12 +711,12 @@ export default {
    * Xử lý các xự kiện khi khởi tạo component
    * Author: linhpv (12/08/2022)
    */
-  created() {
+  async created() {
     // Load các dữ liệu cần thiết
-    this.loadAllMenuGroup();
-    this.loadAllUnit();
-    this.loadAllKitchen();
-    this.loadAllMaterial();
+    await this.loadAllMenuGroup();
+    await this.loadAllUnit();
+    await this.loadAllKitchen();
+    await this.loadAllMaterial();
     // Set món ăn ban đầu
     this.singleDish = JSON.parse(JSON.stringify(this.selectedDish));
     // Nếu thêm thì set mặc nguyên vật liệu
@@ -721,7 +726,7 @@ export default {
         // Lấy nguyên vật liệu của món ăn được nhân bản
         this.loadDishMaterial(this.singleDish.DishID);
         // Lấy mã món ăn mới
-        this.getNewCode(this.singleDish.DishName);
+        await this.getNewCode(this.singleDish.DishName);
       } else {
         // Ngược lại là thêm mới
         // Set mặc định của định lượng nguyên vật liệu

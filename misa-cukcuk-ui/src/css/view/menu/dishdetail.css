@@ -195,8 +195,21 @@ fieldset {
   padding: 7px 10px;
 }
 
+.pdi-table thead td div:hover {
+  background-color: #eef6fb;
+  cursor: default;
+}
+
 .pdi-table thead td:not(:last-child) {
   border-right: 1px solid #c1c1c1;
+}
+
+.pdi-table tbody tr:hover {
+  background-color:#e2eff8
+}
+
+.pdi-table tbody tr:hover input {
+  background-color:#e2eff8
 }
 
 .pdi-table tbody td {
