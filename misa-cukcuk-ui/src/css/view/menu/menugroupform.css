@@ -60,3 +60,11 @@
   border-radius: 4px;
   background-color: #0072bc;
 }
+
+.kitchen-form {
+  width: 485px;
+  z-index: 101;
+  position: fixed;
+  border-radius: 4px;
+  background-color: #0072bc;
+}

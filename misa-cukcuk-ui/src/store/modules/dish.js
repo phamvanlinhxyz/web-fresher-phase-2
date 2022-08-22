@@ -16,6 +16,7 @@ const state = {
   isShowMGPopup: false, // Trang thái show popup thêm nhóm thực đơn
   isShowUnitPopup: false, // Trạng thái show popup thêm đơn vị tính
   isShowMaterialPopup: false, // Trạng thái show popup thêm nguyên vật liệu
+  isShowKitchenPopup: false, // Trạng thái show popup thêm bếp
   formMode: enums.formMode.Add, // Mode của form
   menuGroups: [], // Danh sách nhóm thực đơn
   units: [], // Danh sách đơn vị tính
@@ -24,6 +25,13 @@ const state = {
 };
 
 const mutations = {
+  TOGGLE_KITCHEN_POPUP(state) {
+    state.isShowKitchenPopup = !state.isShowKitchenPopup;
+  },
+  INSERT_KITCHEN(state, payload) {
+    state.kitchens.unshift(payload);
+    state.isShowKitchenPopup = false;
+  },
   UPDATE_DISH(state, payload) {
     state.dishs = state.dishs.map((dish) => {
       if (dish.DishID == payload.DishID) {
@@ -110,6 +118,33 @@ const mutations = {
 };
 
 const actions = {
+  /**
+   * Thêm bếp mới
+   * @param {*} ctx context
+   * @param {*} kitchen bếp
+   * Created by: linhpv (22/08/2022)
+   */
+  async insertKitchen(ctx, kitchen) {
+    const res = await axios.post(
+      `${constants.API_URL}/api/${constants.API_VERSION}/Kitchen`,
+      kitchen
+    );
+
+    if (res.data.Success) {
+      kitchen.KitchenID = res.data.Data;
+      ctx.commit("INSERT_KITCHEN", kitchen);
+    } else {
+      handleError(ctx, res);
+    }
+  },
+  /**
+   * Đóng mở popup thêm bếp
+   * @param {*} ctx context
+   * Created by: linhpv (22/08/2022)
+   */
+  toggleKitchenPopup(ctx) {
+    ctx.commit("TOGGLE_KITCHEN_POPUP");
+  },
   /**
    * Cập nhật thông tin món ăn
    * @param {*} ctx context

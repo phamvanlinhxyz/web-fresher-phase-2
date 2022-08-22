@@ -112,6 +112,7 @@
                   <base-combobox
                     :listItem="kitchens"
                     tableName="Kitchen"
+                    :addIcon="true"
                     :value="singleDish.KitchenID"
                     @change="(val) => this.setValueCombobox('Kitchen', val)"
                   />

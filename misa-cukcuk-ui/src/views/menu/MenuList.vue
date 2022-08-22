@@ -47,6 +47,7 @@
     <menu-group-form v-if="isShowMGPopup" />
     <unit-form v-if="isShowUnitPopup" />
     <material-form v-if="isShowMaterialPopup" />
+    <kitchen-form v-if="isShowKitchenPopup" />
     <!-- Dialog confirm xóa -->
     <base-dialog
       v-if="isShowConfirmDialog"
@@ -79,6 +80,7 @@ import { mapActions, mapState } from "vuex";
 import enums from "@/enums";
 import resources from "@/resources";
 import MaterialForm from "./MaterialForm.vue";
+import KitchenForm from "./KitchenForm.vue";
 
 export default {
   components: {
@@ -88,6 +90,7 @@ export default {
     MenuGroupForm,
     UnitForm,
     MaterialForm,
+    KitchenForm,
   },
   data() {
     return {
@@ -105,6 +108,7 @@ export default {
     isShowMGPopup: (state) => state.dish.isShowMGPopup,
     isShowUnitPopup: (state) => state.dish.isShowUnitPopup,
     isShowMaterialPopup: (state) => state.dish.isShowMaterialPopup,
+    isShowKitchenPopup: (state) => state.dish.isShowKitchenPopup,
     selectedDish: (state) => state.dish.selectedDish,
   }),
   methods: {

@@ -1,5 +1,5 @@
 const state = {
-  langCode: "VI", // Mã ngôn ngữ
+  langCode: "EN", // Mã ngôn ngữ
   isShowMenu: true, // Trạng thái hiển thị menu
   isShowDialog: false, // Trạng thái hiển thị dialog
   dialogContent: null, // Nội dung hiển thị trong dialog

@@ -77,3 +77,18 @@ input::-webkit-inner-spin-button {
   text-align: right;
   -moz-appearance: textfield;
 }
+
+.radio-group {
+  display: flex;
+}
+
+.radio-group label {
+  display: flex;
+  margin-right: 15px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+.input-radio {
+  display: none;
+}

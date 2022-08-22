@@ -193,3 +193,14 @@
   height: 18px;
   width: 18px;
 }
+
+.icon-radio {
+  background: url(@/assets/images/radio.png) no-repeat;
+  width: 15px;
+  height: 15px;
+  margin-right: 4px;
+}
+
+.input-radio:checked + label > .icon-radio {
+  background-position: 0 -15px;
+}

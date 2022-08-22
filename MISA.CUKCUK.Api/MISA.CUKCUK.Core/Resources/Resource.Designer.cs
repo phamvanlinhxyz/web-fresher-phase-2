@@ -88,7 +88,7 @@ namespace MISA.CUKCUK.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mã món không được phép để trống..
+        ///   Looks up a localized string similar to Mã món không được để trống..
         /// </summary>
         public static string VN_DishCode_Empty {
             get {
@@ -160,7 +160,16 @@ namespace MISA.CUKCUK.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mã NVL không được phép để trống..
+        ///   Looks up a localized string similar to Tên bếp không được để trống..
+        /// </summary>
+        public static string VN_KitchenName_Empty {
+            get {
+                return ResourceManager.GetString("VN_KitchenName_Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mã NVL không được để trống..
         /// </summary>
         public static string VN_MaterialCode_Empty {
             get {
@@ -169,7 +178,7 @@ namespace MISA.CUKCUK.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tên NVL không được phép để trống..
+        ///   Looks up a localized string similar to Tên NVL không được để trống..
         /// </summary>
         public static string VN_MaterialName_Empty {
             get {
@@ -178,7 +187,7 @@ namespace MISA.CUKCUK.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mã nhóm thực đơn không được phép để trống..
+        ///   Looks up a localized string similar to Mã nhóm thực đơn không được để trống..
         /// </summary>
         public static string VN_MenuGroupCode_Empty {
             get {
@@ -187,7 +196,7 @@ namespace MISA.CUKCUK.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tên nhóm thực đơn không được phép để trống..
+        ///   Looks up a localized string similar to Tên nhóm thực đơn không được để trống..
         /// </summary>
         public static string VN_MenuGroupName_Empty {
             get {
@@ -205,7 +214,7 @@ namespace MISA.CUKCUK.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Đơn vị tính không được phép để trống..
+        ///   Looks up a localized string similar to Đơn vị tính không được để trống..
         /// </summary>
         public static string VN_Unit_Empty {
             get {

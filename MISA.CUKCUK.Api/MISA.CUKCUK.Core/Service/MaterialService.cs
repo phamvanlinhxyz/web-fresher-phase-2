@@ -28,6 +28,7 @@ namespace MISA.CUKCUK.Core.Service
         /// </summary>
         /// <param name="entity">bản ghi cần validate</param>
         /// <returns>null - nếu valid, lỗi - nếu không valid</returns>
+        /// Created by: linhpv (22/08/2022)
         protected override string? Validate(Material entity)
         {
             var langCode = Common.LanguageCode;

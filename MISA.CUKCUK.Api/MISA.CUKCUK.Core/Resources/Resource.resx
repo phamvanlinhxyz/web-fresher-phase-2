@@ -130,7 +130,7 @@
     <comment>Thiết bị máy tính bảng</comment>
   </data>
   <data name="VN_DishCode_Empty" xml:space="preserve">
-    <value>Mã món không được phép để trống.</value>
+    <value>Mã món không được để trống.</value>
     <comment>Mã món ăn bị trống</comment>
   </data>
   <data name="VN_DishName_Empty" xml:space="preserve">
@@ -161,20 +161,24 @@
     <value>Ảnh không tải được do vượt quá dung lượng. Vui lòng chọn ảnh có dung lượng nhỏ hơn 5 MB.</value>
     <comment>Ảnh quá dung lượng</comment>
   </data>
+  <data name="VN_KitchenName_Empty" xml:space="preserve">
+    <value>Tên bếp không được để trống.</value>
+    <comment>Tên bếp trống</comment>
+  </data>
   <data name="VN_MaterialCode_Empty" xml:space="preserve">
-    <value>Mã NVL không được phép để trống.</value>
+    <value>Mã NVL không được để trống.</value>
     <comment>Mã NVL trống</comment>
   </data>
   <data name="VN_MaterialName_Empty" xml:space="preserve">
-    <value>Tên NVL không được phép để trống.</value>
+    <value>Tên NVL không được để trống.</value>
     <comment>Tên NVL trống</comment>
   </data>
   <data name="VN_MenuGroupCode_Empty" xml:space="preserve">
-    <value>Mã nhóm thực đơn không được phép để trống.</value>
+    <value>Mã nhóm thực đơn không được để trống.</value>
     <comment>Mã nhóm thực đơn để trống</comment>
   </data>
   <data name="VN_MenuGroupName_Empty" xml:space="preserve">
-    <value>Tên nhóm thực đơn không được phép để trống.</value>
+    <value>Tên nhóm thực đơn không được để trống.</value>
     <comment>Tên nhóm thực đơn để trống</comment>
   </data>
   <data name="VN_Server_Error" xml:space="preserve">
@@ -182,7 +186,7 @@
     <comment>Lỗi server</comment>
   </data>
   <data name="VN_Unit_Empty" xml:space="preserve">
-    <value>Đơn vị tính không được phép để trống.</value>
+    <value>Đơn vị tính không được để trống.</value>
     <comment>Đơn vị tính bị trống</comment>
   </data>
 </root>
