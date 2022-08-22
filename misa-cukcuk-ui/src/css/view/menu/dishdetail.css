@@ -101,6 +101,10 @@ fieldset {
   height: 160px;
 }
 
+.pdi-image img {
+  object-fit: contain;
+}
+
 .pdi-image-text {
   font-size: 12px;
   text-align: center;

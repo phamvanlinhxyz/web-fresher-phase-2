@@ -60,7 +60,11 @@
             <base-button content="Giúp" icon="question-circle" />
           </div>
           <div class="pdf-right">
-            <base-button content="Cất" icon="save" @click="handleStoreMaterial" />
+            <base-button
+              content="Cất"
+              icon="save"
+              @click="handleStoreMaterial"
+            />
             <base-button
               content="Hủy"
               icon="cancel"
@@ -150,7 +154,7 @@ export default {
           this.focusElm = "MaterialCode";
         }
         this.errorList.MaterialCode =
-          resources[`${this.langCode}_Required_Error`];
+          resources[`${this.langCode}_Error_Msg`].required;
         valid = false;
       }
       if (!this.newMaterial.MaterialName) {
@@ -158,14 +162,15 @@ export default {
           this.focusElm = "MaterialName";
         }
         this.errorList.MaterialName =
-          resources[`${this.langCode}_Required_Error`];
+          resources[`${this.langCode}_Error_Msg`].required;
         valid = false;
       }
       if (!this.newMaterial.UnitID) {
         if (!this.focusElm) {
           this.focusElm = "UnitID";
         }
-        this.errorList.UnitID = resources[`${this.langCode}_Required_Error`];
+        this.errorList.UnitID =
+          resources[`${this.langCode}_Error_Msg`].required;
         valid = false;
       }
 
@@ -177,7 +182,8 @@ export default {
      */
     checkInputRequired(column, value) {
       if (!value) {
-        this.errorList[column] = resources[`${this.langCode}_Required_Error`];
+        this.errorList[column] =
+          resources[`${this.langCode}_Error_Msg`].required;
       } else {
         this.errorList[column] = null;
       }
@@ -191,7 +197,7 @@ export default {
     setValueCombobox(tableName, value) {
       if (!value) {
         this.errorList[`${tableName}ID`] =
-          resources[`${this.langCode}_Required_Error`];
+          resources[`${this.langCode}_Error_Msg`].required;
         this.newMaterial[`${tableName}ID`] = null;
         this.newMaterial[`${tableName}Name`] = null;
       } else {

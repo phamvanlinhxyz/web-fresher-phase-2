@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Folder Include="Upload\" />
+    <Folder Include="Upload\Dish\" />
   </ItemGroup>
 
   <PropertyGroup>

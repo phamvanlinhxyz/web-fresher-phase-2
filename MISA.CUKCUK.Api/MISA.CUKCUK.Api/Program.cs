@@ -1,3 +1,4 @@
+using Microsoft.Extensions.FileProviders;
 using MISA.CUKCUK.Core.Interfaces.Repositories;
 using MISA.CUKCUK.Core.Interfaces.Services;
 using MISA.CUKCUK.Core.Service;
@@ -5,6 +6,12 @@ using MISA.Web05.Infrastructure;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
+
+StaticFileOptions staticFileOptions = new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Upload")),
+    RequestPath = "/Upload"
+};
 
 // Add services to the container.
 builder.Services.AddCors(options =>
@@ -44,6 +51,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseStaticFiles(staticFileOptions);
 
 app.UseCors(MyAllowSpecificOrigins);
 

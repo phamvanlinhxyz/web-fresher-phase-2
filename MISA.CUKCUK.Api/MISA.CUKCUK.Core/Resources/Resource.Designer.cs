@@ -151,6 +151,15 @@ namespace MISA.CUKCUK.Core.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ảnh không tải được do vượt quá dung lượng. Vui lòng chọn ảnh có dung lượng nhỏ hơn 5 MB..
+        /// </summary>
+        public static string VN_Image_Size_Error {
+            get {
+                return ResourceManager.GetString("VN_Image_Size_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mã NVL không được phép để trống..
         /// </summary>
         public static string VN_MaterialCode_Empty {

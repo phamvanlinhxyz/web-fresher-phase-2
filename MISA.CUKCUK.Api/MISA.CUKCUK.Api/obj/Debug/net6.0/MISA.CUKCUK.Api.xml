@@ -32,6 +32,14 @@
             </summary>
             Created by: linhpv (08/08/2022)
         </member>
+        <member name="M:MISA.CUKCUK.Api.Controllers.DishController.PostImageAsync(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            Upload hình ảnh món ăn
+            </summary>
+            <param name="image">Ảnh món ăn</param>
+            <returns>link ảnh</returns>
+            Created by: linhpv (20/08/2022)
+        </member>
         <member name="M:MISA.CUKCUK.Api.Controllers.DishController.GetListMaterial(System.Guid)">
             <summary>
             Lấy nguyên vật liệu theo món ăn

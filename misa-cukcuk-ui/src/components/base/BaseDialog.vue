@@ -53,7 +53,6 @@ export default {
   },
   created() {
     this.dialogIcon = this.type ? `${this.type}-32` : "question-32";
-    console.log(typeof this.message);
   },
 };
 </script>

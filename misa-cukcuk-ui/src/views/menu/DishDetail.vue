@@ -139,7 +139,11 @@
                     <div class="pdi-image">
                       <img
                         ref="imagePreview"
-                        src="https://misathai.cukcuk.com/Handler/ImageHandler.ashx?FileType=1&IsTemp=True&W=160&H=120&IsFit=true"
+                        :src="
+                          singleDish.LinkImage
+                            ? `${serverLink}${singleDish.LinkImage}`
+                            : 'https://misathai.cukcuk.com/Handler/ImageHandler.ashx?FileType=1&IsTemp=True&W=160&H=120&IsFit=true'
+                        "
                         width="160"
                         height="120"
                       />
@@ -333,6 +337,7 @@ export default {
       deletedDMList: [],
       isShowConfirmDialog: false,
       dialogMsg: "",
+      serverLink: "",
     };
   },
   computed: mapState({
@@ -353,6 +358,8 @@ export default {
       "insertDish",
       "loadAllMaterial",
       "updateDish",
+      "changeDialogContent",
+      "toggleDialog",
     ]),
     /**
      * Người dùng ấn đóng popup
@@ -543,7 +550,8 @@ export default {
         if (!this.focusElm) {
           this.focusElm = "DishName";
         }
-        this.errorList.DishName = resources[`${this.langCode}_Required_Error`];
+        this.errorList.DishName =
+          resources[`${this.langCode}_Error_Msg`].required;
         valid = false;
       }
       // 2. Mã món ăn
@@ -551,7 +559,8 @@ export default {
         if (!this.focusElm) {
           this.focusElm = "DishCode";
         }
-        this.errorList.DishCode = resources[`${this.langCode}_Required_Error`];
+        this.errorList.DishCode =
+          resources[`${this.langCode}_Error_Msg`].required;
         valid = false;
       }
       // 3. Đơn vị tính
@@ -559,7 +568,8 @@ export default {
         if (!this.focusElm) {
           this.focusElm = "UnitID";
         }
-        this.errorList.UnitID = resources[`${this.langCode}_Required_Error`];
+        this.errorList.UnitID =
+          resources[`${this.langCode}_Error_Msg`].required;
         valid = false;
       }
       // 4. Giá bán
@@ -567,7 +577,7 @@ export default {
         if (!this.focusElm) {
           this.focusElm = "Price";
         }
-        this.errorList.Price = resources[`${this.langCode}_Required_Error`];
+        this.errorList.Price = resources[`${this.langCode}_Error_Msg`].required;
         valid = false;
       }
       return valid;
@@ -596,7 +606,7 @@ export default {
     checkComboboxRequired(tableName, value) {
       if (!value) {
         this.errorList[`${tableName}ID`] =
-          resources[`${this.langCode}_Required_Error`];
+          resources[`${this.langCode}_Error_Msg`].required;
       } else {
         this.errorList[`${tableName}ID`] = null;
       }
@@ -608,7 +618,8 @@ export default {
      */
     checkInputRequired(column, value) {
       if (!value) {
-        this.errorList[column] = resources[`${this.langCode}_Required_Error`];
+        this.errorList[column] =
+          resources[`${this.langCode}_Error_Msg`].required;
       } else {
         this.errorList[column] = null;
       }
@@ -630,16 +641,64 @@ export default {
         }
       }
     },
+
+    /**
+     * Xử lý upload ảnh
+     * @param {*} file file ảnh
+     * @returns link ảnh
+     * Author: linhpv (22/08/2022)
+     */
+    async handleUploadImage(file) {
+      const res = await axios.post(
+        `${constants.API_URL}/api/${constants.API_VERSION}/Dish/Image`,
+        file,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (res.data.Success) {
+        return res.data.Data;
+      } else {
+        this.changeDialogContent(
+          resources[`${this.langCode}_Error_Msg`].capacity
+        );
+        this.toggleDialog();
+        return null;
+      }
+    },
+
     /**
      * Preview ảnh
      * @param {*} e
      * Author: linhpv (10/08/2022)
      */
-    handleChangeImage(e) {
-      let imgPreview = this.$refs.imagePreview;
-      URL.revokeObjectURL(imgPreview.src);
+    async handleChangeImage(e) {
       const file = e.target.files[0];
-      imgPreview.src = URL.createObjectURL(file);
+
+      // Kiểm tra dung lượng ảnh có hợp lệ hay không
+      if (file.size > 5 * 1024 * 1024) {
+        this.changeDialogContent(
+          resources[`${this.langCode}_Error_Msg`].capacity
+        );
+        this.toggleDialog();
+      } else {
+        let imgPreview = this.$refs.imagePreview;
+        URL.revokeObjectURL(imgPreview.src);
+        imgPreview.src = URL.createObjectURL(file);
+
+        let formData = new FormData();
+        formData.append("image", file);
+
+        const link = await this.handleUploadImage(formData);
+
+        if (link) {
+          this.singleDish.LinkImage = link;
+        }
+      }
+      e.target.value = null;
     },
   },
   /**
@@ -673,6 +732,8 @@ export default {
       // Nếu sửa thì gọi api lấy các nguyên vật liệu
       this.loadDishMaterial(this.singleDish.DishID);
     }
+    // Lấy link server
+    this.serverLink = constants.API_URL;
   },
   /**
    * Xử lý các sự kiện khi mount component

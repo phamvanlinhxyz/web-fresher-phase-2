@@ -33,6 +33,59 @@ namespace MISA.CUKCUK.Api.Controllers
 
         #region Controller
         /// <summary>
+        /// Upload hình ảnh món ăn
+        /// </summary>
+        /// <param name="image">Ảnh món ăn</param>
+        /// <returns>link ảnh</returns>
+        /// Created by: linhpv (20/08/2022)
+        [HttpPost("Image")]
+        public async Task<IActionResult> PostImageAsync(IFormFile image) 
+        {
+            try
+            {
+                // Check dung lượng file ảnh
+                if (image.Length > 5 * 1024 * 1024)
+                {
+                    var langCode = Common.LanguageCode;
+                    Response errorRes = new Response(null, false, ErrorCode.BadRequest, Resource.ResourceManager.GetString($"{langCode}_Image_Size_Error"), Resource.ResourceManager.GetString($"{langCode}_Image_Size_Error"));
+                    return Ok(JsonConvert.SerializeObject(errorRes, Formatting.Indented));
+                }
+
+                // Khởi tạo file name
+                var extention = ".jpg";
+                string fileName = "Dish-" + DateTime.Now.Ticks + extention;
+
+                // Tạo được dẫn
+                var pathBuild = Path.Combine(Directory.GetCurrentDirectory(), "Upload\\Dish");
+
+                if (!Directory.Exists(pathBuild))
+                {
+                    Directory.CreateDirectory(pathBuild);
+                }
+
+                // Khởi tạo đường dẫn ảnh
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "Upload\\Dish", fileName);
+
+                // Copy ảnh theo đường dẫn
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await image.CopyToAsync(stream);
+                }
+
+                // Tạo link ảnh trả về cho client
+                var linkImage = "/Upload/Dish/" + fileName;
+                
+                // Trả về response
+                Response res = new Response(linkImage, true, ErrorCode.NoError, "", "");
+                return Ok(JsonConvert.SerializeObject(res, Formatting.Indented));
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
+        }
+
+        /// <summary>
         /// Lấy nguyên vật liệu theo món ăn
         /// </summary>
         /// <param name="dishID">ID món ăn</param>

@@ -88,6 +88,10 @@ namespace MISA.CUKCUK.Core.Models
         /// Danh sách nguyên vật liệu bị xóa
         /// </summary>
         public List<Guid>? DeletedDM { get; set; }
+        /// <summary>
+        /// Link ảnh món ăn
+        /// </summary>
+        public string? LinkImage { get; set; }
         #endregion
     }
 }

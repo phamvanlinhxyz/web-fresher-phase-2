@@ -157,6 +157,10 @@
     <value>Đơn vị tính &lt;{0}&gt; đã tồn tại trong hệ thống.</value>
     <comment>Trùng đơn vị tính</comment>
   </data>
+  <data name="VN_Image_Size_Error" xml:space="preserve">
+    <value>Ảnh không tải được do vượt quá dung lượng. Vui lòng chọn ảnh có dung lượng nhỏ hơn 5 MB.</value>
+    <comment>Ảnh quá dung lượng</comment>
+  </data>
   <data name="VN_MaterialCode_Empty" xml:space="preserve">
     <value>Mã NVL không được phép để trống.</value>
     <comment>Mã NVL trống</comment>

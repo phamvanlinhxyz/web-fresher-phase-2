@@ -160,7 +160,7 @@ export default {
           this.focusElm = "MenuGroupCode";
         }
         this.errorList.MenuGroupCode =
-          resources[`${this.langCode}_Required_Error`];
+          resources[`${this.langCode}_Error_Msg`].required;
         valid = false;
       }
       // 2. Tên nhóm thực đơn
@@ -169,7 +169,7 @@ export default {
           this.focusElm = "MenuGroupName";
         }
         this.errorList.MenuGroupName =
-          resources[`${this.langCode}_Required_Error`];
+          resources[`${this.langCode}_Error_Msg`].required;
         valid = false;
       }
       return valid;
@@ -180,7 +180,8 @@ export default {
      */
     checkInputRequired(column, value) {
       if (!value) {
-        this.errorList[column] = resources[`${this.langCode}_Required_Error`];
+        this.errorList[column] =
+          resources[`${this.langCode}_Error_Msg`].required;
       } else {
         this.errorList[column] = null;
       }
