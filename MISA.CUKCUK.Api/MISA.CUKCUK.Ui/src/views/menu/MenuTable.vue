@@ -20,7 +20,7 @@
             <input
               class="input"
               @change="
-                handleChangeFilterObject('DishCode', $event.target.value, 0, 0)
+                handleChangeFilterObject('DishCode', $event.target.value)
               "
             />
           </div>
@@ -37,7 +37,7 @@
             <input
               class="input"
               @change="
-                handleChangeFilterObject('DishName', $event.target.value, 0, 0)
+                handleChangeFilterObject('DishName', $event.target.value)
               "
             />
           </div>
@@ -56,12 +56,7 @@
             <input
               class="input"
               @change="
-                handleChangeFilterObject(
-                  'MenuGroupName',
-                  $event.target.value,
-                  0,
-                  0
-                )
+                handleChangeFilterObject('MenuGroupName', $event.target.value)
               "
             />
           </div>
@@ -78,7 +73,7 @@
             <input
               class="input"
               @change="
-                handleChangeFilterObject('UnitName', $event.target.value, 0, 0)
+                handleChangeFilterObject('UnitName', $event.target.value)
               "
             />
           </div>
@@ -98,9 +93,7 @@
               class="input"
               type="number"
               style="text-align: right"
-              @change="
-                handleChangeFilterObject('Price', $event.target.value, 1, 6)
-              "
+              @change="handleChangeFilterObject('Price', $event.target.value)"
             />
           </div>
         </td>
@@ -139,7 +132,7 @@
     <tbody class="table-body" v-if="!isLoadingDish">
       <tr
         v-for="dish of dishs"
-        key="dish.dishID"
+        :key="dish.dishID"
         :class="{ selected: dish.DishID === selectedDish.DishID }"
         @click="selectDish(dish)"
         @dblclick="handleDbClickDish(dish)"
@@ -209,13 +202,45 @@ export default {
       selectedCol: null,
       dropdownItem: [],
       filterTypes: {
-        DishCode: enums.filterType.Contain,
         DishName: enums.filterType.Contain,
+        DishCode: enums.filterType.Contain,
         MenuGroupName: enums.filterType.Contain,
         UnitName: enums.filterType.Contain,
         Price: enums.filterType.LessOrEqual,
       },
       filterIcon: ["*", "=", "+", "-", "!", "<", "≤", ">", "≥"],
+      filterObjects: [
+        {
+          columnName: "DishName",
+          value: "",
+          inputType: enums.inputType.Text,
+          filterType: enums.filterType.Contain,
+        },
+        {
+          columnName: "DishCode",
+          value: "",
+          inputType: enums.inputType.Text,
+          filterType: enums.filterType.Contain,
+        },
+        {
+          columnName: "MenuGroupName",
+          value: "",
+          inputType: enums.inputType.Text,
+          filterType: enums.filterType.Contain,
+        },
+        {
+          columnName: "UnitName",
+          value: "",
+          inputType: enums.inputType.Text,
+          filterType: enums.filterType.Contain,
+        },
+        {
+          columnName: "Price",
+          value: "",
+          inputType: enums.inputType.Number,
+          filterType: enums.filterType.LessOrEqual,
+        },
+      ],
     };
   },
   computed: mapState({
@@ -223,8 +248,20 @@ export default {
     dishs: (state) => state.dish.dishs,
     selectedDish: (state) => state.dish.selectedDish,
     isLoadingDish: (state) => state.dish.isLoadingDish,
-    filterObjects: (state) => state.dish.filterObjects,
   }),
+  watch: {
+    /**
+     * Theo dõi sự kiện cập nhật filter object
+     * @param newVal giá trị mới
+     * Author: linhpv (23/08/2022)
+     */
+    filterObjects(newVal) {
+      // 
+      this.updateFilterObjects(newVal);
+      this.updatePageIndex(1);
+      this.loadDishsByPaging();
+    },
+  },
   methods: {
     ...mapActions([
       "loadDishsByPaging",
@@ -234,9 +271,21 @@ export default {
       "setFormMode",
       "toggleDishPopup",
     ]),
+    /**
+     * Xử lý chọn kiểu lọc
+     * @param {*} filterType kiểu lọc
+     * Author: linhpv (23/08/2022)
+     */
     handleSelectFilterType(filterType) {
       // Set filtertype cho các trường
       this.filterTypes[this.selectedCol] = filterType;
+      // Set filter type trong filter object
+      this.filterObjects = this.filterObjects.map((filter) => {
+        if (filter.columnName === this.selectedCol) {
+          return { ...filter, filterType };
+        }
+        return filter;
+      });
       // Ẩn dropdown
       this.isShowDropdown = false;
     },
@@ -326,36 +375,14 @@ export default {
      * @param {*} filterType
      * Author: linhpv (11/08/2022)
      */
-    handleChangeFilterObject(columnName, value, inputType, filterType) {
-      // Tìm vị trí của object trong mảng lọc
-      var objectIndex = this.filterObjects.findIndex((object) => {
-        return object.columnName === columnName;
+    handleChangeFilterObject(columnName, value) {
+      // Duyệt qua mảng và cập nhật phần tử
+      this.filterObjects = this.filterObjects.map((filter) => {
+        if (filter.columnName === columnName) {
+          return { ...filter, value };
+        }
+        return filter;
       });
-
-      var newObjects = [];
-
-      if (objectIndex === -1) {
-        newObjects = [
-          ...this.filterObjects,
-          {
-            columnName,
-            value,
-            inputType,
-            filterType,
-          },
-        ];
-      } else {
-        newObjects = this.filterObjects;
-        newObjects[objectIndex] = {
-          columnName,
-          value,
-          inputType,
-          filterType,
-        };
-      }
-      this.updateFilterObjects(newObjects);
-      this.updatePageIndex(1);
-      this.loadDishsByPaging();
     },
     /**
      * Xử lý giá bán

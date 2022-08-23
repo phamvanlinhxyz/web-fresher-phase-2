@@ -168,7 +168,13 @@ namespace MISA.CUKCUK.Core.Service
             string where = "";
             for (int i = 0; i < filterObjects.Length; i++)
             {
+                
                 FilterObject filterObject = filterObjects[i];
+                // Check giá trị xem có trống hay không => nếu có thì bỏ qua
+                if (string.IsNullOrEmpty(filterObject.Value)) {
+                    continue;
+                }
+
                 // Nếu loại đầu vào là chữ
                 if (filterObject.InputType == Enum.InputType.Text)
                 {
