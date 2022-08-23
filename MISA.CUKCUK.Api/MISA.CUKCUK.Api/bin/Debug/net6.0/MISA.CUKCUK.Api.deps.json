@@ -9,7 +9,7 @@
       "MISA.CUKCUK.Api/1.0.0": {
         "dependencies": {
           "MISA.CUKCUK.Core": "1.0.0",
-          "MISA.Web05.Infrastructure": "1.0.0",
+          "MISA.CUKCUK.Infrastructure": "1.0.0",
           "Newtonsoft.Json": "13.0.1",
           "Swashbuckle.AspNetCore": "6.2.3"
         },
@@ -104,7 +104,7 @@
           "MISA.CUKCUK.Core.dll": {}
         }
       },
-      "MISA.Web05.Infrastructure/1.0.0": {
+      "MISA.CUKCUK.Infrastructure/1.0.0": {
         "dependencies": {
           "Dapper": "2.0.123",
           "MISA.CUKCUK.Core": "1.0.0",
@@ -112,7 +112,7 @@
           "MySqlConnector": "2.1.11"
         },
         "runtime": {
-          "MISA.Web05.Infrastructure.dll": {}
+          "MISA.CUKCUK.Infrastructure.dll": {}
         }
       }
     }
@@ -212,7 +212,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "MISA.Web05.Infrastructure/1.0.0": {
+    "MISA.CUKCUK.Infrastructure/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

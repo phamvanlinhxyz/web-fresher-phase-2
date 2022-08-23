@@ -35,6 +35,11 @@ export default {
       }
     },
   },
+  methods: {
+    log() {
+      console.log("ạkadas");
+    },
+  },
 };
 </script>
 

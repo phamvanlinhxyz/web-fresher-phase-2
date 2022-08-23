@@ -11,7 +11,12 @@
         <td style="min-width: 179px">
           <div class="table-column">{{ tableColumn.dishCode }}</div>
           <div class="table-filter">
-            <div class="filter-type">*</div>
+            <div
+              class="filter-type"
+              @click="openDropdown(enums.inputType.Text, 'DishCode', $event)"
+            >
+              {{ filterIcon[filterTypes.DishCode] }}
+            </div>
             <input
               class="input"
               @change="
@@ -23,7 +28,12 @@
         <td style="min-width: 149px">
           <div class="table-column">{{ tableColumn.dishName }}</div>
           <div class="table-filter">
-            <div class="filter-type">*</div>
+            <div
+              class="filter-type"
+              @click="openDropdown(enums.inputType.Text, 'DishName', $event)"
+            >
+              {{ filterIcon[filterTypes.DishName] }}
+            </div>
             <input
               class="input"
               @change="
@@ -35,7 +45,14 @@
         <td style="min-width: 149px">
           <div class="table-column">{{ tableColumn.menuGroup }}</div>
           <div class="table-filter">
-            <div class="filter-type">*</div>
+            <div
+              class="filter-type"
+              @click="
+                openDropdown(enums.inputType.Text, 'MenuGroupName', $event)
+              "
+            >
+              {{ filterIcon[filterTypes.MenuGroupName] }}
+            </div>
             <input
               class="input"
               @change="
@@ -52,7 +69,12 @@
         <td style="min-width: 89px">
           <div class="table-column">{{ tableColumn.unit }}</div>
           <div class="table-filter">
-            <div class="filter-type">*</div>
+            <div
+              class="filter-type"
+              @click="openDropdown(enums.inputType.Text, 'UnitName', $event)"
+            >
+              {{ filterIcon[filterTypes.UnitName] }}
+            </div>
             <input
               class="input"
               @change="
@@ -62,9 +84,16 @@
           </div>
         </td>
         <td style="min-width: 119px">
-          <div class="table-column">{{ tableColumn.price }}</div>
+          <div class="table-column">
+            {{ tableColumn.price }}
+          </div>
           <div class="table-filter">
-            <div class="filter-type">≤</div>
+            <div
+              class="filter-type"
+              @click="openDropdown(enums.inputType.Number, 'Price', $event)"
+            >
+              {{ filterIcon[filterTypes.Price] }}
+            </div>
             <input
               class="input"
               type="number"
@@ -137,6 +166,31 @@
       <base-loading content="Đang lấy dữ liệu" />
     </div>
   </table>
+  <!-- Dropdown chọn kiểu tìm kiếm -->
+  <div class="cbb-bg" @click="toggleDropdown" v-show="isShowDropdown"></div>
+  <div
+    class="cbb-option"
+    v-show="isShowDropdown"
+    :style="{
+      top: `${dropdownTop}px`,
+      left: `${dropdownLeft}px`,
+    }"
+    ref="comboboxOption"
+  >
+    <ul class="cbb-list-item">
+      <li
+        class="filter-item"
+        :class="{ 'filter-selected': item.type === filterTypes[selectedCol] }"
+        v-for="(item, i) of dropdownItem"
+        :key="i"
+        @click="handleSelectFilterType(item.type)"
+      >
+        <div>
+          {{ item.text }}
+        </div>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
@@ -147,7 +201,21 @@ import { mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
+      enums: enums,
       tableColumn: null,
+      dropdownLeft: 0,
+      dropdownTop: 0,
+      isShowDropdown: false,
+      selectedCol: null,
+      dropdownItem: [],
+      filterTypes: {
+        DishCode: enums.filterType.Contain,
+        DishName: enums.filterType.Contain,
+        MenuGroupName: enums.filterType.Contain,
+        UnitName: enums.filterType.Contain,
+        Price: enums.filterType.LessOrEqual,
+      },
+      filterIcon: ["*", "=", "+", "-", "!", "<", "≤", ">", "≥"],
     };
   },
   computed: mapState({
@@ -166,6 +234,81 @@ export default {
       "setFormMode",
       "toggleDishPopup",
     ]),
+    handleSelectFilterType(filterType) {
+      // Set filtertype cho các trường
+      this.filterTypes[this.selectedCol] = filterType;
+      // Ẩn dropdown
+      this.isShowDropdown = false;
+    },
+    /**
+     * Mở popup chọn kiểu lọc
+     * @param {*} inputType kiểu dữ liệu đầu vào
+     */
+    openDropdown(inputType, columnName, e) {
+      // Set cột đang set là
+      this.selectedCol = columnName;
+      // Set các item cho dropdown theo kiểu đầu vào
+      if (inputType === enums.inputType.Text) {
+        this.dropdownItem = [
+          {
+            type: enums.filterType.Contain,
+            text: resources[`${this.langCode}_Filter_Type`].Contain,
+          },
+          {
+            type: enums.filterType.Equal,
+            text: resources[`${this.langCode}_Filter_Type`].Equal,
+          },
+          {
+            type: enums.filterType.StartWith,
+            text: resources[`${this.langCode}_Filter_Type`].StartWith,
+          },
+          {
+            type: enums.filterType.EndWith,
+            text: resources[`${this.langCode}_Filter_Type`].EndWith,
+          },
+          {
+            type: enums.filterType.NotContain,
+            text: resources[`${this.langCode}_Filter_Type`].NotContain,
+          },
+        ];
+      } else if (inputType === enums.inputType.Number) {
+        this.dropdownItem = [
+          {
+            type: enums.filterType.Contain,
+            text: resources[`${this.langCode}_Filter_Type`].Contain,
+          },
+          {
+            type: enums.filterType.Less,
+            text: resources[`${this.langCode}_Filter_Type`].Less,
+          },
+          {
+            type: enums.filterType.LessOrEqual,
+            text: resources[`${this.langCode}_Filter_Type`].LessOrEqual,
+          },
+          {
+            type: enums.filterType.Greater,
+            text: resources[`${this.langCode}_Filter_Type`].Greater,
+          },
+          {
+            type: enums.filterType.GreaterOrEqual,
+            text: resources[`${this.langCode}_Filter_Type`].GreaterOrEqual,
+          },
+        ];
+      }
+      // Set vị trí dropdown
+      let rect = e.target.getBoundingClientRect();
+      this.dropdownLeft = rect.left;
+      this.dropdownTop = rect.top + rect.height;
+      // Hiển thị dropdown
+      this.isShowDropdown = true;
+    },
+    /**
+     * Xử lý sự kiện ẩn hiện dropdown chọn cách tìm kiếm
+     * Author: linhpv (23/08/2022)
+     */
+    toggleDropdown() {
+      this.isShowDropdown = !this.isShowDropdown;
+    },
     /**
      * Xử lý sự kiện double click vào món ăn
      * Author: linhpv (15/08/2022)

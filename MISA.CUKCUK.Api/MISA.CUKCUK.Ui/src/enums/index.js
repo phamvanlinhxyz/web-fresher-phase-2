@@ -38,9 +38,34 @@ const storeMode = {
   StoreAndAdd: 1,
 };
 
+/**
+ * Kiểu lọc
+ */
+const filterType = {
+  Contain: 0, // Chứa
+  Equal: 1, // Bằng
+  StartWith: 2, // Bắt đầu bằng
+  EndWith: 3, // Kết thúc bằng
+  NotContain: 4, // Không chứa
+  Less: 5, // Nhỏ hơn
+  LessOrEqual: 6, // Nhỏ hơn hoặc bằng
+  Greater: 7, // Lớn hơn
+  GreaterOrEqual: 8, // Lớn hơn hoặc bằng
+};
+
+/**
+ * Kiểu dữ liệu đầu vào
+ */
+const inputType = {
+  Text: 0, // Kiểu chữ
+  Number: 1, // Kiểu số
+};
+
 export default {
   formMode,
   yesNo,
   dropdownType,
   storeMode,
+  filterType,
+  inputType,
 };

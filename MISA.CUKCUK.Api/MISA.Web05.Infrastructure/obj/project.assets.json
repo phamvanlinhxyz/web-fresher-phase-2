@@ -228,9 +228,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Workspace\\Thực tâp\\Bài tập giai đoạn 2\\MISA.CUKCUK.Api\\MISA.Web05.Infrastructure\\MISA.Web05.Infrastructure.csproj",
-      "projectName": "MISA.Web05.Infrastructure",
-      "projectPath": "D:\\Workspace\\Thực tâp\\Bài tập giai đoạn 2\\MISA.CUKCUK.Api\\MISA.Web05.Infrastructure\\MISA.Web05.Infrastructure.csproj",
+      "projectUniqueName": "D:\\Workspace\\Thực tâp\\Bài tập giai đoạn 2\\MISA.CUKCUK.Api\\MISA.Web05.Infrastructure\\MISA.CUKCUK.Infrastructure.csproj",
+      "projectName": "MISA.CUKCUK.Infrastructure",
+      "projectPath": "D:\\Workspace\\Thực tâp\\Bài tập giai đoạn 2\\MISA.CUKCUK.Api\\MISA.Web05.Infrastructure\\MISA.CUKCUK.Infrastructure.csproj",
       "packagesPath": "C:\\Users\\LEGION\\.nuget\\packages\\",
       "outputPath": "D:\\Workspace\\Thực tâp\\Bài tập giai đoạn 2\\MISA.CUKCUK.Api\\MISA.Web05.Infrastructure\\obj\\",
       "projectStyle": "PackageReference",

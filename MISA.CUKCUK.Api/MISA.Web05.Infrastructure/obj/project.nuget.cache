@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "jP6QM+dvawfKDdrKBX4NLaAXHqlpIVimSxTxYw1l74RHK4J4tnVBAltKIg6cSt2JcUCSzXzD5qmvL5FQiZsoxg==",
+  "dgSpecHash": "L30FZbl9H2JllsA/eofu8Q2ttF+AWelhYgxcSHBhl2frXUxaErI/cnTZAlGZDF+mp+GcoqBeQp0P0NqkXyLpxg==",
   "success": true,
-  "projectFilePath": "D:\\Workspace\\Thực tâp\\Bài tập giai đoạn 2\\MISA.CUKCUK.Api\\MISA.Web05.Infrastructure\\MISA.Web05.Infrastructure.csproj",
+  "projectFilePath": "D:\\Workspace\\Thực tâp\\Bài tập giai đoạn 2\\MISA.CUKCUK.Api\\MISA.Web05.Infrastructure\\MISA.CUKCUK.Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\LEGION\\.nuget\\packages\\dapper\\2.0.123\\dapper.2.0.123.nupkg.sha512",
     "C:\\Users\\LEGION\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\6.0.0\\microsoft.extensions.configuration.abstractions.6.0.0.nupkg.sha512",

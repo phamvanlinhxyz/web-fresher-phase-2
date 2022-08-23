@@ -51,6 +51,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .filter-type:hover {
@@ -66,12 +67,12 @@
 }
 
 .table-body tr:hover {
-  background-color: #e2eff8!important;
+  background-color: #e2eff8 !important;
   cursor: default;
 }
 
 .table-body tr.selected {
-  background-color: #d9e9f4!important;
+  background-color: #d9e9f4 !important;
 }
 
 .table-loading {
@@ -82,4 +83,23 @@
 
 .table-body tr:nth-child(even) {
   background-color: #fafafa;
+}
+
+.filter-item {
+  line-height: 24px;
+  padding-right: 5px;
+  cursor: pointer;
+}
+
+.filter-item:hover {
+  background-color: #d6e8f6;
+}
+
+.filter-selected {
+  background: url(@/assets/images/table-circle-blue16.png) no-repeat 5px
+    center;
+}
+
+.filter-item div {
+  margin-left: 26px;
 }

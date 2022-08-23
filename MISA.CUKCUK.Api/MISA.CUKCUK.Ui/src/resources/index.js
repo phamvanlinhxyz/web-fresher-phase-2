@@ -48,6 +48,18 @@ const VI_Pagination = {
   },
 };
 
+const VI_Filter_Type = {
+  Contain: "∗ : Chứa", // Chứa
+  Equal: "= : Bằng", // Bằng
+  StartWith: "+ : Bắt đầu bằng", // Bắt đầu bằng
+  EndWith: "- : Kết thúc bằng", // Kết thúc bằng
+  NotContain: "! : Không chứa", // Không chứa
+  Less: "< : Nhỏ hơn", // Nhỏ hơn
+  LessOrEqual: "≤ : Nhỏ hơn hoặc bằng", // Nhỏ hơn hoặc bằng
+  Greater: "> : Lớn hơn", // Lớn hơn
+  GreaterOrEqual: "≥ : Lớn hơn hoặc bằng", // Lớn hơn hoặc bằng
+};
+
 const EN_Required_Error = "This field must not be empty.";
 const EN_Data_Changed = "Data were changed, do you want to save?";
 const EN_Error_Msg = "An error has occurred, please contact MISA for support.";
@@ -100,6 +112,7 @@ export default {
   VI_Toolbar,
   VI_Table_Column,
   VI_Pagination,
+  VI_Filter_Type,
   VI_Confirm_Delete,
   EN_Required_Error,
   EN_Data_Changed,

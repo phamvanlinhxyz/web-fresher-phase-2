@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MISA.CUKCUK.Core\MISA.CUKCUK.Core.csproj" />
-    <ProjectReference Include="..\MISA.Web05.Infrastructure\MISA.Web05.Infrastructure.csproj" />
+    <ProjectReference Include="..\MISA.Web05.Infrastructure\MISA.CUKCUK.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

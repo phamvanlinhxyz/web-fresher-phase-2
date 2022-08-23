@@ -1,0 +1,15 @@
+D:\Workspace\Thực tâp\Bài tập giai đoạn 2\MISA.CUKCUK.Api\MISA.Web05.Infrastructure\bin\Debug\net6.0\MISA.CUKCUK.Infrastructure.deps.json
+D:\Workspace\Thực tâp\Bài tập giai đoạn 2\MISA.CUKCUK.Api\MISA.Web05.Infrastructure\bin\Debug\net6.0\MISA.CUKCUK.Infrastructure.dll
+D:\Workspace\Thực tâp\Bài tập giai đoạn 2\MISA.CUKCUK.Api\MISA.Web05.Infrastructure\bin\Debug\net6.0\MISA.CUKCUK.Infrastructure.pdb
+D:\Workspace\Thực tâp\Bài tập giai đoạn 2\MISA.CUKCUK.Api\MISA.Web05.Infrastructure\bin\Debug\net6.0\MISA.CUKCUK.Core.dll
+D:\Workspace\Thực tâp\Bài tập giai đoạn 2\MISA.CUKCUK.Api\MISA.Web05.Infrastructure\bin\Debug\net6.0\MISA.CUKCUK.Core.pdb
+D:\Workspace\Thực tâp\Bài tập giai đoạn 2\MISA.CUKCUK.Api\MISA.Web05.Infrastructure\obj\Debug\net6.0\MISA.CUKCUK.Infrastructure.csproj.AssemblyReference.cache
+D:\Workspace\Thực tâp\Bài tập giai đoạn 2\MISA.CUKCUK.Api\MISA.Web05.Infrastructure\obj\Debug\net6.0\MISA.CUKCUK.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+D:\Workspace\Thực tâp\Bài tập giai đoạn 2\MISA.CUKCUK.Api\MISA.Web05.Infrastructure\obj\Debug\net6.0\MISA.CUKCUK.Infrastructure.AssemblyInfoInputs.cache
+D:\Workspace\Thực tâp\Bài tập giai đoạn 2\MISA.CUKCUK.Api\MISA.Web05.Infrastructure\obj\Debug\net6.0\MISA.CUKCUK.Infrastructure.AssemblyInfo.cs
+D:\Workspace\Thực tâp\Bài tập giai đoạn 2\MISA.CUKCUK.Api\MISA.Web05.Infrastructure\obj\Debug\net6.0\MISA.CUKCUK.Infrastructure.csproj.CoreCompileInputs.cache
+D:\Workspace\Thực tâp\Bài tập giai đoạn 2\MISA.CUKCUK.Api\MISA.Web05.Infrastructure\obj\Debug\net6.0\MISA.CUKCUK.Infrastructure.csproj.CopyComplete
+D:\Workspace\Thực tâp\Bài tập giai đoạn 2\MISA.CUKCUK.Api\MISA.Web05.Infrastructure\obj\Debug\net6.0\MISA.CUKCUK.Infrastructure.dll
+D:\Workspace\Thực tâp\Bài tập giai đoạn 2\MISA.CUKCUK.Api\MISA.Web05.Infrastructure\obj\Debug\net6.0\refint\MISA.CUKCUK.Infrastructure.dll
+D:\Workspace\Thực tâp\Bài tập giai đoạn 2\MISA.CUKCUK.Api\MISA.Web05.Infrastructure\obj\Debug\net6.0\MISA.CUKCUK.Infrastructure.pdb
+D:\Workspace\Thực tâp\Bài tập giai đoạn 2\MISA.CUKCUK.Api\MISA.Web05.Infrastructure\obj\Debug\net6.0\ref\MISA.CUKCUK.Infrastructure.dll

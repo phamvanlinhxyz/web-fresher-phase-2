@@ -189,7 +189,7 @@
           "bin/placeholder/MISA.CUKCUK.Core.dll": {}
         }
       },
-      "MISA.Web05.Infrastructure/1.0.0": {
+      "MISA.CUKCUK.Infrastructure/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
@@ -199,10 +199,10 @@
           "MySqlConnector": "2.1.11"
         },
         "compile": {
-          "bin/placeholder/MISA.Web05.Infrastructure.dll": {}
+          "bin/placeholder/MISA.CUKCUK.Infrastructure.dll": {}
         },
         "runtime": {
-          "bin/placeholder/MISA.Web05.Infrastructure.dll": {}
+          "bin/placeholder/MISA.CUKCUK.Infrastructure.dll": {}
         }
       }
     }
@@ -481,16 +481,16 @@
       "path": "../MISA.CUKCUK.Core/MISA.CUKCUK.Core.csproj",
       "msbuildProject": "../MISA.CUKCUK.Core/MISA.CUKCUK.Core.csproj"
     },
-    "MISA.Web05.Infrastructure/1.0.0": {
+    "MISA.CUKCUK.Infrastructure/1.0.0": {
       "type": "project",
-      "path": "../MISA.Web05.Infrastructure/MISA.Web05.Infrastructure.csproj",
-      "msbuildProject": "../MISA.Web05.Infrastructure/MISA.Web05.Infrastructure.csproj"
+      "path": "../MISA.Web05.Infrastructure/MISA.CUKCUK.Infrastructure.csproj",
+      "msbuildProject": "../MISA.Web05.Infrastructure/MISA.CUKCUK.Infrastructure.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
       "MISA.CUKCUK.Core >= 1.0.0",
-      "MISA.Web05.Infrastructure >= 1.0.0",
+      "MISA.CUKCUK.Infrastructure >= 1.0.0",
       "Newtonsoft.Json >= 13.0.1",
       "Swashbuckle.AspNetCore >= 6.2.3"
     ]
@@ -525,8 +525,8 @@
             "D:\\Workspace\\Thực tâp\\Bài tập giai đoạn 2\\MISA.CUKCUK.Api\\MISA.CUKCUK.Core\\MISA.CUKCUK.Core.csproj": {
               "projectPath": "D:\\Workspace\\Thực tâp\\Bài tập giai đoạn 2\\MISA.CUKCUK.Api\\MISA.CUKCUK.Core\\MISA.CUKCUK.Core.csproj"
             },
-            "D:\\Workspace\\Thực tâp\\Bài tập giai đoạn 2\\MISA.CUKCUK.Api\\MISA.Web05.Infrastructure\\MISA.Web05.Infrastructure.csproj": {
-              "projectPath": "D:\\Workspace\\Thực tâp\\Bài tập giai đoạn 2\\MISA.CUKCUK.Api\\MISA.Web05.Infrastructure\\MISA.Web05.Infrastructure.csproj"
+            "D:\\Workspace\\Thực tâp\\Bài tập giai đoạn 2\\MISA.CUKCUK.Api\\MISA.Web05.Infrastructure\\MISA.CUKCUK.Infrastructure.csproj": {
+              "projectPath": "D:\\Workspace\\Thực tâp\\Bài tập giai đoạn 2\\MISA.CUKCUK.Api\\MISA.Web05.Infrastructure\\MISA.CUKCUK.Infrastructure.csproj"
             }
           }
         }

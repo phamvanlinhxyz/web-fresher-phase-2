@@ -292,7 +292,11 @@
                 icon="save-add"
                 @click="handleStore(enums.storeMode.StoreAndAdd)"
               />
-              <base-button content="Hủy" icon="cancel" @click="toggleDishPopup" />
+              <base-button
+                content="Hủy bỏ"
+                icon="cancel"
+                @click="toggleDishPopup"
+              />
             </div>
           </div>
         </div>
