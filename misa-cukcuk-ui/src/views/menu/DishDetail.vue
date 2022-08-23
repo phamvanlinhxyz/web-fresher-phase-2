@@ -282,9 +282,17 @@
               <base-button content="Giúp" icon="question-circle" />
             </div>
             <div class="pdf-right">
-              <base-button content="Cất" icon="save" @click="handleStore" />
-              <base-button content="Cất & thêm" icon="save-add" />
-              <base-button content="Hủy" icon="cancel" />
+              <base-button
+                content="Cất"
+                icon="save"
+                @click="handleStore(enums.storeMode.Store)"
+              />
+              <base-button
+                content="Cất & thêm"
+                icon="save-add"
+                @click="handleStore(enums.storeMode.StoreAndAdd)"
+              />
+              <base-button content="Hủy" icon="cancel" @click="toggleDishPopup" />
             </div>
           </div>
         </div>
@@ -303,7 +311,7 @@
     @confirm="
       () => {
         this.isShowConfirmDialog = false;
-        this.handleStore();
+        this.handleStore(enums.storeMode.Store);
       }
     "
     @no-confirm="toggleDishPopup"
@@ -322,6 +330,7 @@ import { objectEqual } from "@/utils";
 export default {
   data() {
     return {
+      enums: enums,
       popupTab: 1,
       singleDish: {},
       errorList: {
@@ -355,6 +364,21 @@ export default {
     selectedDish: (state) => state.dish.selectedDish,
     formMode: (state) => state.dish.formMode,
   }),
+  watch: {
+    /**
+     * Bắt sự kiện thay đổi món ăn được chọn
+     * @param {*} newVal món ăn mới
+     * Created by: linhpv (23/08/2022)
+     */
+    selectedDish(newVal) {
+      // Quay lại tab 1
+      this.popupTab = 1;
+      // Gán lại món ăn vào form
+      this.singleDish = JSON.parse(JSON.stringify(newVal));
+      // Gán nguyên vật liệu mặc định
+      this.dishMaterial = [JSON.parse(JSON.stringify(this.defaultMaterial))];
+    },
+  },
   methods: {
     ...mapActions([
       "toggleDishPopup",
@@ -366,6 +390,7 @@ export default {
       "updateDish",
       "changeDialogContent",
       "toggleDialog",
+      "setStoreMode",
     ]),
     /**
      * Người dùng ấn đóng popup
@@ -470,7 +495,7 @@ export default {
      * Người dùng ấn cất
      * Author: linhpv (12/08/2022)
      */
-    async handleStore() {
+    handleStore(storeMode) {
       this.focusElm = "";
       var valid = this.validateData();
       if (valid) {
@@ -478,13 +503,12 @@ export default {
         this.formatData();
         // Xử lý định lượng nguyên vật liệu
         this.handleDishMaterial();
-        // Upload ảnh và lấy link
-        let formData = new FormData();
-        formData.append("image", this.imageFile);
-        const link = await this.handleUploadImage(formData);
-        if (link) {
-          this.singleDish.LinkImage = link;
+        // Set ảnh
+        if (this.imageFile) {
+          this.handleUploadImage();
         }
+        // Set store mode
+        this.setStoreMode(storeMode);
         // Check formMode
         if (this.formMode == enums.formMode.Add) {
           this.insertDish(this.singleDish);
@@ -657,14 +681,16 @@ export default {
 
     /**
      * Xử lý upload ảnh
-     * @param {*} file file ảnh
-     * @returns link ảnh
      * Author: linhpv (22/08/2022)
      */
-    async handleUploadImage(file) {
+    async handleUploadImage() {
+      // Upload ảnh và lấy link
+      let formData = new FormData();
+      formData.append("image", this.imageFile);
+
       const res = await axios.post(
         `${constants.API_URL}/api/${constants.API_VERSION}/Dish/Image`,
-        file,
+        formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -673,13 +699,12 @@ export default {
       );
 
       if (res.data.Success) {
-        return res.data.Data;
+        this.singleDish.LinkImage = res.data.Data;
       } else {
         this.changeDialogContent(
           resources[`${this.langCode}_Error_Msg`].capacity
         );
         this.toggleDialog();
-        return null;
       }
     },
 

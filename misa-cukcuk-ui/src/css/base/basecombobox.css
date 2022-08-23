@@ -16,7 +16,7 @@
 
 .combobox-focus,
 .combobox-focus.hide-border {
-  border-color: #0072bc;
+  border-color: #0072bc!important;
 }
 
 .cbb-bg {

@@ -96,10 +96,12 @@ namespace MISA.CUKCUK.Core.Enum
         /// Không có error
         /// </summary>
         NoError = 0,
+
         /// <summary>
         /// Bad request
         /// </summary>
         BadRequest = 400,
+
         /// <summary>
         /// Lỗi server
         /// </summary>

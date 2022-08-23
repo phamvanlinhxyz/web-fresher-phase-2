@@ -28,15 +28,19 @@ const dropdownType = {
   Table: 1,
 };
 
-const dialogButtonType = {
-  NoConfirm: "no-confirm",
-  Confirm: "confirm",
-  Cancel: "cancel",
+/**
+ * Trạng thái cất
+ * 0 - Cất
+ * 1 - Cất và thêm
+ */
+const storeMode = {
+  Store: 0,
+  StoreAndAdd: 1,
 };
 
 export default {
   formMode,
   yesNo,
   dropdownType,
-  dialogButtonType,
+  storeMode,
 };

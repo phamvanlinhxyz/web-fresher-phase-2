@@ -55,7 +55,7 @@ namespace MISA.CUKCUK.Api.Controllers
                 var extention = ".jpg";
                 string fileName = "Dish-" + DateTime.Now.Ticks + extention;
 
-                // Tạo được dẫn
+                // Tạo đường dẫn
                 var pathBuild = Path.Combine(Directory.GetCurrentDirectory(), "Upload\\Dish");
 
                 if (!Directory.Exists(pathBuild))
@@ -70,7 +70,7 @@ namespace MISA.CUKCUK.Api.Controllers
                 using (var stream = new FileStream(path, FileMode.Create))
                 {
                     await image.CopyToAsync(stream);
-                }
+                }   
 
                 // Tạo link ảnh trả về cho client
                 var linkImage = "/Upload/Dish/" + fileName;
@@ -236,6 +236,7 @@ namespace MISA.CUKCUK.Api.Controllers
         #region Function
         private IActionResult HandleException(Exception ex)
         {
+            Console.WriteLine(ex.Message);
             var langCode = Common.LanguageCode;
             Response res = new Response(null, false, ErrorCode.ServerInternal, Resource.ResourceManager.GetString($"{langCode}_Server_Error"), ex.Message);
             return Ok(JsonConvert.SerializeObject(res, Formatting.Indented));

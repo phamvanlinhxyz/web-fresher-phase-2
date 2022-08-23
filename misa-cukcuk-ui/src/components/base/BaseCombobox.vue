@@ -8,7 +8,7 @@
       @keyup="handleKeyUp"
       ref="comboboxInput"
       :disabled="disabled"
-      v-on:focus="this.$refs.comboboxRef.classList.add('combobox-focus')"
+      v-on:focusin="() => (this.isFocus = true)"
       v-on:blur="handleBlurInput"
     />
     <base-icon iconName="grey-drop-arrow" @click="handleArrowClick" />
@@ -110,6 +110,7 @@ export default {
       selectedItem: null,
       selectedIndex: 0,
       show: "",
+      isFocus: false,
     };
   },
   watch: {
@@ -123,16 +124,11 @@ export default {
     },
     errorMessage(newVal) {
       if (newVal == null) {
-        this.comboboxClass = [
-          "combobox",
-          this.hideBorder ? "hide-border" : null,
-        ];
+        this.comboboxClass = this.comboboxClass.filter(
+          (item) => item !== "combobox-error"
+        );
       } else {
-        this.comboboxClass = [
-          "combobox",
-          this.hideBorder ? "hide-border" : null,
-          "combobox-error",
-        ];
+        this.comboboxClass = [...this.comboboxClass, "combobox-error"];
       }
     },
     value(newVal) {
@@ -142,6 +138,17 @@ export default {
       if (this.selectedItem) {
         this.$refs.comboboxInput.value = this.selectedItem[this.show];
         this.$emit("change", this.selectedItem);
+      } else {
+        this.$refs.comboboxInput.value = null;
+      }
+    },
+    isFocus(newVal) {
+      if (newVal) {
+        this.comboboxClass = [...this.comboboxClass, "combobox-focus"];
+      } else {
+        this.comboboxClass = this.comboboxClass.filter(
+          (item) => item !== "combobox-focus"
+        );
       }
     },
   },
@@ -202,7 +209,7 @@ export default {
      */
     handleBlurInput() {
       // Bỏ border xanh
-      this.$refs.comboboxRef.classList.remove("combobox-focus");
+      this.isFocus = false;
       // Nếu có item đang được chọn thì set value nếu không thì value = null
       if (this.selectedItem) {
         this.$refs.comboboxInput.value = this.selectedItem[this.show];
@@ -263,6 +270,9 @@ export default {
         this.isShowDropdown = true;
       } else {
         this.selectedItem = null;
+      }
+      if (!this.selectedItem) {
+        this.$emit("change", this.selectedItem);
       }
     },
     /**

@@ -14,6 +14,7 @@ const state = {
   totalPage: 0, // Tổng số trang
   isShowDishPopup: false, // Trạng thái show popup thêm sửa món ăn
   formMode: enums.formMode.Add, // Mode của form
+  storeMode: enums.storeMode.Store, // Mode cất
 };
 
 const mutations = {
@@ -24,7 +25,17 @@ const mutations = {
       }
       return dish;
     });
-    state.isShowDishPopup = false;
+    if (state.storeMode == enums.storeMode.Store) {
+      state.isShowDishPopup = false;
+    } else {
+      state.selectedDish = {
+        ShowOnMenu: enums.yesNo.Yes,
+        SemiFinishedProduct: enums.yesNo.No,
+      };
+    }
+  },
+  SET_STORE_MODE(state, payload) {
+    state.storeMode = payload;
   },
   SET_FORM_MODE(state, payload) {
     state.formMode = payload;
@@ -32,7 +43,14 @@ const mutations = {
   INSERT_DISH(state, payload) {
     state.dishs.unshift(payload);
     state.totalRecord++;
-    state.isShowDishPopup = false;
+    if (state.storeMode == enums.storeMode.Store) {
+      state.isShowDishPopup = false;
+    } else {
+      state.selectedDish = {
+        ShowOnMenu: enums.yesNo.Yes,
+        SemiFinishedProduct: enums.yesNo.No,
+      };
+    }
   },
   DELETE_DISH(state, payload) {
     state.dishs = state.dishs.filter((dish) => dish.DishID !== payload);
@@ -69,6 +87,15 @@ const mutations = {
 
 const actions = {
   /**
+   * Cập nhật tùy chọn cất
+   * @param {*} ctx context
+   * @param {*} mode tùy chọn
+   * Author: linhpv (22/08/2022)
+   */
+  setStoreMode(ctx, mode) {
+    ctx.commit("SET_STORE_MODE", mode);
+  },
+  /**
    * Cập nhật thông tin món ăn
    * @param {*} ctx context
    * @param {object} dish món ăn
@@ -86,7 +113,7 @@ const actions = {
       handleError(ctx, res);
     }
   },
- 
+
   /**
    * Thay đổi form mode
    * @param {*} ctx context
