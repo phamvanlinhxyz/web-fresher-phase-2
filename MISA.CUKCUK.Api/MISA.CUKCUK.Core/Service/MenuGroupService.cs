@@ -1,4 +1,5 @@
-﻿using MISA.CUKCUK.Core.Interfaces.Repositories;
+﻿using MISA.CUKCUK.Core.Enum;
+using MISA.CUKCUK.Core.Interfaces.Repositories;
 using MISA.CUKCUK.Core.Interfaces.Services;
 using MISA.CUKCUK.Core.Models;
 using System;
@@ -33,42 +34,28 @@ namespace MISA.CUKCUK.Core.Service
         /// </summary>
         /// <param name="menuGroup">Nhóm thực đơn</param>
         /// <returns>null - nếu valid, thông báo - nếu không valid</returns>
-        protected override string? Validate(MenuGroup menuGroup)
+        protected override ErrorCode Validate(MenuGroup menuGroup)
         {
-            var langCode = Common.LanguageCode;
-            string errorMsg = "";
             // Check mã nhóm trống
             if (string.IsNullOrEmpty(menuGroup.MenuGroupCode))
             {
-                errorMsg += Resources.Resource.ResourceManager.GetString($"{langCode}_MenuGroupCode_Empty");
+                return ErrorCode.EmptyCode;
             }
             // Check tên nhóm trống
             if (string.IsNullOrEmpty(menuGroup.MenuGroupName))
             {
-                if (!string.IsNullOrEmpty(errorMsg))
-                {
-                    errorMsg += "; ";
-                }
-                errorMsg += Resources.Resource.ResourceManager.GetString($"{langCode}_MenuGroupName_Empty");
+                return ErrorCode.EmptyName;
             }
             // Check trùng mã nhóm
             if (_repository.CheckDuplicate(Guid.Empty, menuGroup.MenuGroupCode, "MenuGroupCode"))
             {
-                if (!string.IsNullOrEmpty(errorMsg))
-                {
-                    errorMsg += "; ";
-                }
-                errorMsg += string.Format(Resources.Resource.ResourceManager.GetString($"{langCode}_Duplicate_MenuGroupCode"), menuGroup.MenuGroupCode);
+                return ErrorCode.DuplicateCode;
             }
             // Check trùng tên nhóm
             if (_repository.CheckDuplicate(Guid.Empty, menuGroup.MenuGroupName, "MenuGroupName")) {
-                if (!string.IsNullOrEmpty(errorMsg))
-                {
-                    errorMsg += "; ";
-                }
-                errorMsg += string.Format(Resources.Resource.ResourceManager.GetString($"{langCode}_Duplicate_MenuGroupName"), menuGroup.MenuGroupName);
+                return ErrorCode.DuplicateName;
             }
-            return errorMsg;
+            return ErrorCode.NoError;
         }
         #endregion
     }

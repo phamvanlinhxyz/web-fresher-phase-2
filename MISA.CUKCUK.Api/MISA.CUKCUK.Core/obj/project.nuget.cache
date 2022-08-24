@@ -1,8 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "7aZCdA+N90u23niU3aJphaBO9H8xTGocWWVfyK5bRUcE80g7L/kj0Z7YPLWwwG5dO/90+49YTnwP7NvVT4Lrmw==",
+  "dgSpecHash": "gtmdM4Psv7/w2yLLn6Qn+eAiidbbdOkK4TVa4iYdsZ4d65oBL3kSJJVbYsKyE7oSdQF4s97Sm48ijCNZkHWUGg==",
   "success": true,
   "projectFilePath": "D:\\Workspace\\Thực tâp\\Bài tập giai đoạn 2\\MISA.CUKCUK.Api\\MISA.CUKCUK.Core\\MISA.CUKCUK.Core.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\LEGION\\.nuget\\packages\\microsoft.aspnetcore.http.features\\5.0.17\\microsoft.aspnetcore.http.features.5.0.17.nupkg.sha512",
+    "C:\\Users\\LEGION\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\6.0.0\\microsoft.extensions.configuration.abstractions.6.0.0.nupkg.sha512",
+    "C:\\Users\\LEGION\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0\\microsoft.extensions.primitives.6.0.0.nupkg.sha512",
+    "C:\\Users\\LEGION\\.nuget\\packages\\system.io.pipelines\\5.0.2\\system.io.pipelines.5.0.2.nupkg.sha512",
+    "C:\\Users\\LEGION\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
+  ],
   "logs": []
 }

@@ -1,24 +1,29 @@
-﻿using MISA.CUKCUK.Core.Enum;
+﻿using Microsoft.AspNetCore.Http;
+using MISA.CUKCUK.Core.Enum;
 using MISA.CUKCUK.Core.Interfaces.Repositories;
 using MISA.CUKCUK.Core.Interfaces.Services;
 using MISA.CUKCUK.Core.Models;
+using MISA.CUKCUK.Core.Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
+using System.Xml;
+using Microsoft.Extensions.Configuration;
 
 namespace MISA.CUKCUK.Core.Service
 {
     /// <summary>
     /// Dish service
     /// </summary>
-    public class DishService : IDishService
+    public class DishService : BaseService<Dish>, IDishService
     {
         #region Variable
         IDishRepository _repository;
-        IBaseRepository<Dish> _baseRepository;
+       IConfiguration _configuration;
         #endregion
 
         #region Contructor
@@ -27,14 +32,55 @@ namespace MISA.CUKCUK.Core.Service
         /// </summary>
         /// <param name="repository">repo</param>
         /// Created by: linhpv (15/08/2022)
-        public DishService(IDishRepository repository, IBaseRepository<Dish> baseRepository)
+        public DishService(IDishRepository repository, IConfiguration configuration) : base (repository)
         {
-            _repository = repository;   
-            _baseRepository = baseRepository;
+            _repository = repository;
+            _configuration = configuration;
         }
         #endregion
 
         #region Service
+        /// <summary>
+        /// Service upload ảnh
+        /// </summary>
+        /// <param name="image">Ảnh</param>
+        /// <returns>response</returns>
+        /// Created by: linhpv (24/08/2022)
+        public Response UploadService(IFormFile image)
+        {
+            // Check dung lượng file ảnh
+            if (image.Length > 5 * 1024 * 1024)
+            {
+                return new Response(null, false, ErrorCode.OverSize, "", "");
+            }
+
+            // Khởi tạo file name
+            var extention = ".jpg";
+            string fileName = "Dish-" + DateTime.Now.Ticks + extention;
+
+            // Tạo đường dẫn
+            var pathBuild = Path.Combine(Directory.GetCurrentDirectory(), _configuration["StaticFolder:UploadPath"]);
+
+            if (!Directory.Exists(pathBuild))
+            {
+                Directory.CreateDirectory(pathBuild);
+            }
+
+            // Khởi tạo đường dẫn ảnh
+            var path = Path.Combine(Directory.GetCurrentDirectory(), _configuration["StaticFolder:UploadPath"], fileName);
+
+            // Copy ảnh theo đường dẫn
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                image.CopyToAsync(stream);
+            }
+
+            // Tạo link ảnh trả về cho client
+            var linkImage = _configuration["StaticFolder:UploadLink"] + fileName;
+
+            return new Response(linkImage, true, ErrorCode.NoError, "", "");
+        }
+
         /// <summary>
         /// Service sửa thông tin món ăn
         /// </summary>
@@ -44,8 +90,9 @@ namespace MISA.CUKCUK.Core.Service
         public Response UpdateService(Dish dish)
         {
             // Validate dữ liệu
-            string? valid = Validate(dish, dish.DishID);
-            if (string.IsNullOrEmpty(valid))
+            ErrorCode error = Validate(dish, dish.DishID);
+
+            if (error == ErrorCode.NoError)
             {
                 // Nếu không có nguyên vật liệu thì set định lượng nguyên vật liệu = 0 nếu đã định lượng set = 1
                 if (dish.DishMaterials == null || dish.DishMaterials.Count == 0)
@@ -59,12 +106,13 @@ namespace MISA.CUKCUK.Core.Service
                 // Gọi repo lấy kết quả
                 var newID = _repository.Update(dish);
                 // Check có ID trả về hay không
-                return new Response(data: newID, success: newID != Guid.Empty, errorCode: Enum.ErrorCode.NoError, userMsg: "", devMsg: "");
+                if (newID != Guid.Empty)
+                {
+                    return new Response(newID, true, error, "", "");
+                }
+                error = ErrorCode.EditFailed;
             }
-            else
-            {
-                return new Response(data: null, success: false, errorCode: Enum.ErrorCode.BadRequest, userMsg: valid, devMsg: valid);
-            }
+            return new Response(null, false, error, "", "");
         }
 
         /// <summary>
@@ -74,12 +122,13 @@ namespace MISA.CUKCUK.Core.Service
         /// <param name="dishMaterials">Danh sách nguyên vật liệu</param>
         /// <returns>Trả về ID mới</returns>
         /// Created by: linhpv (17/08/2022)
-        public Response InsertService(Dish dish)
+        public override Response InsertService(Dish dish)
         {
             // Validate dữ liệu
-            string? valid = Validate(dish, Guid.Empty);
+            ErrorCode error = Validate(dish, Guid.Empty);
 
-            if (string.IsNullOrEmpty(valid))
+            // Kiểm tra có error gì không
+            if (error == ErrorCode.NoError)
             {
                 // Nếu không có nguyên vật liệu thì set định lượng nguyên vật liệu = 0 nếu đã định lượng set = 1
                 if (dish.DishMaterials == null || dish.DishMaterials.Count == 0)
@@ -93,12 +142,13 @@ namespace MISA.CUKCUK.Core.Service
                 // Gọi repo lấy kết quả
                 var newID = _repository.Insert(dish);
                 // Check có ID trả về hay không
-                return new Response(data: newID, success: newID != Guid.Empty, errorCode: Enum.ErrorCode.NoError, userMsg: "", devMsg: "");
+                if (newID != Guid.Empty)
+                {
+                    return new Response(data: newID, success: true, error, userMsg: "", devMsg: "");
+                }
+                error = ErrorCode.AddFailed;
             }
-            else
-            {
-                return new Response(data: null, success: false, errorCode: Enum.ErrorCode.BadRequest, userMsg: valid, devMsg: valid);
-            }
+            return new Response(data: null, success: false, error, userMsg: "", devMsg: "");
         }
 
         /// <summary>
@@ -120,7 +170,7 @@ namespace MISA.CUKCUK.Core.Service
                 }
             }
             newCode = RemoveVietnameseTone(newCode).ToUpper();
-            if (_baseRepository.CheckDuplicate(Guid.Empty, newCode, "DishCode"))
+            if (_repository.CheckDuplicate(Guid.Empty, newCode, "DishCode"))
             {
                 newCode = "";
                 foreach (var word in words)
@@ -135,7 +185,7 @@ namespace MISA.CUKCUK.Core.Service
                     }
                 }
 
-                if (_baseRepository.CheckDuplicate(Guid.Empty, newCode, "DishCode"))
+                if (_repository.CheckDuplicate(Guid.Empty, newCode, "DishCode"))
                 {
                     newCode = DishName.Replace(" ", "");
                 } 
@@ -312,44 +362,34 @@ namespace MISA.CUKCUK.Core.Service
         /// <param name="dishID">ID món ăn</param>
         /// <returns>null - nếu valid, thông báo - nếu không valid</returns>
         /// Created by: linhpv (18/08/2022)
-        private string? Validate(Dish dish, Guid? dishID)
+        private ErrorCode Validate(Dish dish, Guid? dishID)
         {
-            var langCode = Common.LanguageCode;
-            // Khởi tạo string lỗi
-            string errorMsg = "";
             // Check tên món ăn trống
             if (string.IsNullOrEmpty(dish.DishName))
             {
-                errorMsg += Resources.Resource.ResourceManager.GetString($"{langCode}_DishName_Empty");
+                return ErrorCode.EmptyName;
             }
             // Check mã món ăn trống
             if (string.IsNullOrEmpty(dish.DishCode))
             {
-                if (!string.IsNullOrEmpty(errorMsg))
-                {
-                    errorMsg += "; ";
-                }
-                errorMsg += Resources.Resource.ResourceManager.GetString($"{langCode}_DishCode_Empty");
+                return ErrorCode.EmptyCode;
             }
             // Check đơn vị tính trống
             if (dish.UnitID == Guid.Empty)
             {
-                if (!string.IsNullOrEmpty(errorMsg))
-                {
-                    errorMsg += "; ";
-                }
-                errorMsg += Resources.Resource.ResourceManager.GetString($"{langCode}_Unit_Empty");
+                return ErrorCode.EmptyUnit;
+            }
+            // Check giá bán trống
+            if (!dish.Price.HasValue)
+            {
+                return ErrorCode.EmptyPrice;
             }
             // Check trùng mã món ăn
-            if (_baseRepository.CheckDuplicate(dishID, dish.DishCode, "DishCode"))
+            if (_repository.CheckDuplicate(dishID, dish.DishCode, "DishCode"))
             {
-                if (!string.IsNullOrEmpty(errorMsg))
-                {
-                    errorMsg += "; ";
-                }
-                errorMsg += string.Format(Resources.Resource.ResourceManager.GetString($"{langCode}_Duplicate_DishCode"), dish.DishCode);
+                return ErrorCode.DuplicateCode;
             }
-            return errorMsg;
+            return ErrorCode.NoError;
         }
 
         /// <summary>

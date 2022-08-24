@@ -44,7 +44,9 @@ namespace MISA.CUKCUK.Api.Controllers
         {
             try
             {
+                // Lấy dữ liệu từ service trả về
                 var res = _service.InsertService(entity);
+                    
                 return Ok(JsonConvert.SerializeObject(res, Formatting.Indented));
             }
             catch (Exception ex)

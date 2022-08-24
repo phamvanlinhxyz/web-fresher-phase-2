@@ -86,7 +86,7 @@ namespace MISA.Web05.Infrastructure
             }
         }
 
-        public Guid Insert(T entity)
+        public virtual Guid Insert(T entity)
         {
             using (SqlConnection = new MySqlConnection(ConnectionString))
             {
@@ -97,11 +97,18 @@ namespace MISA.Web05.Infrastructure
                 parameters.Add("$newID", dbType: DbType.Guid, direction: ParameterDirection.Output);
 
                 // Lấy kết quả
-                SqlConnection.Query<T>(sql: sqlQuery, param: parameters, commandType: CommandType.StoredProcedure);
+                bool isSuccess = SqlConnection.Execute(sql: sqlQuery, param: parameters, commandType: CommandType.StoredProcedure) > 0;
                 var newID = parameters.Get<Guid>("$newID");
 
-                // Trả về kết quả
-                return newID;
+                // Nếu thành công trả về ID mới ngược lại trả về ID trông
+                if (isSuccess)
+                {
+                    return newID;
+                } 
+                else
+                {
+                    return Guid.Empty;
+                }
             }
         }
         #endregion

@@ -1,4 +1,5 @@
-﻿using MISA.CUKCUK.Core.Interfaces.Repositories;
+﻿using MISA.CUKCUK.Core.Enum;
+using MISA.CUKCUK.Core.Interfaces.Repositories;
 using MISA.CUKCUK.Core.Interfaces.Services;
 using MISA.CUKCUK.Core.Models;
 using System;
@@ -29,43 +30,29 @@ namespace MISA.CUKCUK.Core.Service
         /// <param name="entity">bản ghi cần validate</param>
         /// <returns>null - nếu valid, lỗi - nếu không valid</returns>
         /// Created by: linhpv (22/08/2022)
-        protected override string? Validate(Material entity)
+        protected override ErrorCode Validate(Material entity)
         {
-            var langCode = Common.LanguageCode;
-            string errorMsg = "";
             // Check mã NVL trống
             if (string.IsNullOrEmpty(entity.MaterialCode))
             {
-                errorMsg += Resources.Resource.ResourceManager.GetString($"{langCode}_MaterialCode_Empty");
+                return ErrorCode.EmptyCode;
             }
             // Check tên NVL trống
             if (string.IsNullOrEmpty(entity.MaterialName))
             {   
-                if (!string.IsNullOrEmpty(errorMsg))
-                {
-                    errorMsg += "; ";
-                }
-                errorMsg += Resources.Resource.ResourceManager.GetString($"{langCode}_MaterialName_Empty");
+                return ErrorCode.EmptyName;
             }
             // Check đơn vị tính trống
             if (entity.UnitID == Guid.Empty)
             {
-                if (!string.IsNullOrEmpty(errorMsg))
-                {
-                    errorMsg += "; ";
-                }
-                errorMsg += Resources.Resource.ResourceManager.GetString($"{langCode}_Unit_Empty");
+                return ErrorCode.EmptyUnit;
             }
             // Check trùng mã NVL
             if (_repository.CheckDuplicate(Guid.Empty, entity.MaterialCode, "MaterialCode"))
             {
-                if (!string.IsNullOrEmpty(errorMsg))
-                {
-                    errorMsg += "; ";
-                }
-                errorMsg += string.Format(Resources.Resource.ResourceManager.GetString($"{langCode}_Duplicate_MaterialCode"), entity.MaterialCode);
+                return ErrorCode.DuplicateCode;
             }
-            return errorMsg;
+            return ErrorCode.NoError;
         }
         #endregion
     }

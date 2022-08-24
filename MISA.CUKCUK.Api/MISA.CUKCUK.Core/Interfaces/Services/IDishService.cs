@@ -1,4 +1,5 @@
-﻿using MISA.CUKCUK.Core.Enum;
+﻿using Microsoft.AspNetCore.Http;
+using MISA.CUKCUK.Core.Enum;
 using MISA.CUKCUK.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -12,23 +13,23 @@ namespace MISA.CUKCUK.Core.Interfaces.Services
     /// Interface c/ho các service của bảng món ăn
     /// </summary>/
     /// Created by: linhpv (08/08/2022)
-    public interface IDishService
+    public interface IDishService : IBaseService<Dish>
     {
+        /// <summary>
+        /// Service upload ảnh
+        /// </summary>
+        /// <param name="image">Ảnh</param>
+        /// <returns>response</returns>
+        /// Created by: linhpv (24/08/2022)
+        Response UploadService(IFormFile image);
+
         /// <summary>
         /// Service sửa thông tin món ăn
         /// </summary>
         /// <param name="dish">Món ăn cần sửa</param>
-        /// <returns>responst</returns>
+        /// <returns>response</returns>
         /// Created by: linhpv (18/08/2022)
         Response UpdateService(Dish dish);
-
-        /// <summary>
-        /// Service thêm món ăn mới
-        /// </summary>
-        /// <param name="dish">Món ăn mới</param>
-        /// <returns>response</returns>
-        /// Created by: linhpv (17/08/2022)
-        Response InsertService(Dish dish);
 
         /// <summary>
         /// Tự động sinh mã 

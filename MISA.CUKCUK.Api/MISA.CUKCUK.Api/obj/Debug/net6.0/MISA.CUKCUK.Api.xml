@@ -32,7 +32,7 @@
             </summary>
             Created by: linhpv (08/08/2022)
         </member>
-        <member name="M:MISA.CUKCUK.Api.Controllers.DishController.PostImageAsync(Microsoft.AspNetCore.Http.IFormFile)">
+        <member name="M:MISA.CUKCUK.Api.Controllers.DishController.PostImage(Microsoft.AspNetCore.Http.IFormFile)">
             <summary>
             Upload hình ảnh món ăn
             </summary>
@@ -54,14 +54,6 @@
             </summary>
             <param name="dish">Món ăn cần sửa</param>
             <returns>ID món ăn đã sửa</returns>
-            Created by: linhpv (17/08/2022)
-        </member>
-        <member name="M:MISA.CUKCUK.Api.Controllers.DishController.Post(MISA.CUKCUK.Core.Models.Dish)">
-            <summary>
-            Thêm bản ghi mới
-            </summary>
-            <param name="dish">Món ăn</param>
-            <returns>Response</returns>
             Created by: linhpv (17/08/2022)
         </member>
         <member name="M:MISA.CUKCUK.Api.Controllers.DishController.GetNewCode(System.String)">

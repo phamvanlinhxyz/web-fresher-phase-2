@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "Lz/vfWoKzl1xtJnHLkyFMVnhxBfOz4lRk3CBiXTPjcMyDv9/ccSM7f/HXEyzYftVMG7gjhOzqBXeNLQNmHCkBg==",
+  "dgSpecHash": "lJew9wI9ndy0qCce42Soguiod9sA7zxXp95tya0cD4LcfErCYAQ2pn4FKLHb4e0NDVhIwv8Jk4dKO0HQfgsMZQ==",
   "success": true,
   "projectFilePath": "D:\\Workspace\\Thực tâp\\Bài tập giai đoạn 2\\MISA.CUKCUK.Api\\MISA.CUKCUK.Api\\MISA.CUKCUK.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\LEGION\\.nuget\\packages\\dapper\\2.0.123\\dapper.2.0.123.nupkg.sha512",
+    "C:\\Users\\LEGION\\.nuget\\packages\\microsoft.aspnetcore.http.features\\5.0.17\\microsoft.aspnetcore.http.features.5.0.17.nupkg.sha512",
     "C:\\Users\\LEGION\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
     "C:\\Users\\LEGION\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\6.0.0\\microsoft.extensions.configuration.abstractions.6.0.0.nupkg.sha512",
     "C:\\Users\\LEGION\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0\\microsoft.extensions.primitives.6.0.0.nupkg.sha512",
@@ -15,6 +16,7 @@
     "C:\\Users\\LEGION\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
     "C:\\Users\\LEGION\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
     "C:\\Users\\LEGION\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.2.3\\swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512",
+    "C:\\Users\\LEGION\\.nuget\\packages\\system.io.pipelines\\5.0.2\\system.io.pipelines.5.0.2.nupkg.sha512",
     "C:\\Users\\LEGION\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
   ],
   "logs": []

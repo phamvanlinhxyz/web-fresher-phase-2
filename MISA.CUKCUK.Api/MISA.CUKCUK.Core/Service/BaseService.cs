@@ -1,4 +1,5 @@
-﻿using MISA.CUKCUK.Core.Interfaces.Repositories;
+﻿using MISA.CUKCUK.Core.Enum;
+using MISA.CUKCUK.Core.Interfaces.Repositories;
 using MISA.CUKCUK.Core.Interfaces.Services;
 using MISA.CUKCUK.Core.Models;
 using System;
@@ -34,18 +35,24 @@ namespace MISA.CUKCUK.Core.Service
         /// <param name="entity">Bản ghi cần thêm</param>
         /// <returns>Trả về ID mới</returns>
         /// Created by: linhpv (12/08/2022)
-        public Response InsertService(T entity)
+        public virtual Response InsertService(T entity)
         {
             // Validate dữ liệu
-            string? valid = Validate(entity);
+            ErrorCode error = Validate(entity);
 
-            if (string.IsNullOrEmpty(valid)) {
-                return new Response(data: _repository.Insert(entity), success: true, errorCode: Enum.ErrorCode.NoError, userMsg: "", devMsg: "");
-            } 
-            else
-            {
-                return new Response(data: null, success: false, errorCode: Enum.ErrorCode.BadRequest, userMsg: valid, devMsg: valid);
+            // Nếu valid thì gọi repo insert bản ghi mới và lấy ID mới
+            if (error == ErrorCode.NoError) {
+                var newID = _repository.Insert(entity);
+                // Check ID mới trả về
+                if (newID != Guid.Empty)
+                {
+                    return new Response(newID, true, error, "", "");
+                }
+                error = ErrorCode.AddFailed;
             }
+
+            // Các trường hợp lỗi thì trả về lỗi
+            return new Response(null, false, error, "", "");
         }
         #endregion
 
@@ -55,9 +62,9 @@ namespace MISA.CUKCUK.Core.Service
         /// </summary>
         /// <param name="entity">Bản ghi cần validate</param>
         /// <returns>null - valid, thông báo lỗi - not valid</returns>
-        protected virtual string? Validate(T entity)
+        protected virtual ErrorCode Validate(T entity)
         {
-            return null;
+            return ErrorCode.NoError;
         }
         #endregion
     }

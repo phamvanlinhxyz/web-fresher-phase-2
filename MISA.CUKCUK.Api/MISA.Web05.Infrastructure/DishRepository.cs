@@ -13,17 +13,11 @@ using static Dapper.SqlMapper;
 
 namespace MISA.Web05.Infrastructure
 {
-    public class DishRepository : IDishRepository
+    public class DishRepository : BaseRepository<Dish>, IDishRepository
     {
-        #region Variable
-        protected string ConnectionString;
-        protected MySqlConnection SqlConnection;
-        #endregion
-
         #region Contructor
-        public DishRepository(IConfiguration configuration)
+        public DishRepository(IConfiguration configuration) : base(configuration)
         {
-            ConnectionString = configuration.GetConnectionString("ConnectionStrings");
         }
         #endregion
 
@@ -238,7 +232,7 @@ namespace MISA.Web05.Infrastructure
         /// <param name="dishMaterials">Danh sách nguyên vật liệu</param>
         /// <returns>ID món ăn mới</returns>
         /// Created by: linhpv (17/08/2022)
-        public Guid Insert(Dish dish)
+        public override Guid Insert(Dish dish)
         {
             using (SqlConnection = new MySqlConnection(ConnectionString))
             {

@@ -124,14 +124,54 @@ namespace MISA.CUKCUK.Core.Enum
         NoError = 0,
 
         /// <summary>
-        /// Bad request
+        /// Tên để trống
         /// </summary>
-        BadRequest = 400,
+        EmptyName = 1,
+
+        /// <summary>
+        /// Mã để trống
+        /// </summary>
+        EmptyCode = 2,
+
+        /// <summary>
+        /// Đơn vị tính trông
+        /// </summary>
+        EmptyUnit = 3,
+
+        /// <summary>
+        /// Giá bán để trống
+        /// </summary>
+        EmptyPrice = 4,
+
+        /// <summary>
+        /// Trùng tên
+        /// </summary>
+        DuplicateName = 5,
+        
+        /// <summary>
+        /// Trùng mã
+        /// </summary>
+        DuplicateCode = 6,
+
+        /// <summary>
+        /// Thêm mới thất bại
+        /// </summary>
+        AddFailed = 7,
+
+        /// <summary>
+        /// Sửa thất bại
+        /// </summary>
+        EditFailed = 8,
+
+        /// <summary>
+        /// Quá dung lượng cho phép
+        /// </summary>
+        OverSize = 9,
 
         /// <summary>
         /// Lỗi server
         /// </summary>
-        ServerInternal = 500,
+        ServerInternal = 10,
     }
 
     /// <summary>

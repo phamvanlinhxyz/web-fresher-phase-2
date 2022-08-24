@@ -1,4 +1,5 @@
-﻿using MISA.CUKCUK.Core.Interfaces.Repositories;
+﻿using MISA.CUKCUK.Core.Enum;
+using MISA.CUKCUK.Core.Interfaces.Repositories;
 using MISA.CUKCUK.Core.Interfaces.Services;
 using MISA.CUKCUK.Core.Models;
 using System;
@@ -29,15 +30,14 @@ namespace MISA.CUKCUK.Core.Service
         /// <param name="entity">bản ghi cần validate</param>
         /// <returns>null - nếu valid, lỗi - nếu không valid</returns>
         /// Created by: linhpv (22/08/2022)
-        protected override string? Validate(Kitchen entity)
+        protected override ErrorCode Validate(Kitchen entity)
         {
-            var langCode = Common.LanguageCode;
             // Check tên bếp trống
             if (string.IsNullOrEmpty(entity.KitchenName))
             {
-                return Resources.Resource.ResourceManager.GetString($"{langCode}_KitchenName_Empty");
+                return ErrorCode.EmptyName;
             }
-            return null;
+            return ErrorCode.NoError;
         }
         #endregion
     }

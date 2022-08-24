@@ -21,7 +21,7 @@ namespace MISA.CUKCUK.Core.Interfaces.Services
         /// <param name="entity">bản ghi mới</param>
         /// <returns>Số bản ghi đã đc thêm</returns>
         /// Created by: linhpv (07/08/2022)
-        Response? InsertService(T entity);
+        Response InsertService(T entity);
         #endregion
     }
 }

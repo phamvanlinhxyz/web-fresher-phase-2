@@ -1,4 +1,5 @@
-﻿using MISA.CUKCUK.Core.Interfaces.Repositories;
+﻿using MISA.CUKCUK.Core.Enum;
+using MISA.CUKCUK.Core.Interfaces.Repositories;
 using MISA.CUKCUK.Core.Interfaces.Services;
 using MISA.CUKCUK.Core.Models;
 using System;
@@ -33,25 +34,19 @@ namespace MISA.CUKCUK.Core.Service
         /// </summary>
         /// <param name="menuGroup">Nhóm thực đơn</param>
         /// <returns>null - nếu valid, thông báo - nếu không valid</returns>
-        protected override string? Validate(Unit unit)
+        protected override ErrorCode Validate(Unit unit)
         {
-            var langCode = Common.LanguageCode;
-            string errorMsg = ""; 
             // Check đơn vị tính trống
             if (string.IsNullOrEmpty(unit.UnitName))
             {   
-                errorMsg += Resources.Resource.ResourceManager.GetString($"{langCode}_Unit_Empty");
+                return ErrorCode.EmptyUnit;
             }
             // Check trùng đơn vị tính
             if (_repository.CheckDuplicate(Guid.Empty, unit.UnitName, "UnitName"))
             {
-                if (!string.IsNullOrEmpty(errorMsg))
-                {
-                    errorMsg += "; ";
-                }
-                errorMsg += string.Format(Resources.Resource.ResourceManager.GetString($"{langCode}_Duplicate_UnitName"), unit.UnitName);
+                return ErrorCode.DuplicateName;
             }
-            return errorMsg;
+            return ErrorCode.NoError;
         }
         #endregion
     }

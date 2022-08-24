@@ -16,7 +16,7 @@ namespace MISA.CUKCUK.Api.Controllers
     /// Created by: linhpv (08/08/2022)
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class DishController : ControllerBase
+    public class DishController : BaseController<Dish>
     {
         #region Variable
         IDishRepository _repository;
@@ -24,7 +24,7 @@ namespace MISA.CUKCUK.Api.Controllers
         #endregion
 
         #region Contructor
-        public DishController(IDishRepository repository, IDishService service) 
+        public DishController(IDishRepository repository, IDishService service) : base(repository, service)
         {
             _repository = repository;
             _service = service;
@@ -39,44 +39,13 @@ namespace MISA.CUKCUK.Api.Controllers
         /// <returns>link ảnh</returns>
         /// Created by: linhpv (20/08/2022)
         [HttpPost("Image")]
-        public async Task<IActionResult> PostImageAsync(IFormFile image) 
+        public IActionResult PostImage(IFormFile image) 
         {
             try
             {
-                // Check dung lượng file ảnh
-                if (image.Length > 5 * 1024 * 1024)
-                {
-                    var langCode = Common.LanguageCode;
-                    Response errorRes = new Response(null, false, ErrorCode.BadRequest, Resource.ResourceManager.GetString($"{langCode}_Image_Size_Error"), Resource.ResourceManager.GetString($"{langCode}_Image_Size_Error"));
-                    return Ok(JsonConvert.SerializeObject(errorRes, Formatting.Indented));
-                }
-
-                // Khởi tạo file name
-                var extention = ".jpg";
-                string fileName = "Dish-" + DateTime.Now.Ticks + extention;
-
-                // Tạo đường dẫn
-                var pathBuild = Path.Combine(Directory.GetCurrentDirectory(), "Upload\\Dish");
-
-                if (!Directory.Exists(pathBuild))
-                {
-                    Directory.CreateDirectory(pathBuild);
-                }
-
-                // Khởi tạo đường dẫn ảnh
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "Upload\\Dish", fileName);
-
-                // Copy ảnh theo đường dẫn
-                using (var stream = new FileStream(path, FileMode.Create))
-                {
-                    await image.CopyToAsync(stream);
-                }   
-
-                // Tạo link ảnh trả về cho client
-                var linkImage = "/Upload/Dish/" + fileName;
+                var res = _service.UploadService(image);
                 
                 // Trả về response
-                Response res = new Response(linkImage, true, ErrorCode.NoError, "", "");
                 return Ok(JsonConvert.SerializeObject(res, Formatting.Indented));
             }
             catch (Exception ex)
@@ -124,29 +93,6 @@ namespace MISA.CUKCUK.Api.Controllers
             {
                 // Lấy kết quả
                 var res = _service.UpdateService(dish);
-
-                // Trả lại kết quả cho client
-                return Ok(JsonConvert.SerializeObject(res, Formatting.Indented));
-            }
-            catch (Exception ex)
-            {
-                return HandleException(ex);
-            }
-        }
-
-        /// <summary>
-        /// Thêm bản ghi mới
-        /// </summary>
-        /// <param name="dish">Món ăn</param>
-        /// <returns>Response</returns>
-        /// Created by: linhpv (17/08/2022)
-        [HttpPost] 
-        public IActionResult Post(Dish dish)
-        {
-            try
-            {
-                // Lấy kết quả
-                var res = _service.InsertService(dish);
 
                 // Trả lại kết quả cho client
                 return Ok(JsonConvert.SerializeObject(res, Formatting.Indented));
@@ -233,16 +179,6 @@ namespace MISA.CUKCUK.Api.Controllers
             {
                 return HandleException(ex);
             }
-        }
-        #endregion
-
-        #region Function
-        private IActionResult HandleException(Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            var langCode = Common.LanguageCode;
-            Response res = new Response(null, false, ErrorCode.ServerInternal, Resource.ResourceManager.GetString($"{langCode}_Server_Error"), ex.Message);
-            return Ok(JsonConvert.SerializeObject(res, Formatting.Indented));
         }
         #endregion
     }
