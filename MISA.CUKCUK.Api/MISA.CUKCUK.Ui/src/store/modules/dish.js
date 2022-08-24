@@ -28,6 +28,7 @@ const mutations = {
     if (state.storeMode == enums.storeMode.Store) {
       state.isShowDishPopup = false;
     } else {
+      state.formMode = enums.formMode.Add;
       state.selectedDish = {
         ShowOnMenu: enums.yesNo.Yes,
         SemiFinishedProduct: enums.yesNo.No,

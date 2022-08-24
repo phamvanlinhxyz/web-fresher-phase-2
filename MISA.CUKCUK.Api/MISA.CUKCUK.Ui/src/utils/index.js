@@ -36,3 +36,15 @@ export const objectEqual = (object1, object2) => {
     console.log(error);
   }
 };
+
+/**
+ *  Định dạng các input giá tiền
+ * @param {*} money
+ * Author: linhpv (15/08/2022)
+ */
+export const formatMoney = (money) => {
+  return money
+    .toString()
+    .replace(/\D/g, "")
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+};

@@ -1,7 +1,7 @@
 .menu-list {
-  padding: 18px 10px 10px;
-  width: calc(100% - 20px);
-  height: calc(100% - 28px);
+  padding: 18px 9px 9px;
+  width: calc(100% - 18px);
+  height: calc(100% - 27px);
   display: flex;
   flex-direction: column;
   overflow: auto;

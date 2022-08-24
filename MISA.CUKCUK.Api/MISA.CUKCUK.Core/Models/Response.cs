@@ -14,7 +14,7 @@ namespace MISA.CUKCUK.Core.Models
     public class Response
     {
         #region Contructor
-        public Response(dynamic? data, bool success, ErrorCode? errorCode, string? userMsg, string? devMsg)
+        public Response(object? data, bool success, ErrorCode? errorCode, string? userMsg, string? devMsg)
         {
             Data = data;    
             Success = success;
@@ -25,7 +25,7 @@ namespace MISA.CUKCUK.Core.Models
         #endregion
 
         #region Properties
-        public dynamic? Data { get; set; }
+        public object? Data { get; set; }
         public bool Success { get; set; }
         public ErrorCode? ErrorCode { get; set; }
         public string? UserMsg { get; set; }

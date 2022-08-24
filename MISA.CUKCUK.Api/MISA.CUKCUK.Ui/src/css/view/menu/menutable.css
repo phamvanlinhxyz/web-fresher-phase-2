@@ -33,6 +33,7 @@
   justify-content: center;
   align-items: center;
   height: calc(100% - 26px);
+  cursor: default;
 }
 
 .table-column:hover {
@@ -96,8 +97,7 @@
 }
 
 .filter-selected {
-  background: url(@/assets/images/table-circle-blue16.png) no-repeat 5px
-    center;
+  background: url(@/assets/images/table-circle-blue16.png) no-repeat 5px center;
 }
 
 .filter-item div {

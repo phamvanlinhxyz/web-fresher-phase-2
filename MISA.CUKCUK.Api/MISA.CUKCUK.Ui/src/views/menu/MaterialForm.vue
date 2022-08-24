@@ -42,7 +42,7 @@
                 :value="newMaterial.UnitID"
                 :focus="focusElm == 'UnitID'"
                 :errorMessage="errorList.UnitID"
-                @change="(val) => this.setValueCombobox('Unit', val)"
+                @change="(val, tab) => this.setValueCombobox('Unit', val)"
               />
             </div>
             <div class="form-input">
@@ -115,7 +115,7 @@ export default {
   },
   computed: mapState({
     langCode: (state) => state.app.langCode,
-    units: (state) => state.dish.units,
+    units: (state) => state.unit.units,
   }),
   methods: {
     ...mapActions(["toggleMaterialPopup", "loadAllUnit", "insertMaterial"]),
@@ -207,8 +207,8 @@ export default {
       }
     },
   },
-  created() {
-    this.loadAllUnit();
+  async created() {
+    await this.loadAllUnit();
   },
 };
 </script>

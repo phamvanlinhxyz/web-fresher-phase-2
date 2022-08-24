@@ -42,7 +42,7 @@
                 :listItem="kitchens"
                 tableName="Kitchen"
                 :value="newMenuGroup.KitchenID"
-                @change="(val) => this.setValueCombobox('Kitchen', val)"
+                @change="(val, tab) => this.setValueCombobox('Kitchen', val)"
               />
             </div>
             <div class="form-input">

@@ -114,7 +114,12 @@ export default {
   },
   methods: {
     ...mapActions(["updatePageSize", "updatePageIndex", "loadDishsByPaging"]),
-    selectTotalRecord(item) {
+    /**
+     * Xử lý sự kiện chọn số bản ghi trên trang
+     * @param {*} item số bản ghi
+     * Author: linhpv (10/08/2022)
+     */
+    selectTotalRecord(item, table) {
       this.pageNumber = 1;
       this.updatePageSize(item.totalRecordName);
       this.loadDishsByPaging();

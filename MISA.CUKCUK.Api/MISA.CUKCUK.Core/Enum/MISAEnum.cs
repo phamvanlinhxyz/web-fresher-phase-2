@@ -16,10 +16,12 @@ namespace MISA.CUKCUK.Core.Enum
         /// Không sử dụng
         /// </summary>
         No = 0,
+
         /// <summary>
         /// Máy tính bảng
         /// </summary>
         Tablet = 1,
+
         /// <summary>
         /// Máy in
         /// </summary>
@@ -36,10 +38,16 @@ namespace MISA.CUKCUK.Core.Enum
         /// Kiểu chữ 
         /// </summary>
         Text = 0,
+
         /// <summary>
         /// Kiểu số
         /// </summary>
         Number = 1,
+
+        /// <summary>
+        /// Kiểm đúng sai
+        /// </summary>
+        Boolean = 2,
     }
 
     /// <summary>
@@ -52,38 +60,56 @@ namespace MISA.CUKCUK.Core.Enum
         /// Chứa
         /// </summary>
         Contain = 0,
+
         /// <summary>
         /// Bằng
         /// </summary>
         Equal = 1,
+
         /// <summary>
         /// Bắt đầu bằng
         /// </summary>
         StartWith = 2,
+
         /// <summary>
         /// Kết thúc bằng
         /// </summary>
         EndWith = 3,
+
         /// <summary>
         /// Không chứa
         /// </summary>
         NotContain = 4,
+
         /// <summary>
         /// Nhỏ hơn
         /// </summary>
         Less = 5,
+
         /// <summary>
         /// Nhỏ hơn hoặc bằng
         /// </summary>
         LessOrEqual = 6,
+
         /// <summary>
         /// Lớn hơn
         /// </summary>
         Greater = 7,
+
         /// <summary>
         /// Lớn hơn hoặc bằng
         /// </summary>
         GreaterOrEqual = 8,
+
+        /// <summary>
+        /// Đúng
+        /// </summary>
+        True = 9,
+
+        /// <summary>
+        /// Sai
+        /// </summary>
+        False = 10,
     }
 
     /// <summary>

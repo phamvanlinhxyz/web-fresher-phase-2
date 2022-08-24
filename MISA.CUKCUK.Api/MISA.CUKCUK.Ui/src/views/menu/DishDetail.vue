@@ -61,7 +61,7 @@
                     tableName="MenuGroup"
                     :addIcon="true"
                     :value="singleDish.MenuGroupID"
-                    @change="(val) => this.setValueCombobox('MenuGroup', val)"
+                    @change="(val, tab) => this.setValueCombobox('MenuGroup', val)"
                   />
                 </div>
                 <div class="form-input">
@@ -73,7 +73,7 @@
                     tableName="Unit"
                     :addIcon="true"
                     :value="singleDish.UnitID"
-                    @change="(val) => this.checkComboboxRequired('Unit', val)"
+                    @change="(val, tab) => this.checkComboboxRequired('Unit', val)"
                     :focus="focusElm == 'UnitID'"
                     :errorMessage="errorList.UnitID"
                   />
@@ -114,7 +114,7 @@
                     tableName="Kitchen"
                     :addIcon="true"
                     :value="singleDish.KitchenID"
-                    @change="(val) => this.setValueCombobox('Kitchen', val)"
+                    @change="(val, tab) => this.setValueCombobox('Kitchen', val)"
                   />
                 </div>
                 <div class="form-input">
@@ -488,7 +488,7 @@ export default {
      * @param {*} material
      * Author: linhpv (16/08/2022)
      */
-    handleChangeMaterial(material) {
+    handleChangeMaterial(material, table) {
       this.dishMaterial[this.dishMaterialFocus].MaterialID =
         material.MaterialID;
       this.dishMaterial[this.dishMaterialFocus].MaterialName =

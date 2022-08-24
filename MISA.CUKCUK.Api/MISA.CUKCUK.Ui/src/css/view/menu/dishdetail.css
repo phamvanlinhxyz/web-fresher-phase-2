@@ -235,4 +235,5 @@ fieldset {
 
 .pdi-table .combobox {
   width: calc(100% - 1px);
+  background-color: transparent;
 }

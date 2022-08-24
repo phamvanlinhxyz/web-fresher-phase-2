@@ -98,6 +98,12 @@ export default {
      * Author: linhpv (05/08/2022)
      */
     changeValue(event) {
+      // Bỏ khoảng trắng ở 2 đầu
+      event.target.value = event.target.value.trim();
+      // Cập nhật v-model
+      this.$emit("update:modelValue", event.target.value);
+      this.$emit("write", event);
+      // Emit thay đổi giá trị
       this.$emit("changeValue", event.target.value);
     },
   },

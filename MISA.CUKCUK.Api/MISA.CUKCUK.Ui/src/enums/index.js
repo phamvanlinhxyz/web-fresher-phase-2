@@ -51,6 +51,8 @@ const filterType = {
   LessOrEqual: 6, // Nhỏ hơn hoặc bằng
   Greater: 7, // Lớn hơn
   GreaterOrEqual: 8, // Lớn hơn hoặc bằng
+  True: 9, // Giá trị đúng
+  False: 10, // Giá trị sai
 };
 
 /**
@@ -59,6 +61,7 @@ const filterType = {
 const inputType = {
   Text: 0, // Kiểu chữ
   Number: 1, // Kiểu số
+  Boolean: 2, // Kiểm đúng sai
 };
 
 export default {

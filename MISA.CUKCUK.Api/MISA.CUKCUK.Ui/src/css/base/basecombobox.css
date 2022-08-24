@@ -4,6 +4,7 @@
   align-items: center;
   height: 22px;
   border: 1px solid #c1c1c1;
+  background-color: #fff;
 }
 
 .combobox.hide-border {

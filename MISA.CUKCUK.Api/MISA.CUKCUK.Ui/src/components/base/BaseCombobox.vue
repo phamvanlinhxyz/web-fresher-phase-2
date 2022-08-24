@@ -114,9 +114,6 @@ export default {
     };
   },
   watch: {
-    // selectedItem(newItem) {
-    //   this.$emit("change", newItem);
-    // },
     focus(newVal) {
       if (newVal) {
         this.$refs.comboboxInput.focus();
@@ -137,7 +134,7 @@ export default {
       });
       if (this.selectedItem) {
         this.$refs.comboboxInput.value = this.selectedItem[this.show];
-        this.$emit("change", this.selectedItem);
+        this.$emit("change", this.selectedItem, this.tableName);
       } else {
         this.$refs.comboboxInput.value = null;
       }
@@ -199,7 +196,7 @@ export default {
         if (this.filterItems.length > 0) {
           this.selectedItem = this.filterItems[this.selectedIndex];
           event.target.value = this.selectedItem[this.show];
-          this.$emit("change", this.selectedItem);
+          this.$emit("change", this.selectedItem, this.tableName);
         }
       }
     },
@@ -232,7 +229,7 @@ export default {
     handleSelect(item) {
       this.$refs.comboboxInput.value = item[this.show];
       this.selectedItem = item;
-      this.$emit("change", this.selectedItem);
+      this.$emit("change", this.selectedItem, this.tableName);
       this.toggleDropdown();
     },
     /**
@@ -272,7 +269,7 @@ export default {
         this.selectedItem = null;
       }
       if (!this.selectedItem) {
-        this.$emit("change", this.selectedItem);
+        this.$emit("change", this.selectedItem, this.tableName);
       }
     },
     /**

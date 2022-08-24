@@ -89,42 +89,63 @@
             >
               {{ filterIcon[filterTypes.Price] }}
             </div>
-            <input
-              class="input"
-              type="number"
-              style="text-align: right"
-              @change="handleChangeFilterObject('Price', $event.target.value)"
+            <base-input
+              type="money"
+              @change="handleFilterMoney('Price', $event.target.value)"
             />
           </div>
         </td>
         <td style="min-width: 150px">
           <div class="table-column">{{ tableColumn.seasonalPrice }}</div>
           <div class="table-filter">
-            <input class="input" />
+            <input class="input" disabled />
           </div>
         </td>
         <td style="min-width: 149px">
           <div class="table-column">{{ tableColumn.flexiblePrice }}</div>
           <div class="table-filter">
-            <input class="input" />
+            <input class="input" disabled />
           </div>
         </td>
         <td style="min-width: 139px">
           <div class="table-column">{{ tableColumn.materialQuantified }}</div>
           <div class="table-filter">
-            <input class="input" />
+            <base-combobox
+              :listItem="[
+                {
+                  MaterialQuantifiedID: enums.filterType.True,
+                  MaterialQuantifiedName: 'Đã thiết lập',
+                },
+                {
+                  MaterialQuantifiedID: enums.filterType.False,
+                  MaterialQuantifiedName: 'Chưa thiết lập',
+                },
+              ]"
+              tableName="MaterialQuantified"
+              @change="selectTableCombobox"
+            />
           </div>
         </td>
         <td style="min-width: 149px">
           <div class="table-column">{{ tableColumn.showOnMenu }}</div>
           <div class="table-filter">
-            <input class="input" />
+            <base-combobox
+              :listItem="[
+                { ShowOnMenuID: enums.filterType.True, ShowOnMenuName: 'Có' },
+                {
+                  ShowOnMenuID: enums.filterType.False,
+                  ShowOnMenuName: 'Không',
+                },
+              ]"
+              tableName="ShowOnMenu"
+              @change="selectTableCombobox"
+            />
           </div>
         </td>
         <td style="min-width: 89px">
           <div class="table-column">{{ tableColumn.stopSale }}</div>
           <div class="table-filter">
-            <input class="input" value="Không" />
+            <input class="input" value="Không" disabled />
           </div>
         </td>
       </tr>
@@ -190,6 +211,7 @@
 import enums from "@/enums";
 import resources from "@/resources";
 import { mapActions, mapState } from "vuex";
+import { formatMoney } from "@/utils";
 
 export default {
   data() {
@@ -256,7 +278,7 @@ export default {
      * Author: linhpv (23/08/2022)
      */
     filterObjects(newVal) {
-      // 
+      console.log(newVal);
       this.updateFilterObjects(newVal);
       this.updatePageIndex(1);
       this.loadDishsByPaging();
@@ -271,6 +293,47 @@ export default {
       "setFormMode",
       "toggleDishPopup",
     ]),
+    /**
+     * Xử lý dữ liệu đầu vào khi ô input là giá tiền
+     * @param {*} columnName tên cột
+     * @param {*} value giá trị
+     * Created by: linhpv (24/08/2022)
+     */
+    handleFilterMoney(columnName, value) {
+      // Format lại value
+      value = value.replaceAll(".", "");
+      // Thay đổi filter object
+      this.handleChangeFilterObject(columnName, value);
+    },
+    /**
+     * Người dùng chọn combobox lọc dữ liệu
+     * @param {*} item Giá trị đc chọn
+     * @param {*} col Tên cột
+     */
+    selectTableCombobox(item, col) {
+      // Map qua filter object để kiểm tra trường col đã có chưa
+      let isFilter = false;
+      // Nếu rồi thì sửa thông tin lọc
+      this.filterObjects = this.filterObjects.map((filter) => {
+        if (filter.columnName === col) {
+          isFilter = true;
+          return { ...filter, filterType: item[`${col}ID`] };
+        }
+        return filter;
+      });
+      // Nếu chưa thì thêm mới vào mảng lọc
+      if (!isFilter) {
+        this.filterObjects = [
+          ...this.filterObjects,
+          {
+            columnName: col,
+            value: "",
+            inputType: enums.inputType.Boolean,
+            filterType: item[`${col}ID`],
+          },
+        ];
+      }
+    },
     /**
      * Xử lý chọn kiểu lọc
      * @param {*} filterType kiểu lọc
@@ -323,8 +386,8 @@ export default {
       } else if (inputType === enums.inputType.Number) {
         this.dropdownItem = [
           {
-            type: enums.filterType.Contain,
-            text: resources[`${this.langCode}_Filter_Type`].Contain,
+            type: enums.filterType.Equal,
+            text: resources[`${this.langCode}_Filter_Type`].Equal,
           },
           {
             type: enums.filterType.Less,
@@ -376,6 +439,8 @@ export default {
      * Author: linhpv (11/08/2022)
      */
     handleChangeFilterObject(columnName, value) {
+      // Fomat lại value
+      value = value.trim();
       // Duyệt qua mảng và cập nhật phần tử
       this.filterObjects = this.filterObjects.map((filter) => {
         if (filter.columnName === columnName) {

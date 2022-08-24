@@ -168,11 +168,17 @@ namespace MISA.CUKCUK.Core.Service
             string where = "";
             for (int i = 0; i < filterObjects.Length; i++)
             {
-                
+
                 FilterObject filterObject = filterObjects[i];
                 // Check giá trị xem có trống hay không => nếu có thì bỏ qua
-                if (string.IsNullOrEmpty(filterObject.Value)) {
+                if (string.IsNullOrEmpty(filterObject.Value) && filterObject.InputType != Enum.InputType.Boolean) {
                     continue;
+                }
+
+                // Check nếu không phải phần tử đầu thì thêm AND
+                if (!string.IsNullOrEmpty(where))
+                {
+                    where += "AND ";
                 }
 
                 // Nếu loại đầu vào là chữ
@@ -224,10 +230,19 @@ namespace MISA.CUKCUK.Core.Service
                         default:
                             break;
                     }
-                }
-                if (i < filterObjects.Length - 1)
+                } else if (filterObject.InputType == Enum.InputType.Boolean)
                 {
-                    where += "AND ";
+                    switch (filterObject.FilterType) 
+                    {
+                        case Enum.FilterType.True:
+                            where += filterObject.ColumnName + " = '1' ";
+                            break;
+                        case Enum.FilterType.False:
+                            where += filterObject.ColumnName + " = '0' ";
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
 
