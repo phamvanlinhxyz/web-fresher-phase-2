@@ -3,13 +3,26 @@
     <thead class="table-header">
       <tr>
         <td style="min-width: 159px">
-          <div class="table-column">{{ tableColumn.dishType }}</div>
+          <div class="table-column">
+            {{ tableColumn.dishType }}
+          </div>
           <div class="table-filter">
             <input class="input" value="Món ăn" disabled />
           </div>
         </td>
         <td style="min-width: 179px">
-          <div class="table-column">{{ tableColumn.dishCode }}</div>
+          <div class="table-column" @click="handleSortData('DishCode')">
+            <div
+              :class="[
+                sortObject.sortBy === 'DishCode'
+                  ? 'sort-colum-' + sortObject.sortType
+                  : null,
+                ,
+              ]"
+            >
+              {{ tableColumn.dishCode }}
+            </div>
+          </div>
           <div class="table-filter">
             <div
               class="filter-type"
@@ -26,7 +39,18 @@
           </div>
         </td>
         <td style="min-width: 149px">
-          <div class="table-column">{{ tableColumn.dishName }}</div>
+          <div class="table-column" @click="handleSortData('DishName')">
+            <div
+              :class="[
+                sortObject.sortBy === 'DishName'
+                  ? 'sort-colum-' + sortObject.sortType
+                  : null,
+                ,
+              ]"
+            >
+              {{ tableColumn.dishName }}
+            </div>
+          </div>
           <div class="table-filter">
             <div
               class="filter-type"
@@ -43,7 +67,18 @@
           </div>
         </td>
         <td style="min-width: 149px">
-          <div class="table-column">{{ tableColumn.menuGroup }}</div>
+          <div class="table-column" @click="handleSortData('MenuGroupName')">
+            <div
+              :class="[
+                sortObject.sortBy === 'MenuGroupName'
+                  ? 'sort-colum-' + sortObject.sortType
+                  : null,
+                ,
+              ]"
+            >
+              {{ tableColumn.menuGroup }}
+            </div>
+          </div>
           <div class="table-filter">
             <div
               class="filter-type"
@@ -62,7 +97,18 @@
           </div>
         </td>
         <td style="min-width: 89px">
-          <div class="table-column">{{ tableColumn.unit }}</div>
+          <div class="table-column" @click="handleSortData('UnitName')">
+            <div
+              :class="[
+                sortObject.sortBy === 'UnitName'
+                  ? 'sort-colum-' + sortObject.sortType
+                  : null,
+                ,
+              ]"
+            >
+              {{ tableColumn.unit }}
+            </div>
+          </div>
           <div class="table-filter">
             <div
               class="filter-type"
@@ -79,8 +125,17 @@
           </div>
         </td>
         <td style="min-width: 119px">
-          <div class="table-column">
-            {{ tableColumn.price }}
+          <div class="table-column" @click="handleSortData('Price')">
+            <div
+              :class="[
+                sortObject.sortBy === 'Price'
+                  ? 'sort-colum-' + sortObject.sortType
+                  : null,
+                ,
+              ]"
+            >
+              {{ tableColumn.price }}
+            </div>
           </div>
           <div class="table-filter">
             <div
@@ -108,7 +163,21 @@
           </div>
         </td>
         <td style="min-width: 139px">
-          <div class="table-column">{{ tableColumn.materialQuantified }}</div>
+          <div
+            class="table-column"
+            @click="handleSortData('MaterialQuantified')"
+          >
+            <div
+              :class="[
+                sortObject.sortBy === 'MateiralQuantified'
+                  ? 'sort-colum-' + sortObject.sortType
+                  : null,
+                ,
+              ]"
+            >
+              {{ tableColumn.materialQuantified }}
+            </div>
+          </div>
           <div class="table-filter">
             <base-combobox
               :listItem="[
@@ -127,7 +196,18 @@
           </div>
         </td>
         <td style="min-width: 149px">
-          <div class="table-column">{{ tableColumn.showOnMenu }}</div>
+          <div class="table-column" @click="handleSortData('ShowOnMenu')">
+            <div
+              :class="[
+                sortObject.sortBy === 'ShowOnMenu'
+                  ? 'sort-colum-' + sortObject.sortType
+                  : null,
+                ,
+              ]"
+            >
+              {{ tableColumn.showOnMenu }}
+            </div>
+          </div>
           <div class="table-filter">
             <base-combobox
               :listItem="[
@@ -211,7 +291,6 @@
 import enums from "@/enums";
 import resources from "@/resources";
 import { mapActions, mapState } from "vuex";
-import { formatMoney } from "@/utils";
 
 export default {
   data() {
@@ -263,6 +342,10 @@ export default {
           filterType: enums.filterType.LessOrEqual,
         },
       ],
+      sortObject: {
+        sortBy: "",
+        sortType: enums.sortType.Asc,
+      },
     };
   },
   computed: mapState({
@@ -292,7 +375,34 @@ export default {
       "updatePageIndex",
       "setFormMode",
       "toggleDishPopup",
+      "updateSortInfo",
     ]),
+    /**
+     * Xử lý sắp xếp theo cột
+     * @param {*} col tên cột
+     * Author: linhpv (24/08/2022)
+     */
+    handleSortData(col) {
+      // Check xem cột có đang sort hay không
+      if (col === this.sortObject.sortBy) {
+        // Thay đổi kiểu sort
+        this.sortObject.sortType =
+          this.sortObject.sortType === enums.sortType.Asc
+            ? enums.sortType.Desc
+            : enums.sortType.Asc;
+      } else {
+        // Thay đổi cột sort
+        this.sortObject = {
+          sortBy: col,
+          sortType: enums.sortType.Asc,
+        };
+      }
+
+      // Cập nhật trạng thái sắp xếp
+      this.updateSortInfo(this.sortObject);
+      // Gọi paging
+      this.loadDishsByPaging();
+    },
     /**
      * Xử lý dữ liệu đầu vào khi ô input là giá tiền
      * @param {*} columnName tên cột

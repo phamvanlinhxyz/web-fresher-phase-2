@@ -237,3 +237,11 @@ fieldset {
   width: calc(100% - 1px);
   background-color: transparent;
 }
+
+.pdi-table tbody tr:nth-child(even) {
+  background-color: #fafafa;
+} 
+
+.pdi-table tbody tr:nth-child(even) input {
+  background-color: #fafafa;
+} 

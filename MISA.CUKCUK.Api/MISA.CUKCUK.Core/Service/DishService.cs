@@ -1,4 +1,5 @@
-﻿using MISA.CUKCUK.Core.Interfaces.Repositories;
+﻿using MISA.CUKCUK.Core.Enum;
+using MISA.CUKCUK.Core.Interfaces.Repositories;
 using MISA.CUKCUK.Core.Interfaces.Services;
 using MISA.CUKCUK.Core.Models;
 using System;
@@ -150,20 +151,63 @@ namespace MISA.CUKCUK.Core.Service
         /// <param name="filterObjects">Mảng lọc</param>
         /// <returns>Trả về các bản ghi thỏa mãn</returns>
         /// Created by: linhpv (09/08/2022)
-        public object PagingService(int pageIndex, int pageSize, FilterObject[] filterObjects)
+        public object PagingService(int pageIndex, int pageSize, FilterObject[] filterObjects, string? sortBy, string? sortType)
         {
             // Xử lý số trang đầu vào
             if (string.IsNullOrEmpty(pageIndex.ToString()) || pageIndex <= 0)
             {
                 pageIndex = 1;
             }
-
             // Xử lý số bản ghi trên 1 trang
             if (string.IsNullOrEmpty(pageSize.ToString()) || pageSize <= 0)
             {
                 pageSize = 1;
             }
 
+            // Lấy câu where
+            string where = CreateWhereString(filterObjects);
+            // Lấy câu sort
+            string? sort = CreateSortString(sortBy, sortType);
+
+            // Gọi repository
+            var data = _repository.Paging(pageIndex, pageSize, where, sort);
+            // Trả về data
+            return data;
+        }
+        #endregion
+
+        #region Function
+        private string? CreateSortString (string? sortBy, string? sortType)
+        {
+            // Kiểm tra xem có sort by hay không
+            if (string.IsNullOrEmpty(sortBy))
+            {
+                return null; 
+            }
+
+            // Tạo câu sort
+            string sort = sortBy + " ";
+
+            // Kiểm tra xe có kiểu sort hay không
+            if (string.IsNullOrEmpty(sortType)) {
+                sort += "ASC";
+            }  
+            else
+            {
+                sort += sortType;
+            }
+
+            return sort;
+        }
+
+        /// <summary>
+        /// Xử lý sinh câu điều kiện where
+        /// </summary>
+        /// <param name="filterObjects">Mảng lọc truyền vào</param>
+        /// <returns>Câu lệnh where hoàn chỉnh</returns>
+        /// Created by: linhpv (24/08/2022)
+        private string CreateWhereString(FilterObject[] filterObjects)
+        {
             // Xử lý tìm câu lệnh tìm kiếm
             string where = "";
             for (int i = 0; i < filterObjects.Length; i++)
@@ -171,7 +215,8 @@ namespace MISA.CUKCUK.Core.Service
 
                 FilterObject filterObject = filterObjects[i];
                 // Check giá trị xem có trống hay không => nếu có thì bỏ qua
-                if (string.IsNullOrEmpty(filterObject.Value) && filterObject.InputType != Enum.InputType.Boolean) {
+                if (string.IsNullOrEmpty(filterObject.Value) && filterObject.InputType != Enum.InputType.Boolean)
+                {
                     continue;
                 }
 
@@ -182,62 +227,73 @@ namespace MISA.CUKCUK.Core.Service
                 }
 
                 // Nếu loại đầu vào là chữ
-                if (filterObject.InputType == Enum.InputType.Text)
+                if (filterObject.InputType == InputType.Text)
                 {
                     // Xử lý kiểu lọc
                     switch (filterObject.FilterType)
                     {
                         // Chứa
-                        case Enum.FilterType.Contain:
+                        case FilterType.Contain:
                             where += filterObject.ColumnName + " LIKE '%" + filterObject.Value + "%' ";
                             break;
                         // Bằng
-                        case Enum.FilterType.Equal:
+                        case FilterType.Equal:
                             where += filterObject.ColumnName + " = '" + filterObject.Value + "' ";
                             break;
                         // Bắt đầu bằng
-                        case Enum.FilterType.StartWith:
+                        case FilterType.StartWith:
                             where += filterObject.ColumnName + " LIKE '" + filterObject.Value + "%' ";
                             break;
                         // Kết thúc bằng
-                        case Enum.FilterType.EndWith:
+                        case FilterType.EndWith:
                             where += filterObject.ColumnName + " LIKE '%" + filterObject.Value + "' ";
                             break;
                         // Không chứa
-                        case Enum.FilterType.NotContain:
+                        case FilterType.NotContain:
                             where += filterObject.ColumnName + " NOT LIKE '%" + filterObject.Value + "%' ";
                             break;
                     }
-                } else if (filterObject.InputType == Enum.InputType.Number) {
+                }
+                else if (filterObject.InputType == InputType.Number)
+                {
                     // Nếu loại đầu vào là số
                     switch (filterObject.FilterType)
                     {
-                        case Enum.FilterType.Equal:
+                        // Bằng
+                        case FilterType.Equal:
                             where += filterObject.ColumnName + " = '" + filterObject.Value + "' ";
                             break;
-                        case Enum.FilterType.Less:
+                        // Nhỏ hơn
+                        case FilterType.Less:
                             where += filterObject.ColumnName + " < '" + filterObject.Value + "' ";
                             break;
-                        case Enum.FilterType.LessOrEqual:
+                        // Nhỏ hơn hoặc bằng
+                        case FilterType.LessOrEqual:
                             where += filterObject.ColumnName + " <= '" + filterObject.Value + "' ";
                             break;
-                        case Enum.FilterType.Greater:
+                        // Lớn hơn
+                        case FilterType.Greater:
                             where += filterObject.ColumnName + " > '" + filterObject.Value + "' ";
                             break;
-                        case Enum.FilterType.GreaterOrEqual:
+                        // Lớn hơn hoặc bằng
+                        case FilterType.GreaterOrEqual:
                             where += filterObject.ColumnName + " >= '" + filterObject.Value + "' ";
                             break;
                         default:
                             break;
                     }
-                } else if (filterObject.InputType == Enum.InputType.Boolean)
+                }
+                else if (filterObject.InputType == InputType.Boolean)
                 {
-                    switch (filterObject.FilterType) 
+                    // Nếu đầu vào dạng bool
+                    switch (filterObject.FilterType)
                     {
-                        case Enum.FilterType.True:
+                        // Đúng
+                        case FilterType.True:
                             where += filterObject.ColumnName + " = '1' ";
                             break;
-                        case Enum.FilterType.False:
+                        // Sai
+                        case FilterType.False:
                             where += filterObject.ColumnName + " = '0' ";
                             break;
                         default:
@@ -246,15 +302,9 @@ namespace MISA.CUKCUK.Core.Service
                 }
             }
 
-            // Gọi repository
-            var data = _repository.Paging(pageIndex, pageSize, where);
-
-            // Trả về data
-            return data;
+            return where;
         }
-        #endregion
 
-        #region Function
         /// <summary>
         /// Validate dữ liệu
         /// </summary>

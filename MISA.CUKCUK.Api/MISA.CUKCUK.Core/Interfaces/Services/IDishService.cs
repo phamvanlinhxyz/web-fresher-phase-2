@@ -1,4 +1,5 @@
-﻿using MISA.CUKCUK.Core.Models;
+﻿using MISA.CUKCUK.Core.Enum;
+using MISA.CUKCUK.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,6 +46,6 @@ namespace MISA.CUKCUK.Core.Interfaces.Services
         /// <param name="filterObjects">Mảng lọc</param>
         /// <returns>Trả về các bản ghi thỏa mãn</returns>
         /// Created by: linhpv (09/08/2022)
-        object PagingService(int pageIndex, int pageSize, FilterObject[] filterObjects); 
+        object PagingService(int pageIndex, int pageSize, FilterObject[] filterObjects, string? sortBy, string? sortType); 
     }
 }

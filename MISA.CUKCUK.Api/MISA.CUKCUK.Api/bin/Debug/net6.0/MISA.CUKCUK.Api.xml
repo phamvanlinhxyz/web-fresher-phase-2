@@ -80,14 +80,17 @@
             <returns>số bản ghi đã xóa</returns>
             Created by: linhpv (11/08/2022)
         </member>
-        <member name="M:MISA.CUKCUK.Api.Controllers.DishController.Paging(System.Int32,System.Int32,MISA.CUKCUK.Core.Models.FilterObject[])">
+        <member name="M:MISA.CUKCUK.Api.Controllers.DishController.Paging(System.Int32,System.Int32,MISA.CUKCUK.Core.Models.FilterObject[],System.String,System.String)">
             <summary>
             Lấy dữ liệu theo phân trang, tìm kiếm
             </summary>
             <param name="pageIndex">Số trang</param>
             <param name="pageSize">Số bản ghi trên trang</param>
             <param name="filterObjects">Mảng các điều kiện lọc</param>
+            <param name="sortBy">Sắp xếp theo cột nào</param>
+            <param name="sortType">Kiểu sắp xếp là gì</param>
             <returns>Tổng số bản ghi, tổng số trang, các bản ghi thỏa mãn</returns>
+            Created by: linhpv (11/08/2022)
         </member>
     </members>
 </doc>

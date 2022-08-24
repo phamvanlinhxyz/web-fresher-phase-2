@@ -53,6 +53,6 @@ namespace MISA.CUKCUK.Core.Interfaces.Repositories
         /// <param name="where">câu lệnh điều kiện</param>
         /// <returns>trả về phân trang</returns>
         /// Created by: linhpv (09/08/2022)
-        object Paging(int pageIndex, int pageSize, string where);
+        object Paging(int pageIndex, int pageSize, string where, string? sort);
     }
 }

@@ -12,12 +12,18 @@ const state = {
   isLoadingDish: false, // Trạng thái đang load món ăn
   totalRecord: 0, // Tổng số món ăn
   totalPage: 0, // Tổng số trang
+  sortBy: "", // Sắp xếp theo trường nào
+  sortType: "", // Sắp xếp theo kiểu gì
   isShowDishPopup: false, // Trạng thái show popup thêm sửa món ăn
   formMode: enums.formMode.Add, // Mode của form
   storeMode: enums.storeMode.Store, // Mode cất
 };
 
 const mutations = {
+  UPDATE_SORT_INFO(state, payload) {
+    state.sortBy = payload.sortBy;
+    state.sortType = payload.sortType;
+  },
   UPDATE_DISH(state, payload) {
     state.dishs = state.dishs.map((dish) => {
       if (dish.DishID == payload.DishID) {
@@ -87,6 +93,15 @@ const mutations = {
 };
 
 const actions = {
+  /**
+   * Cập nhật thông tin sắp xếp
+   * @param {*} ctx context
+   * @param {*} sortInfo thông tin sắp xếp
+   * Created by: linhpv (24/08/2022)
+   */
+  updateSortInfo(ctx, sortInfo) {
+    ctx.commit("UPDATE_SORT_INFO", sortInfo);
+  },
   /**
    * Cập nhật tùy chọn cất
    * @param {*} ctx context
@@ -226,7 +241,7 @@ const actions = {
   async loadDishsByPaging(ctx) {
     ctx.commit("TOGGLE_LOADING");
     const res = await axios.post(
-      `${constants.API_URL}/api/${constants.API_VERSION}/Dish/Paging?pageIndex=${state.pageIndex}&pageSize=${state.pageSize}`,
+      `${constants.API_URL}/api/${constants.API_VERSION}/Dish/Paging?pageIndex=${state.pageIndex}&pageSize=${state.pageSize}&sortBy=${state.sortBy}&sortType=${state.sortType}`,
       state.filterObjects
     );
 

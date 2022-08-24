@@ -212,14 +212,17 @@ namespace MISA.CUKCUK.Api.Controllers
         /// <param name="pageIndex">Số trang</param>
         /// <param name="pageSize">Số bản ghi trên trang</param>
         /// <param name="filterObjects">Mảng các điều kiện lọc</param>
+        /// <param name="sortBy">Sắp xếp theo cột nào</param>
+        /// <param name="sortType">Kiểu sắp xếp là gì</param>
         /// <returns>Tổng số bản ghi, tổng số trang, các bản ghi thỏa mãn</returns>
+        /// Created by: linhpv (11/08/2022)
         [HttpPost("Paging")]
-        public IActionResult Paging(int pageIndex, int pageSize, FilterObject[] filterObjects)
+        public IActionResult Paging(int pageIndex, int pageSize, FilterObject[] filterObjects, string? sortBy, string? sortType)
         {
             try
             {
                 // Lấy dữ liệu và khởi tạo response
-                var data = _service.PagingService(pageIndex, pageSize, filterObjects);
+                var data = _service.PagingService(pageIndex, pageSize, filterObjects, sortBy, sortType);
 
                 Response res = new Response(data: data, success: true, errorCode: ErrorCode.NoError, userMsg: "", devMsg: "");
 

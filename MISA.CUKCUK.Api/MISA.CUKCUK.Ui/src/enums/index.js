@@ -64,6 +64,14 @@ const inputType = {
   Boolean: 2, // Kiểm đúng sai
 };
 
+/**
+ * Kiểu sắp xếp
+ */
+const sortType = {
+  Asc: "ASC", // Tăng dần
+  Desc: "DESC", // Giảm dần
+};
+
 export default {
   formMode,
   yesNo,
@@ -71,4 +79,5 @@ export default {
   storeMode,
   filterType,
   inputType,
+  sortType,
 };

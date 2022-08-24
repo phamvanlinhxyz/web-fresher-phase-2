@@ -20,7 +20,7 @@
 }
 
 .table-header td {
-  height: 62px;
+  height: 84px;
   padding: 0;
   border: 1px solid #c1c1c1;
   border-top: none;
@@ -102,4 +102,14 @@
 
 .filter-item div {
   margin-left: 26px;
+}
+
+.sort-colum-ASC {
+  padding-right: 17px;
+  background: url(@/assets/images/sort_asc.png) no-repeat top right;
+}
+
+.sort-colum-DESC {
+  padding-right: 17px;
+  background: url(@/assets/images/sort_desc.png) no-repeat top right;
 }

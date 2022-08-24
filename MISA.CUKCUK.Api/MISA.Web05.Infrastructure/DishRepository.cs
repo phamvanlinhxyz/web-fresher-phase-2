@@ -330,7 +330,7 @@ namespace MISA.Web05.Infrastructure
         /// <param name="where">câu lệnh điều kiện</param>
         /// <returns>trả về phân trang</returns>
         /// Created by: linhpv (09/08/2022)
-        public object Paging(int pageIndex, int pageSize, string where)
+        public object Paging(int pageIndex, int pageSize, string where, string? sort)
         {
             using (SqlConnection = new MySqlConnection(ConnectionString))
             {
@@ -340,7 +340,7 @@ namespace MISA.Web05.Infrastructure
                 parameters.Add("$pageIndex", pageIndex);
                 parameters.Add("$pageSize", pageSize);
                 parameters.Add("$where", where);
-                parameters.Add("$Sort", "");
+                parameters.Add("$Sort", sort);
                 parameters.Add("$TotalRecord", dbType: DbType.Int32, direction: ParameterDirection.Output);
                 parameters.Add("$TotalPage", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
