@@ -84,8 +84,7 @@ namespace MISA.CUKCUK.Api.Controllers
         #region Function
         protected IActionResult HandleException(Exception ex) 
         {
-            var langCode = Common.LanguageCode;
-            Response res = new Response(null, false, ErrorCode.ServerInternal, Resource.ResourceManager.GetString($"{langCode}_Server_Error"), ex.Message);
+            Response res = new Response(null, false, ErrorCode.ServerInternal, "", ex.Message);
             return Ok(JsonConvert.SerializeObject(res, Formatting.Indented));
         }
         #endregion

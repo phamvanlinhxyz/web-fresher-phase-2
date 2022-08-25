@@ -44,7 +44,7 @@ namespace MISA.CUKCUK.Core.Service
             // Check trùng đơn vị tính
             if (_repository.CheckDuplicate(Guid.Empty, unit.UnitName, "UnitName"))
             {
-                return ErrorCode.DuplicateName;
+                return ErrorCode.DuplicateUnit;
             }
             return ErrorCode.NoError;
         }

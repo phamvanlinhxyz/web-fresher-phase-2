@@ -1,6 +1,7 @@
 import { constants } from "@/config";
 import enums from "@/enums";
 import resources from "@/resources";
+import { handleError } from "@/utils";
 import axios from "axios";
 
 const state = {
@@ -38,6 +39,8 @@ const mutations = {
       state.selectedDish = {
         ShowOnMenu: enums.yesNo.Yes,
         SemiFinishedProduct: enums.yesNo.No,
+        Price: 0,
+        PurchasePrice: 0,
       };
     }
   },
@@ -56,6 +59,8 @@ const mutations = {
       state.selectedDish = {
         ShowOnMenu: enums.yesNo.Yes,
         SemiFinishedProduct: enums.yesNo.No,
+        Price: 0,
+        PurchasePrice: 0,
       };
     }
   },
@@ -126,7 +131,7 @@ const actions = {
     if (res.data.Success) {
       ctx.commit("UPDATE_DISH", dish);
     } else {
-      handleError(ctx, res);
+      handleError(ctx, res, dish.DishName, dish.DishCode, "");
     }
   },
 
@@ -155,7 +160,7 @@ const actions = {
       dish.DishID = res.data.Data;
       ctx.commit("INSERT_DISH", dish);
     } else {
-      handleError(ctx, res);
+      handleError(ctx, res, dish.DishName, dish.DishCode, "");
     }
   },
   /**
@@ -253,27 +258,6 @@ const actions = {
 
     ctx.commit("TOGGLE_LOADING");
   },
-};
-
-/**
- * Xử lý lỗi trả về
- * @param {*} ctx context
- * @param {*} res response trả về
- * Author: linhpv (19/08/2022)
- */
-const handleError = (ctx, res) => {
-  let msg = res.data.UserMsg;
-  // Nếu msg trả về trống => hiển thị thông báo đã có lỗi
-  if (!msg || msg == "") {
-    msg = resources.VN_Error_Msg;
-  }
-
-  // Commit dialog
-  ctx.commit(
-    "CHANGE_DIALOG_CONTENT",
-    msg.split(";").map((m) => m.trim())
-  );
-  ctx.commit("TOGGLE_DIALOG");
 };
 
 export default {

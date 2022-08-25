@@ -72,6 +72,21 @@ const sortType = {
   Desc: "DESC", // Giảm dần
 };
 
+const errorCode = {
+  NoError: 0,
+  EmptyName: 1,
+  EmptyCode: 2,
+  EmptyUnit: 3,
+  EmptyPrice: 4,
+  DuplicateName: 5,
+  DuplicateCode: 6,
+  AddFailed: 7,
+  EditFailed: 8,
+  OverSize: 9,
+  ServerInternal: 10,
+  DuplicateUnit: 11,
+};
+
 export default {
   formMode,
   yesNo,
@@ -80,4 +95,5 @@ export default {
   filterType,
   inputType,
   sortType,
+  errorCode,
 };

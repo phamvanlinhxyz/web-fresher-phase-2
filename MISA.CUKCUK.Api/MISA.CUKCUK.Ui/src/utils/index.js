@@ -1,3 +1,7 @@
+import enums from "@/enums";
+import resources from "@/resources";
+import app from "@/store/modules/app";
+
 /**
  * Khiểm tra type của object
  * @param {object?} object
@@ -38,13 +42,53 @@ export const objectEqual = (object1, object2) => {
 };
 
 /**
- *  Định dạng các input giá tiền
- * @param {*} money
- * Author: linhpv (15/08/2022)
+ * Xử lý lỗi trả về
+ * @param {*} ctx context
+ * @param {*} res response trả về
+ * Author: linhpv (19/08/2022)
  */
-export const formatMoney = (money) => {
-  return money
-    .toString()
-    .replace(/\D/g, "")
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+export const handleError = (ctx, res, name, code, unit) => {
+  const langCode = app.state.langCode;
+
+  // Lấy message
+  var msg = "";
+
+  switch (res.data.ErrorCode) {
+    case enums.errorCode.EmptyName:
+      msg = resources[`${langCode}_Error_Msg`].emptyName;
+      break;
+    case enums.errorCode.EmptyCode:
+      msg = resources[`${langCode}_Error_Msg`].emptyCode;
+      break;
+    case enums.errorCode.EmptyUnit:
+      msg = resources[`${langCode}_Error_Msg`].emptyUnit;
+      break;
+    case enums.errorCode.EmptyPrice:
+      msg = resources[`${langCode}_Error_Msg`].emptyPrice;
+      break;
+    case enums.errorCode.DuplicateName:
+      msg = resources[`${langCode}_Error_Msg`].duplicateName(name);
+      break;
+    case enums.errorCode.DuplicateCode:
+      msg = resources[`${langCode}_Error_Msg`].duplicateCode(code);
+      break;
+    case enums.errorCode.AddFailed:
+      msg = resources[`${langCode}_Error_Msg`].addFailed;
+      break;
+    case enums.errorCode.EditFailed:
+      msg = resources[`${langCode}_Error_Msg`].editFailed;
+      break;
+    case enums.errorCode.OverSize:
+      msg = resources[`${langCode}_Error_Msg`].overSize;
+      break;
+    case enums.errorCode.DuplicateUnit:
+      msg = resources[`${langCode}_Error_Msg`].duplicateUnit(unit);
+      break;
+    default:
+      msg = resources[`${langCode}_Error_Msg`].serverInternal;
+  }
+
+  // Commit dialog
+  ctx.commit("CHANGE_DIALOG_CONTENT", msg);
+  ctx.commit("TOGGLE_DIALOG");
 };

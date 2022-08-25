@@ -1,4 +1,5 @@
 import { constants } from "@/config";
+import { handleError } from "@/utils";
 import axios from "axios";
 
 const state = {
@@ -36,7 +37,7 @@ const actions = {
       kitchen.KitchenID = res.data.Data;
       ctx.commit("INSERT_KITCHEN", kitchen);
     } else {
-      handleError(ctx, res);
+      handleError(ctx, res, kitchen.KitchenName);
     }
   },
   /**

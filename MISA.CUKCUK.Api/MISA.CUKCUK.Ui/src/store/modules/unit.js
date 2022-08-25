@@ -1,5 +1,9 @@
 import { constants } from "@/config";
+import enums from "@/enums";
+import resources from "@/resources";
+import { handleError } from "@/utils";
 import axios from "axios";
+import app from "./app";
 
 const state = {
   isShowUnitPopup: false, // Trạng thái show popup thêm đơn vị tính
@@ -36,7 +40,7 @@ const actions = {
       unit.UnitID = res.data.Data;
       ctx.commit("INSERT_UNIT", unit);
     } else {
-      handleError(ctx, res);
+      handleError(ctx, res, "", "", unit.UnitName);
     }
   },
   /**

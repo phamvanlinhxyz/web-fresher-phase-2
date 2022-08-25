@@ -1,4 +1,5 @@
 import { constants } from "@/config";
+import { handleError } from "@/utils";
 import axios from "axios";
 
 const state = {
@@ -43,7 +44,7 @@ const actions = {
       menuGroup.MenuGroupID = res.data.Data;
       ctx.commit("INSERT_MENU_GROUP", menuGroup);
     } else {
-      handleError(ctx, res);
+      handleError(ctx, res, menuGroup.MenuGroupName, menuGroup.MenuGroupCode);
     }
   },
   /**

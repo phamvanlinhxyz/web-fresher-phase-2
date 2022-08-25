@@ -474,46 +474,46 @@ export default {
         this.dropdownItem = [
           {
             type: enums.filterType.Contain,
-            text: resources[`${this.langCode}_Filter_Type`].Contain,
+            text: resources[`${this.langCode}_Filter_Type`].contain,
           },
           {
             type: enums.filterType.Equal,
-            text: resources[`${this.langCode}_Filter_Type`].Equal,
+            text: resources[`${this.langCode}_Filter_Type`].equal,
           },
           {
             type: enums.filterType.StartWith,
-            text: resources[`${this.langCode}_Filter_Type`].StartWith,
+            text: resources[`${this.langCode}_Filter_Type`].startWith,
           },
           {
             type: enums.filterType.EndWith,
-            text: resources[`${this.langCode}_Filter_Type`].EndWith,
+            text: resources[`${this.langCode}_Filter_Type`].endWith,
           },
           {
             type: enums.filterType.NotContain,
-            text: resources[`${this.langCode}_Filter_Type`].NotContain,
+            text: resources[`${this.langCode}_Filter_Type`].notContain,
           },
         ];
       } else if (inputType === enums.inputType.Number) {
         this.dropdownItem = [
           {
             type: enums.filterType.Equal,
-            text: resources[`${this.langCode}_Filter_Type`].Equal,
+            text: resources[`${this.langCode}_Filter_Type`].equal,
           },
           {
             type: enums.filterType.Less,
-            text: resources[`${this.langCode}_Filter_Type`].Less,
+            text: resources[`${this.langCode}_Filter_Type`].less,
           },
           {
             type: enums.filterType.LessOrEqual,
-            text: resources[`${this.langCode}_Filter_Type`].LessOrEqual,
+            text: resources[`${this.langCode}_Filter_Type`].lessOrEqual,
           },
           {
             type: enums.filterType.Greater,
-            text: resources[`${this.langCode}_Filter_Type`].Greater,
+            text: resources[`${this.langCode}_Filter_Type`].greater,
           },
           {
             type: enums.filterType.GreaterOrEqual,
-            text: resources[`${this.langCode}_Filter_Type`].GreaterOrEqual,
+            text: resources[`${this.langCode}_Filter_Type`].greaterOrEqual,
           },
         ];
       }

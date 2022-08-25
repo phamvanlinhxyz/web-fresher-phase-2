@@ -174,6 +174,8 @@ export default {
       this.selectDish({
         ShowOnMenu: enums.yesNo.Yes,
         SemiFinishedProduct: enums.yesNo.No,
+        Price: 0,
+        PurchasePrice: 0,
       });
       this.setFormMode(enums.formMode.Add);
       this.toggleDishPopup();

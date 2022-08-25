@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace MISA.CUKCUK.Core.Enum
 {
     /// <summary>
-    /// thiết bị sử dụng
+    /// Thiết bị sử dụng
     /// </summary>
     /// Created by: linhpv (08/08/2022)
     public enum Device
@@ -172,6 +172,11 @@ namespace MISA.CUKCUK.Core.Enum
         /// Lỗi server
         /// </summary>
         ServerInternal = 10,
+
+        /// <summary>
+        /// Trùng đơn vị tính
+        /// </summary>
+        DuplicateUnit = 11,
     }
 
     /// <summary>

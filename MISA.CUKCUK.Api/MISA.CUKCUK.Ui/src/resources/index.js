@@ -1,13 +1,6 @@
 const VI_Required_Error = "Trường này không được để trống.";
 const VI_Data_Changed = "Dữ liệu đã thay đổi, bạn có muốn cất không?";
 
-const VI_Error_Msg = {
-  required: "Trường này không được để trống.",
-  server: "Đã có lỗi xảy ra vui lòng liên hệ MISA để được hỗ trợ.",
-  capacity:
-    "Ảnh không tải được do vượt quá dung lượng. Vui lòng chọn ảnh có dung lượng nhỏ hơn 5 MB.",
-};
-
 const VI_Confirm_Delete = (dishCode, dishName) => {
   return `Bạn có chắc chắn muốn xóa món <${dishCode} - ${dishName}> không?`;
 };
@@ -49,15 +42,41 @@ const VI_Pagination = {
 };
 
 const VI_Filter_Type = {
-  Contain: "∗ : Chứa", // Chứa
-  Equal: "= : Bằng", // Bằng
-  StartWith: "+ : Bắt đầu bằng", // Bắt đầu bằng
-  EndWith: "- : Kết thúc bằng", // Kết thúc bằng
-  NotContain: "! : Không chứa", // Không chứa
-  Less: "< : Nhỏ hơn", // Nhỏ hơn
-  LessOrEqual: "≤ : Nhỏ hơn hoặc bằng", // Nhỏ hơn hoặc bằng
-  Greater: "> : Lớn hơn", // Lớn hơn
-  GreaterOrEqual: "≥ : Lớn hơn hoặc bằng", // Lớn hơn hoặc bằng
+  contain: "∗ : Chứa", // Chứa
+  equal: "= : Bằng", // Bằng
+  startWith: "+ : Bắt đầu bằng", // Bắt đầu bằng
+  endWith: "- : Kết thúc bằng", // Kết thúc bằng
+  notContain: "! : Không chứa", // Không chứa
+  less: "< : Nhỏ hơn", // Nhỏ hơn
+  lessOrEqual: "≤ : Nhỏ hơn hoặc bằng", // Nhỏ hơn hoặc bằng
+  greater: "> : Lớn hơn", // Lớn hơn
+  greaterOrEqual: "≥ : Lớn hơn hoặc bằng", // Lớn hơn hoặc bằng
+};
+
+const VI_Error_Msg = {
+  required: "Trường này không được để trống.",
+  server: "Đã có lỗi xảy ra vui lòng liên hệ MISA để được hỗ trợ.",
+  capacity:
+    "Ảnh không tải được do vượt quá dung lượng. Vui lòng chọn ảnh có dung lượng nhỏ hơn 5 MB.",
+  noError: "",
+  emptyName: "Tên không được phép để trống.",
+  emptyCode: "Mã không được phép để trống.",
+  emptyUnit: "Đơn vị tính không được phép để trống",
+  emptyPrice: "Giá bán không được phép để trống",
+  duplicateName: (name) => {
+    return `Tên <${name}> đã tồn tại trong hệ thống.`;
+  },
+  duplicateCode: (code) => {
+    return `Mã <${code}> đã tồn tại trong hệ thống.`;
+  },
+  duplicateUnit: (unit) => {
+    return `Đơn vị tính <${unit}> đã tồn tại trong hệ thống.`
+  },
+  addFailed: "Thêm mới thất bại, vui lòng thử lại.",
+  editFailed: "Sửa thất bại, vui lòng thử lại.",
+  overSize:
+    "Ảnh không tải được do vượt quá dung lượng. Vui lòng chọn ảnh có dung lượng nhỏ hơn 5 MB.",
+  serverInternal: "Đã có lỗi xảy ra. Vui lòng liên hệ MISA để được hỗ trợ.",
 };
 
 const EN_Required_Error = "This field must not be empty.";
