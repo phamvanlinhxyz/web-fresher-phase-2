@@ -24,22 +24,27 @@ namespace MISA.CUKCUK.Core.Models
         /// Khóa chính
         /// </summary>
         public Guid MenuGroupID { get; set; }
+
         /// <summary>
         /// Mã nhóm thực đơn
         /// </summary>
         public string MenuGroupCode { get; set; }
+
         /// <summary>
         /// Tên nhóm thực đơn
         /// </summary>
         public string MenuGroupName { get; set; }
+
         /// <summary>
         /// Diễn giải
         /// </summary>
         public string? Description { get; set; }
+
         /// <summary>
         /// ID bếp
         /// </summary>
         public Guid? KitchenID { get; set; }
+
         /// <summary>
         /// Tên bếp
         /// </summary>

@@ -143,7 +143,7 @@ export default {
       if (objectEqual(this.newKitchen, {})) {
         this.toggleKitchenPopup();
       } else {
-        this.dialogMsg = resources[`${this.langCode}_Data_Changed`];
+        this.dialogMsg = resources[`${this.langCode}_Dialog_Msg`].dataChanged;
         this.isShowConfirmDialog = true;
       }
     },
@@ -173,7 +173,7 @@ export default {
           this.focusElm = "KitchenName";
         }
         this.errorList.KitchenName =
-          resources[`${this.langCode}_Error_Msg`].required;
+          resources[`${this.langCode}_Error_Msg`].emptyName;
         valid = false;
       }
 

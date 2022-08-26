@@ -46,7 +46,7 @@ namespace MISA.CUKCUK.Core.Service
         /// <param name="image">Ảnh</param>
         /// <returns>response</returns>
         /// Created by: linhpv (24/08/2022)
-        public Response UploadService(IFormFile image)
+        public async Task<Response> UploadServiceAsync(IFormFile image)
         {
             // Check dung lượng file ảnh
             if (image.Length > 5 * 1024 * 1024)
@@ -72,7 +72,7 @@ namespace MISA.CUKCUK.Core.Service
             // Copy ảnh theo đường dẫn
             using (var stream = new FileStream(path, FileMode.Create))
             {
-                image.CopyToAsync(stream);
+                await image.CopyToAsync(stream);
             }
 
             // Tạo link ảnh trả về cho client
@@ -227,6 +227,13 @@ namespace MISA.CUKCUK.Core.Service
         #endregion
 
         #region Function
+        /// <summary>
+        /// Xử lý sinh câu sort
+        /// </summary>
+        /// <param name="sortBy">Sort theo trường nào</param>
+        /// <param name="sortType">Kiểu sort là gì</param>
+        /// <returns>Câu lệnh sort</returns>
+        /// Created by: linhpv (24/08/2022)
         private string? CreateSortString (string? sortBy, string? sortType)
         {
             // Kiểm tra xem có sort by hay không

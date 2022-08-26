@@ -131,7 +131,7 @@ export default {
       if (objectEqual(this.newMenuGroup, {})) {
         this.toggleMenuGroupPopup();
       } else {
-        this.dialogMsg = resources[`${this.langCode}_Data_Changed`];
+        this.dialogMsg = resources[`${this.langCode}_Dialog_Msg`].dataChanged;
         this.isShowConfirmDialog = true;
       }
     },
@@ -160,7 +160,7 @@ export default {
           this.focusElm = "MenuGroupCode";
         }
         this.errorList.MenuGroupCode =
-          resources[`${this.langCode}_Error_Msg`].required;
+          resources[`${this.langCode}_Error_Msg`].emptyCode;
         valid = false;
       }
       // 2. Tên nhóm thực đơn
@@ -169,7 +169,7 @@ export default {
           this.focusElm = "MenuGroupName";
         }
         this.errorList.MenuGroupName =
-          resources[`${this.langCode}_Error_Msg`].required;
+          resources[`${this.langCode}_Error_Msg`].emptyName;
         valid = false;
       }
       return valid;

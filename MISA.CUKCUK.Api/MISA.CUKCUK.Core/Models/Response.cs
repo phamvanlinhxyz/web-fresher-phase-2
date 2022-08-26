@@ -25,10 +25,29 @@ namespace MISA.CUKCUK.Core.Models
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Dữ liệu trả về
+        /// </summary>
         public object? Data { get; set; }
+
+        /// <summary>
+        /// Thành công hay không
+        /// </summary>
         public bool Success { get; set; }
+
+        /// <summary>
+        /// Mã lỗi nội bộ
+        /// </summary>
         public ErrorCode? ErrorCode { get; set; }
+
+        /// <summary>
+        /// Thông báo cho user
+        /// </summary>
         public string? UserMsg { get; set; }
+
+        /// <summary>
+        /// Thông báo cho dev
+        /// </summary>
         public string? DevMsg { get; set; }
 
         #endregion

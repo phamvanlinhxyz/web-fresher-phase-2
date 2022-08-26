@@ -205,11 +205,11 @@ fieldset {
 }
 
 .pdi-table tbody tr:hover {
-  background-color:#e2eff8
+  background-color: #e2eff8;
 }
 
 .pdi-table tbody tr:hover input {
-  background-color:#e2eff8
+  background-color: #e2eff8;
 }
 
 .pdi-table tbody td {
@@ -240,8 +240,14 @@ fieldset {
 
 .pdi-table tbody tr:nth-child(even) {
   background-color: #fafafa;
-} 
+}
 
 .pdi-table tbody tr:nth-child(even) input {
   background-color: #fafafa;
-} 
+}
+
+.pdi-label-icon:hover,
+.pdi-label-icon:focus {
+  background-color: #e4f2ea;
+  border-color: #0072bc;
+}

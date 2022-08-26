@@ -189,6 +189,7 @@ namespace MISA.CUKCUK.Core.Enum
         /// Đã định lượng
         /// </summary>
         Quantified = 1,
+
         /// <summary>
         /// Chưa định lượng
         /// </summary>

@@ -24,22 +24,27 @@ namespace MISA.CUKCUK.Core.Models
         /// Khóa chính
         /// </summary>
         public Guid MaterialID { get; set; }
+
         /// <summary>
         /// Mã nguyên vật liệu
         /// </summary>
         public string MaterialCode { get; set; }
+
         /// <summary>
         /// Tên nguyên vật liệu
         /// </summary>
         public string MaterialName { get; set; }
+
         /// <summary>
         /// ID đơn vị tính
         /// </summary>
         public Guid UnitID { get; set; }
+
         /// <summary>
         /// Tên đơn vị tính
         /// </summary>
         public string? UnitName { get; set; }
+
         /// <summary>
         /// Ghi chú
         /// </summary>

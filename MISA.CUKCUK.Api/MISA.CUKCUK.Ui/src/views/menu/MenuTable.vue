@@ -4,10 +4,14 @@
       <tr>
         <td style="min-width: 159px">
           <div class="table-column">
-            {{ tableColumn.dishType }}
+            {{ resources[`${langCode}_Table`].dishType }}
           </div>
           <div class="table-filter">
-            <input class="input" value="Món ăn" disabled />
+            <input
+              class="input"
+              :value="resources[`${langCode}_Table`].dishType"
+              disabled
+            />
           </div>
         </td>
         <td style="min-width: 179px">
@@ -20,7 +24,7 @@
                 ,
               ]"
             >
-              {{ tableColumn.dishCode }}
+              {{ resources[`${langCode}_Table`].dishCode }}
             </div>
           </div>
           <div class="table-filter">
@@ -48,7 +52,7 @@
                 ,
               ]"
             >
-              {{ tableColumn.dishName }}
+              {{ resources[`${langCode}_Table`].dishName }}
             </div>
           </div>
           <div class="table-filter">
@@ -76,7 +80,7 @@
                 ,
               ]"
             >
-              {{ tableColumn.menuGroup }}
+              {{ resources[`${langCode}_Table`].menuGroup }}
             </div>
           </div>
           <div class="table-filter">
@@ -106,7 +110,7 @@
                 ,
               ]"
             >
-              {{ tableColumn.unit }}
+              {{ resources[`${langCode}_Table`].unit }}
             </div>
           </div>
           <div class="table-filter">
@@ -134,7 +138,7 @@
                 ,
               ]"
             >
-              {{ tableColumn.price }}
+              {{ resources[`${langCode}_Table`].price }}
             </div>
           </div>
           <div class="table-filter">
@@ -151,13 +155,17 @@
           </div>
         </td>
         <td style="min-width: 150px">
-          <div class="table-column">{{ tableColumn.seasonalPrice }}</div>
+          <div class="table-column">
+            {{ resources[`${langCode}_Table`].seasonalPrice }}
+          </div>
           <div class="table-filter">
             <input class="input" disabled />
           </div>
         </td>
         <td style="min-width: 149px">
-          <div class="table-column">{{ tableColumn.flexiblePrice }}</div>
+          <div class="table-column">
+            {{ resources[`${langCode}_Table`].flexiblePrice }}
+          </div>
           <div class="table-filter">
             <input class="input" disabled />
           </div>
@@ -169,13 +177,13 @@
           >
             <div
               :class="[
-                sortObject.sortBy === 'MateiralQuantified'
+                sortObject.sortBy === 'MaterialQuantified'
                   ? 'sort-colum-' + sortObject.sortType
                   : null,
                 ,
               ]"
             >
-              {{ tableColumn.materialQuantified }}
+              {{ resources[`${langCode}_Table`].materialQuantified }}
             </div>
           </div>
           <div class="table-filter">
@@ -183,11 +191,13 @@
               :listItem="[
                 {
                   MaterialQuantifiedID: enums.filterType.True,
-                  MaterialQuantifiedName: 'Đã thiết lập',
+                  MaterialQuantifiedName:
+                    resources[`${langCode}_Table`].quantified,
                 },
                 {
                   MaterialQuantifiedID: enums.filterType.False,
-                  MaterialQuantifiedName: 'Chưa thiết lập',
+                  MaterialQuantifiedName:
+                    resources[`${langCode}_Table`].notQuantified,
                 },
               ]"
               tableName="MaterialQuantified"
@@ -205,16 +215,19 @@
                 ,
               ]"
             >
-              {{ tableColumn.showOnMenu }}
+              {{ resources[`${langCode}_Table`].showOnMenu }}
             </div>
           </div>
           <div class="table-filter">
             <base-combobox
               :listItem="[
-                { ShowOnMenuID: enums.filterType.True, ShowOnMenuName: 'Có' },
+                {
+                  ShowOnMenuID: enums.filterType.True,
+                  ShowOnMenuName: resources[`${langCode}_Table`].yes,
+                },
                 {
                   ShowOnMenuID: enums.filterType.False,
-                  ShowOnMenuName: 'Không',
+                  ShowOnMenuName: resources[`${langCode}_Table`].no,
                 },
               ]"
               tableName="ShowOnMenu"
@@ -223,9 +236,15 @@
           </div>
         </td>
         <td style="min-width: 89px">
-          <div class="table-column">{{ tableColumn.stopSale }}</div>
+          <div class="table-column">
+            {{ resources[`${langCode}_Table`].stopSale }}
+          </div>
           <div class="table-filter">
-            <input class="input" value="Không" disabled />
+            <input
+              class="input"
+              :value="resources[`${langCode}_Table`].no"
+              disabled
+            />
           </div>
         </td>
       </tr>
@@ -239,7 +258,7 @@
         @dblclick="handleDbClickDish(dish)"
         @contextmenu="handleRightClick(dish, $event)"
       >
-        <td>Món ăn</td>
+        <td>{{ resources[`${langCode}_Table`].dish }}</td>
         <td>{{ dish.DishCode }}</td>
         <td>{{ dish.DishName }}</td>
         <td>{{ dish.MenuGroupName }}</td>
@@ -297,7 +316,7 @@ export default {
   data() {
     return {
       enums: enums,
-      tableColumn: null,
+      resources: resources,
       dropdownLeft: 0,
       dropdownTop: 0,
       isShowDropdown: false,
@@ -589,9 +608,9 @@ export default {
     handleMaterialQuantified(val) {
       switch (val) {
         case enums.yesNo.No:
-          return "Chưa thiết lập";
+          return resources[`${this.langCode}_Table`].notQuantified;
         case enums.yesNo.Yes:
-          return "Đã thiết lập";
+          return resources[`${this.langCode}_Table`].quantified;
         default:
           return "";
       }
@@ -599,7 +618,6 @@ export default {
   },
   created() {
     this.loadDishsByPaging();
-    this.tableColumn = resources[`${this.langCode}_Table_Column`];
   },
 };
 </script>

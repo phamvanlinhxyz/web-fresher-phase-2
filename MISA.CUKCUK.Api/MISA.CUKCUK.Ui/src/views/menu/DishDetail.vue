@@ -174,7 +174,7 @@
                       <label for="input-image" class="pdi-label-icon"
                         >...</label
                       >
-                      <label class="pdi-label-icon">
+                      <label class="pdi-label-icon" @click="handleRevokeImage">
                         <base-icon iconName="x-close-red" />
                       </label>
                     </div>
@@ -403,6 +403,7 @@ export default {
       menuTop: 0,
       menuLeft: 0,
       isShowOptionMenu: false,
+      defaultImage: null,
     };
   },
   computed: mapState({
@@ -443,6 +444,20 @@ export default {
       "setStoreMode",
     ]),
     /**
+     * Xóa ảnh đã chọn
+     * Author: linhpv (26/08/2022)
+     */
+    handleRevokeImage() {
+      // Bỏ preview
+      let imgPreview = this.$refs.imagePreview;
+      URL.revokeObjectURL(imgPreview.src);
+      imgPreview.src = this.defaultImage;
+      // Set trường image trong món ăn thành null
+      this.singleDish.LinkImage = null;
+      // Set data ảnh = null
+      this.imageFile = null;
+    },
+    /**
      * Xử lý sự kiện click chuột phải
      * @param {*} i index
      * @param {*} e event
@@ -466,7 +481,7 @@ export default {
       if (objectEqual(this.singleDish, this.selectedDish)) {
         this.toggleDishPopup();
       } else {
-        this.dialogMsg = resources[`${this.langCode}_Data_Changed`];
+        this.dialogMsg = resources[`${this.langCode}_Dialog_Msg`].dataChanged;
         this.isShowConfirmDialog = true;
       }
     },
@@ -493,8 +508,8 @@ export default {
       let material = this.dishMaterial[this.dishMaterialFocus];
       // Nếu người dùng không nhập số lượng => set số lượng là 0
       if (!material.MaterialAmount) {
-        material.MaterialAmount = 0;
-        material.TotalPrice = 0;
+        material.MaterialAmount = 1;
+        material.TotalPrice = material.MaterialPurchasePrice;
         return;
       }
       // Nếu người dùng không nhập giá vốn => set giá vốn = 0
@@ -503,9 +518,17 @@ export default {
         material.TotalPrice = 0;
         return;
       }
+      // Tính tổng tiền nguyên vật liệu
       material.TotalPrice =
-        parseFloat(material.MaterialAmount.replaceAll(".", "")) *
-        parseFloat(material.MaterialPurchasePrice.replaceAll(".", ""));
+        parseFloat(material.MaterialAmount.toString().replaceAll(".", "")) *
+        parseFloat(
+          material.MaterialPurchasePrice.toString().replaceAll(".", "")
+        );
+      // Tính giá vốn món ăn
+      this.singleDish.PurchasePrice = 0;
+      this.dishMaterial.forEach((dm) => {
+        this.singleDish.PurchasePrice += dm.TotalPrice;
+      });
     },
     /**
      * Xóa 1 dòng nguyên vật liệu
@@ -561,7 +584,7 @@ export default {
      * Người dùng ấn cất
      * Author: linhpv (12/08/2022)
      */
-    handleStore(storeMode) {
+    async handleStore(storeMode) {
       this.focusElm = "";
       var valid = this.validateData();
       if (valid) {
@@ -571,7 +594,7 @@ export default {
         this.handleDishMaterial();
         // Set ảnh
         if (this.imageFile) {
-          this.handleUploadImage();
+          await this.handleUploadImage();
         }
         // Set store mode
         this.setStoreMode(storeMode);
@@ -654,7 +677,7 @@ export default {
           this.focusElm = "DishName";
         }
         this.errorList.DishName =
-          resources[`${this.langCode}_Error_Msg`].required;
+          resources[`${this.langCode}_Error_Msg`].emptyName;
         valid = false;
       }
       // 2. Mã món ăn
@@ -663,7 +686,7 @@ export default {
           this.focusElm = "DishCode";
         }
         this.errorList.DishCode =
-          resources[`${this.langCode}_Error_Msg`].required;
+          resources[`${this.langCode}_Error_Msg`].emptyCode;
         valid = false;
       }
       // 3. Đơn vị tính
@@ -672,7 +695,7 @@ export default {
           this.focusElm = "UnitID";
         }
         this.errorList.UnitID =
-          resources[`${this.langCode}_Error_Msg`].required;
+          resources[`${this.langCode}_Error_Msg`].emptyUnit;
         valid = false;
       }
       // 4. Giá bán
@@ -680,8 +703,22 @@ export default {
         if (!this.focusElm) {
           this.focusElm = "Price";
         }
-        this.errorList.Price = resources[`${this.langCode}_Error_Msg`].required;
+        this.errorList.Price =
+          resources[`${this.langCode}_Error_Msg`].emptyPrice;
         valid = false;
+      }
+      // 5. Check trùng nguyên vật liệu
+      let findDuplicates = (arr) =>
+        arr.filter(
+          (item, index) =>
+            arr.findIndex((x) => x.MaterialID === item.MaterialID) != index
+        );
+      if (findDuplicates(this.dishMaterial).length > 0) {
+        valid = false;
+        this.changeDialogContent(
+          resources[`${this.langCode}_Error_Msg`].duplicateMaterial
+        );
+        this.toggleDialog();
       }
       return valid;
     },
@@ -790,6 +827,7 @@ export default {
         this.toggleDialog();
       } else {
         let imgPreview = this.$refs.imagePreview;
+        this.defaultImage = imgPreview.src;
         URL.revokeObjectURL(imgPreview.src);
         imgPreview.src = URL.createObjectURL(file);
 

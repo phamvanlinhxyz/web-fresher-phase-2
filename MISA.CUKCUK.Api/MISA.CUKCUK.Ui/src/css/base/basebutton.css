@@ -28,7 +28,8 @@
 }
 
 .button-1:hover,
-.button-1:active {
+.button-1:active,
+.button-1:focus {
   background-color: #e4f2ea;
   border-color: #0072bc;
 }
@@ -40,7 +41,8 @@
 }
 
 .button-2:hover,
-.button-2:active {
+.button-2:active,
+.button-2:focus {
   background-color: #008ce6;
   border-color: #008ce6;
 }

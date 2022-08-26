@@ -27,7 +27,9 @@ namespace MISA.Web05.Infrastructure
             // Lấy tên bảng
             TableName = typeof(T).Name;
         }
+        #endregion
 
+        #region Repository
         /// <summary>
         /// Check trùng
         /// </summary>
@@ -38,13 +40,13 @@ namespace MISA.Web05.Infrastructure
         /// Created by: linhpv (14/08/2022)
         public bool CheckDuplicate(Guid? entityID, string text, string column)
         {
-            using(SqlConnection = new MySqlConnection(ConnectionString))
+            using (SqlConnection = new MySqlConnection(ConnectionString))
             {
                 // Query proc
                 var sqlQuery = $"Proc_CheckDuplicate";
-                
+
                 // Viết câu lệnh where
-                var where = "WHERE";    
+                var where = "WHERE";
                 if (entityID != Guid.Empty)
                 {
                     where += $" {TableName}ID <> '" + entityID + "' AND ";
@@ -64,16 +66,19 @@ namespace MISA.Web05.Infrastructure
                 if (res.Count == 0)
                 {
                     return false;
-                } 
+                }
                 else
                 {
                     return true;
                 }
             }
         }
-        #endregion
 
-        #region Repository
+        /// <summary>
+        /// Hàm lấy tất cả dữ liệu từ DB
+        /// </summary>
+        /// <returns>Danh sách</returns>
+        /// Created by: linhpv (26/08/2022)
         public IEnumerable<T> Get()
         {
             using (SqlConnection = new MySqlConnection(ConnectionString))
@@ -86,6 +91,12 @@ namespace MISA.Web05.Infrastructure
             }
         }
 
+        /// <summary>
+        /// Hàm thêm bản ghi vào DB
+        /// </summary>
+        /// <param name="entity">Bản ghi mới</param>
+        /// <returns>ID bản ghi mới</returns>
+        /// Created by: linhpv (26/08/2022)
         public virtual Guid Insert(T entity)
         {
             using (SqlConnection = new MySqlConnection(ConnectionString))

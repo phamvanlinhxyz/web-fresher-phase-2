@@ -24,10 +24,12 @@ namespace MISA.CUKCUK.Core.Models
         /// Khóa chính
         /// </summary>
         public Guid UnitID { get; set; }
+
         /// <summary>
         /// Tên đơn vị tính
         /// </summary>
         public string UnitName { get; set; }
+
         /// <summary>
         /// Diễn giải
         /// </summary>

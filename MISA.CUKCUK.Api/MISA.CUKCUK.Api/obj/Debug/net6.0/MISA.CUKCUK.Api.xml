@@ -40,7 +40,7 @@
             </summary>
             Created by: linhpv (08/08/2022)
         </member>
-        <member name="M:MISA.CUKCUK.Api.Controllers.DishController.PostImage(Microsoft.AspNetCore.Http.IFormFile)">
+        <member name="M:MISA.CUKCUK.Api.Controllers.DishController.PostImageAsync(Microsoft.AspNetCore.Http.IFormFile)">
             <summary>
             Upload hình ảnh món ăn
             </summary>

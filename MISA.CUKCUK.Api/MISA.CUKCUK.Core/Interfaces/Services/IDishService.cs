@@ -21,7 +21,7 @@ namespace MISA.CUKCUK.Core.Interfaces.Services
         /// <param name="image">Ảnh</param>
         /// <returns>response</returns>
         /// Created by: linhpv (24/08/2022)
-        Response UploadService(IFormFile image);
+        Task<Response> UploadServiceAsync(IFormFile image);
 
         /// <summary>
         /// Service sửa thông tin món ăn

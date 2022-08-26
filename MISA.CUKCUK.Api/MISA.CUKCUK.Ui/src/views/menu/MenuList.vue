@@ -222,7 +222,7 @@ export default {
      */
     handleDeleteDish() {
       this.isShowConfirmDialog = true;
-      this.dialogMsg = resources[`${this.langCode}_Confirm_Delete`](
+      this.dialogMsg = resources[`${this.langCode}_Dialog_Msg`].confirmDelete(
         this.selectedDish.DishCode,
         this.selectedDish.DishName
       );

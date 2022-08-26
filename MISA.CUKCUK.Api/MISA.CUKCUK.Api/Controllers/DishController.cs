@@ -39,11 +39,11 @@ namespace MISA.CUKCUK.Api.Controllers
         /// <returns>link ảnh</returns>
         /// Created by: linhpv (20/08/2022)
         [HttpPost("Image")]
-        public IActionResult PostImage(IFormFile image) 
+        public async Task<IActionResult> PostImageAsync(IFormFile image) 
         {
             try
             {
-                var res = _service.UploadService(image);
+                var res = await _service.UploadServiceAsync(image);
                 
                 // Trả về response
                 return Ok(JsonConvert.SerializeObject(res, Formatting.Indented));

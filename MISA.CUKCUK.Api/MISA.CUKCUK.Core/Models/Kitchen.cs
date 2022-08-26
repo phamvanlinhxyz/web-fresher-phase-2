@@ -26,15 +26,18 @@ namespace MISA.CUKCUK.Core.Models
         /// Khóa chính
         /// </summary>
         public Guid KitchenID { get; set; }
+
         /// <summary>
         /// Tên bếp
         /// </summary>
         public string KitchenName { get; set; }
+
         /// <summary>
         /// Thiết bị sử dụng
         /// </summary>
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public Device? Device { get; set; }
+
         /// <summary>
         ///  Tên thiết bị sử dụng
         /// </summary>
@@ -53,6 +56,7 @@ namespace MISA.CUKCUK.Core.Models
                 }
             } 
         }
+
         /// <summary>
         /// Diễn giải
         /// </summary>

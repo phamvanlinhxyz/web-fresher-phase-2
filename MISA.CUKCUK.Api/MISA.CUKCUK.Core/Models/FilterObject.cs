@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace MISA.CUKCUK.Core.Models
 {
+    /// <summary>
+    /// Đối tượng lọc
+    /// </summary>
+    /// Created by: linhpv (11/08/2022)
     public class FilterObject
     {
         #region Contructor
@@ -20,9 +24,24 @@ namespace MISA.CUKCUK.Core.Models
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Tên cột
+        /// </summary>
         public string ColumnName { get; set; }
+
+        /// <summary>
+        /// Giá trị
+        /// </summary>
         public string Value { get; set; }
+
+        /// <summary>
+        /// Kiểu input
+        /// </summary>
         public InputType InputType { get; set; }
+
+        /// <summary>
+        /// Kiểu lọc
+        /// </summary>
         public FilterType FilterType { get; set; }
         #endregion
     }

@@ -127,7 +127,7 @@ export default {
       if (objectEqual(this.newMaterial, {})) {
         this.toggleMaterialPopup();
       } else {
-        this.dialogMsg = resources[`${this.langCode}_Data_Changed`];
+        this.dialogMsg = resources[`${this.langCode}_Dialog_Msg`].dataChanged;
         this.isShowConfirmDialog = true;
       }
     },
@@ -154,7 +154,7 @@ export default {
           this.focusElm = "MaterialCode";
         }
         this.errorList.MaterialCode =
-          resources[`${this.langCode}_Error_Msg`].required;
+          resources[`${this.langCode}_Error_Msg`].emptyCode;
         valid = false;
       }
       if (!this.newMaterial.MaterialName) {
@@ -162,7 +162,7 @@ export default {
           this.focusElm = "MaterialName";
         }
         this.errorList.MaterialName =
-          resources[`${this.langCode}_Error_Msg`].required;
+          resources[`${this.langCode}_Error_Msg`].emptyName;
         valid = false;
       }
       if (!this.newMaterial.UnitID) {
@@ -170,7 +170,7 @@ export default {
           this.focusElm = "UnitID";
         }
         this.errorList.UnitID =
-          resources[`${this.langCode}_Error_Msg`].required;
+          resources[`${this.langCode}_Error_Msg`].emptyUnit;
         valid = false;
       }
 
