@@ -82,6 +82,12 @@ namespace MISA.CUKCUK.Api.Controllers
         #endregion
 
         #region Function
+        /// <summary>
+        /// Xử lý exception
+        /// </summary>
+        /// <param name="ex">Exception</param>
+        /// <returns>Action Result</returns>
+        /// Created by: linhpv (11/08/2022)
         protected IActionResult HandleException(Exception ex) 
         {
             Response res = new Response(null, false, ErrorCode.ServerInternal, "", ex.Message);

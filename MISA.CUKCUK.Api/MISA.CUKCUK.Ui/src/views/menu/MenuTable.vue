@@ -237,6 +237,7 @@
         :class="{ selected: dish.DishID === selectedDish.DishID }"
         @click="selectDish(dish)"
         @dblclick="handleDbClickDish(dish)"
+        @contextmenu="handleRightClick(dish, $event)"
       >
         <td>Món ăn</td>
         <td>{{ dish.DishCode }}</td>
@@ -354,6 +355,7 @@ export default {
     selectedDish: (state) => state.dish.selectedDish,
     isLoadingDish: (state) => state.dish.isLoadingDish,
   }),
+  emits: ["showOptionMenu"],
   watch: {
     /**
      * Theo dõi sự kiện cập nhật filter object
@@ -377,6 +379,14 @@ export default {
       "toggleDishPopup",
       "updateSortInfo",
     ]),
+    handleRightClick(dish, e) {
+      // Bỏ xự kiện mặc định
+      e.preventDefault();
+      // Chọn món ăn click vào
+      this.selectDish(dish);
+      // Emit show option menu
+      this.$emit("showOptionMenu", e);
+    },
     /**
      * Xử lý sắp xếp theo cột
      * @param {*} col tên cột

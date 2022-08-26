@@ -26,6 +26,14 @@
             <returns>Tất cả dữ liệu</returns>
             Created by: linhpv (12/08/2022)
         </member>
+        <member name="M:MISA.CUKCUK.Api.Controllers.BaseController`1.HandleException(System.Exception)">
+            <summary>
+            Xử lý exception
+            </summary>
+            <param name="ex">Exception</param>
+            <returns>Action Result</returns>
+            Created by: linhpv (11/08/2022)
+        </member>
         <member name="T:MISA.CUKCUK.Api.Controllers.DishController">
             <summary>
             Controller xử lý liên quan đến món ăn

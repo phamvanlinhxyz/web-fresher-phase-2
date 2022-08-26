@@ -61,7 +61,9 @@
                     tableName="MenuGroup"
                     :addIcon="true"
                     :value="singleDish.MenuGroupID"
-                    @change="(val, tab) => this.setValueCombobox('MenuGroup', val)"
+                    @change="
+                      (val, tab) => this.setValueCombobox('MenuGroup', val)
+                    "
                   />
                 </div>
                 <div class="form-input">
@@ -73,7 +75,9 @@
                     tableName="Unit"
                     :addIcon="true"
                     :value="singleDish.UnitID"
-                    @change="(val, tab) => this.checkComboboxRequired('Unit', val)"
+                    @change="
+                      (val, tab) => this.checkComboboxRequired('Unit', val)
+                    "
                     :focus="focusElm == 'UnitID'"
                     :errorMessage="errorList.UnitID"
                   />
@@ -114,7 +118,9 @@
                     tableName="Kitchen"
                     :addIcon="true"
                     :value="singleDish.KitchenID"
-                    @change="(val, tab) => this.setValueCombobox('Kitchen', val)"
+                    @change="
+                      (val, tab) => this.setValueCombobox('Kitchen', val)
+                    "
                   />
                 </div>
                 <div class="form-input">
@@ -207,6 +213,7 @@
                       v-for="(material, index) of dishMaterial"
                       :key="index"
                       @click="handleClickRow(index)"
+                      @contextmenu="handleRightClick(index, $event)"
                     >
                       <td>
                         <base-combobox
@@ -321,6 +328,42 @@
     @no-confirm="toggleDishPopup"
     @cancel="() => (this.isShowConfirmDialog = false)"
   />
+  <!-- Option menu trên table -->
+  <div
+    v-if="isShowOptionMenu"
+    class="option-menu"
+    :style="{ position: 'fixed', top: `${menuTop}px`, left: `${menuLeft}px` }"
+    v-click-outside="() => (this.isShowOptionMenu = false)"
+  >
+    <div
+      class="option-menu-item"
+      @click="
+        () => {
+          this.isShowOptionMenu = false;
+          this.addRowMaterial();
+        }
+      "
+    >
+      <div class="option-menu-icon">
+        <base-icon iconName="insert" />
+      </div>
+      <div class="toolbar-button-text">Thêm dòng</div>
+    </div>
+    <div
+      class="option-menu-item"
+      @click="
+        () => {
+          this.isShowOptionMenu = false;
+          this.handleDeleteRow();
+        }
+      "
+    >
+      <div class="option-menu-icon">
+        <base-icon iconName="delete" />
+      </div>
+      <div class="toolbar-button-text">Xóa dòng</div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -357,6 +400,9 @@ export default {
       dialogMsg: "",
       serverLink: "",
       imageFile: null,
+      menuTop: 0,
+      menuLeft: 0,
+      isShowOptionMenu: false,
     };
   },
   computed: mapState({
@@ -396,6 +442,22 @@ export default {
       "toggleDialog",
       "setStoreMode",
     ]),
+    /**
+     * Xử lý sự kiện click chuột phải
+     * @param {*} i index
+     * @param {*} e event
+     * Created by: linhpv (25/08/2022)
+     */
+    handleRightClick(i, e) {
+      // Ngăn sự kiện mặc định
+      e.preventDefault();
+      // Chọn dòng đang focus
+      this.dishMaterialFocus = i;
+      // Lấy vị trí option menu
+      this.menuLeft = e.pageX;
+      this.menuTop = e.pageY;
+      this.isShowOptionMenu = true;
+    },
     /**
      * Người dùng ấn đóng popup
      * Author: linhpv (19/08/2022)

@@ -64,5 +64,29 @@
   border: 1px solid #c1c1c1;
   overflow: auto;
   flex: 1;
-  position: relative;
+position: relative;
+}
+
+.option-menu {
+  background-color: #fff;
+  width: 128px;
+  border: 1px solid #e1e1e1;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.option-menu-item {
+  display: flex;
+  height: 24px;
+  align-items: center;
+  padding: 0 5px;
+  cursor: pointer;
+}
+
+.option-menu-item:hover {
+  background-color: #dee8f6;
+}
+
+.option-menu-sepatator {
+  height: 1px;
+  border-top: 1px solid #e1e1e1;
 }

@@ -115,7 +115,7 @@ export default {
   },
   computed: mapState({
     langCode: (state) => state.app.langCode,
-    kitchens: (state) => state.dish.kitchens,
+    kitchens: (state) => state.kitchen.kitchens,
   }),
   methods: {
     ...mapActions([
@@ -202,8 +202,8 @@ export default {
       }
     },
   },
-  created() {
-    this.loadAllKitchen();
+  async created() {
+    await this.loadAllKitchen();
   },
 };
 </script>

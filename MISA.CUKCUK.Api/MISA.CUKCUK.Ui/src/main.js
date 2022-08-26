@@ -3,6 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 
+import vClickOutside from "click-outside-vue3";
 import BaseIcon from "./components/base/BaseIcon";
 import BaseButton from "./components/base/BaseButton";
 import BaseInput from "./components/base/BaseInput";
@@ -19,4 +20,5 @@ createApp(App)
   .component("base-dialog", BaseDialog)
   .use(store)
   .use(router)
+  .use(vClickOutside)
   .mount("#app");

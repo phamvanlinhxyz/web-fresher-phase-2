@@ -19,17 +19,17 @@
   <div class="input-error-icon" v-if="errorMessage">
     <base-icon iconName="danger" :title="errorMessage" />
   </div>
-  <div class="cbb-bg" @click="toggleDropdown" v-show="isShowDropdown"></div>
+  <!-- <div class="cbb-bg" @click="toggleDropdown" v-show="isShowDropdown"></div> -->
   <div
-    v-if="dropdownType != 1"
+    v-if="dropdownType != 1 && isShowDropdown"
     class="cbb-option"
-    v-show="isShowDropdown"
     :style="{
       top: `${dropdownTop}px`,
       left: `${dropdownLeft}px`,
       width: `${dropdownWidth}px`,
     }"
     ref="comboboxOption"
+    v-click-outside="toggleDropdown"
   >
     <ul class="cbb-list-item">
       <li
@@ -48,7 +48,7 @@
     </ul>
   </div>
   <div
-    v-if="dropdownType == 1"
+    v-if="dropdownType == 1 && isShowDropdown"
     class="cbb-option"
     v-show="isShowDropdown"
     :style="{
@@ -56,6 +56,7 @@
       left: `${dropdownLeft}px`,
     }"
     ref="comboboxOption"
+    v-click-outside="toggleDropdown"
   >
     <ul class="cbb-list-item-table">
       <li class="cbb-item-table table-title">

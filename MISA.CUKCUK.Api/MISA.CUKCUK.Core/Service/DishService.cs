@@ -302,6 +302,8 @@ namespace MISA.CUKCUK.Core.Service
                         case FilterType.NotContain:
                             where += filterObject.ColumnName + " NOT LIKE '%" + filterObject.Value + "%' ";
                             break;
+                        default:
+                            break;
                     }
                 }
                 else if (filterObject.InputType == InputType.Number)

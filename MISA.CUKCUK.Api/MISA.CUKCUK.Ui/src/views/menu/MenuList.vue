@@ -38,7 +38,7 @@
     </div>
     <!-- Bảng -->
     <div class="menu-table">
-      <menu-table />
+      <menu-table @showOptionMenu="showOptionMenu" />
     </div>
     <!-- Phân trang -->
     <menu-pagination />
@@ -67,6 +67,85 @@
       :rightButton="[{ content: 'Đông ý', type: 'confirm' }]"
       @confirm="toggleDialog"
     />
+    <!-- Option menu trên table -->
+    <div
+      v-if="isShowOptionMenu"
+      class="option-menu"
+      :style="{ position: 'fixed', top: `${menuTop}px`, left: `${menuLeft}px` }"
+      v-click-outside="() => (this.isShowOptionMenu = false)"
+    >
+      <div
+        class="option-menu-item"
+        @click="
+          () => {
+            this.isShowOptionMenu = false;
+            this.handleAddDish();
+          }
+        "
+      >
+        <div class="option-menu-icon">
+          <div class="icon-insert"></div>
+        </div>
+        <div class="toolbar-button-text">Thêm thực đơn</div>
+      </div>
+      <div
+        class="option-menu-item"
+        @click="
+          () => {
+            this.isShowOptionMenu = false;
+            this.handleReplicateDish();
+          }
+        "
+      >
+        <div class="toolbar-button-icon">
+          <base-icon iconName="duplicate" />
+        </div>
+        <div class="toolbar-button-text">{{ toolbarContent.copy }}</div>
+      </div>
+      <div
+        class="option-menu-item"
+        @click="
+          () => {
+            this.isShowOptionMenu = false;
+            this.handleEditDish();
+          }
+        "
+      >
+        <div class="toolbar-button-icon">
+          <base-icon iconName="edit" />
+        </div>
+        <div class="toolbar-button-text">{{ toolbarContent.edit }}</div>
+      </div>
+      <div
+        class="option-menu-item"
+        @click="
+          () => {
+            this.isShowOptionMenu = false;
+            this.handleDeleteDish();
+          }
+        "
+      >
+        <div class="toolbar-button-icon">
+          <base-icon iconName="delete" />
+        </div>
+        <div class="toolbar-button-text">{{ toolbarContent.delete }}</div>
+      </div>
+      <div class="option-menu-sepatator"></div>
+      <div
+        class="option-menu-item"
+        @click="
+          () => {
+            this.isShowOptionMenu = false;
+            this.handleReload();
+          }
+        "
+      >
+        <div class="toolbar-button-icon">
+          <base-icon iconName="reload" />
+        </div>
+        <div class="toolbar-button-text">{{ toolbarContent.reload }}</div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -98,6 +177,9 @@ export default {
       dialogMsg: "",
       toolbarContent: null,
       contentTitle: null,
+      menuTop: 0,
+      menuLeft: 0,
+      isShowOptionMenu: false,
     };
   },
   computed: mapState({
@@ -121,6 +203,11 @@ export default {
       "loadDishsByPaging",
       "deleteDish",
     ]),
+    showOptionMenu(e) {
+      this.menuLeft = e.pageX;
+      this.menuTop = e.pageY;
+      this.isShowOptionMenu = true;
+    },
     /**
      * Người dùng xác nhận xóa món ăn
      * Author: linhpv (19/08/2022)
